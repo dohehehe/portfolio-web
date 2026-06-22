@@ -44,31 +44,3 @@
   color: #444;
   line-height: 1.6;
 }
-
-.section {
-  border-top: 1px solid #e1e5e9;
-  padding-top: 20px;
-}
-
-.sectionTitle {
-  margin-bottom: 12px;
-  font-size: 1rem;
-  font-weight: 600;
-}
-
-.tableList {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.tableItem {
-  padding: 6px 12px;
-  border: 1px solid #e1e5e9;
-  border-radius: 999px;
-  background: #fafafa;
-  font-size: 0.875rem;
-}

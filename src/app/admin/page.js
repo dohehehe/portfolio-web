@@ -1,27 +1,25 @@
-import { isAdminUser } from "@/lib/auth/constants";
-import { createSupabaseAuthServerClient } from "@/lib/supabase/server";
-import AccessDenied from "@/components/admin/AccessDenied";
+import AdminPageShell from "@/components/admin/AdminPageShell";
 import AdminDashboard from "@/components/admin/AdminDashboard";
-import LoginForm from "@/components/admin/LoginForm";
+import { createSupabaseAuthServerClient } from "@/lib/supabase/server";
 
 export const metadata = {
   title: "Admin | dohee kwak",
   robots: { index: false, follow: false },
 };
 
-export default async function AdminPage() {
+async function AdminDashboardLoader() {
   const supabase = await createSupabaseAuthServerClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (user && !isAdminUser(user)) {
-    return <AccessDenied />;
-  }
+  return <AdminDashboard user={user} />;
+}
 
-  if (isAdminUser(user)) {
-    return <AdminDashboard user={user} />;
-  }
-
-  return <LoginForm />;
+export default async function AdminPage() {
+  return (
+    <AdminPageShell>
+      <AdminDashboardLoader />
+    </AdminPageShell>
+  );
 }

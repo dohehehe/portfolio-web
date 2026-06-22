@@ -1,4 +1,5 @@
 import { apiError, supabaseError } from "@/lib/api/errors";
+import { requireAdmin } from "@/lib/api/requireAdmin";
 import { assertValidTable } from "@/lib/api/resources";
 import { getTableColumns } from "@/lib/supabase/schema";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -46,6 +47,12 @@ export function createCollectionHandlers(table) {
 
     async POST(request) {
       try {
+        const { response: unauthorized } = await requireAdmin();
+
+        if (unauthorized) {
+          return unauthorized;
+        }
+
         const body = await request.json();
         const payload = pickWritablePayload(table, body);
 
@@ -103,6 +110,12 @@ export function createItemHandlers(table) {
 
     async PATCH(request, { params }) {
       try {
+        const { response: unauthorized } = await requireAdmin();
+
+        if (unauthorized) {
+          return unauthorized;
+        }
+
         const { id } = await params;
         const body = await request.json();
         const payload = pickWritablePayload(table, body);
@@ -135,6 +148,12 @@ export function createItemHandlers(table) {
 
     async DELETE(_request, { params }) {
       try {
+        const { response: unauthorized } = await requireAdmin();
+
+        if (unauthorized) {
+          return unauthorized;
+        }
+
         const { id } = await params;
         const supabase = createSupabaseServerClient();
         const { data, error } = await supabase

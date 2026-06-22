@@ -2,7 +2,8 @@ function getApiBase(table) {
   return `/api/${table}`;
 }
 
-async function parseResponse(response) {
+async function parseResponse(responsePromise) {
+  const response = await responsePromise;
   const data = await response.json();
 
   if (!response.ok) {
