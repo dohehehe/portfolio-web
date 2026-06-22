@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useCreateEvent } from "@/hooks/event";
-import { parseGalleryJson, saveEditorContent } from "./formUtils";
+import GalleryInput from "./GalleryInput";
+import { saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 
@@ -19,7 +20,8 @@ export default function EventCreateForm() {
   const [date, setDate] = useState("");
   const [spaceKo, setSpaceKo] = useState("");
   const [spaceEn, setSpaceEn] = useState("");
-  const [gallery, setGallery] = useState("");
+  const [gallery, setGallery] = useState([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { create, loading } = useCreateEvent();
@@ -37,17 +39,12 @@ export default function EventCreateForm() {
         space_en: spaceEn.trim() || null,
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        gallery: parseGalleryJson(gallery),
+        gallery: serializeGallery(gallery),
       });
 
       router.push("/admin");
       router.refresh();
     } catch (error) {
-      if (error instanceof SyntaxError) {
-        setSubmitError("gallery JSON 형식이 올바르지 않습니다.");
-        return;
-      }
-
       setSubmitError(error.message ?? "Event 생성에 실패했습니다.");
     }
   }
@@ -115,15 +112,11 @@ export default function EventCreateForm() {
           />
         </label>
 
-        <label className={styles.label}>
-          gallery (JSON)
-          <textarea
-            className={styles.jsonTextarea}
-            value={gallery}
-            onChange={(event) => setGallery(event.target.value)}
-            placeholder='예: ["image-url-1", "image-url-2"]'
-          />
-        </label>
+        <GalleryInput
+          value={gallery}
+          onChange={setGallery}
+          onUploadingChange={setGalleryUploading}
+        />
 
         <div className={styles.field}>
           credit_ko
@@ -137,7 +130,11 @@ export default function EventCreateForm() {
 
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 
-        <button className={styles.submitButton} type="submit" disabled={loading}>
+        <button
+          className={styles.submitButton}
+          type="submit"
+          disabled={loading || galleryUploading}
+        >
           {loading ? "저장 중..." : "생성"}
         </button>
       </form>

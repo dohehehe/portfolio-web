@@ -7,12 +7,42 @@ export async function saveEditorContent(editorRef, label) {
   return data.blocks?.length ? data : null;
 }
 
-export function parseGalleryJson(rawValue) {
-  const trimmed = rawValue.trim();
+export function normalizeGallery(rawValue) {
+  if (!Array.isArray(rawValue)) {
+    return [];
+  }
 
-  if (!trimmed) {
+  return rawValue
+    .map((item) => {
+      if (typeof item === "string") {
+        return {
+          img_url: item,
+          caption_ko: "",
+          caption_en: "",
+        };
+      }
+
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+
+      return {
+        img_url: item.img_url ?? "",
+        caption_ko: item.caption_ko ?? "",
+        caption_en: item.caption_en ?? "",
+      };
+    })
+    .filter((item) => item?.img_url);
+}
+
+export function serializeGallery(items) {
+  if (!items?.length) {
     return null;
   }
 
-  return JSON.parse(trimmed);
+  return items.map(({ img_url, caption_ko, caption_en }) => ({
+    img_url,
+    caption_ko: caption_ko?.trim() || null,
+    caption_en: caption_en?.trim() || null,
+  }));
 }

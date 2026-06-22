@@ -6,7 +6,8 @@ import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useDeleteWork, useUpdateWork, useWork } from "@/hooks/work";
 import ForeignSelect from "./ForeignSelect";
-import { parseGalleryJson, saveEditorContent } from "./formUtils";
+import GalleryInput from "./GalleryInput";
+import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 
@@ -25,7 +26,8 @@ export default function WorkEditForm({ id }) {
   const [dimensionKo, setDimensionKo] = useState("");
   const [dimensionEn, setDimensionEn] = useState("");
   const [projectId, setProjectId] = useState("");
-  const [gallery, setGallery] = useState("");
+  const [gallery, setGallery] = useState([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { data: work, loading, error } = useWork(id);
@@ -45,7 +47,7 @@ export default function WorkEditForm({ id }) {
     setDimensionKo(work.dimension_ko ?? "");
     setDimensionEn(work.dimension_en ?? "");
     setProjectId(work.project_id ?? "");
-    setGallery(work.gallery ? JSON.stringify(work.gallery, null, 2) : "");
+    setGallery(normalizeGallery(work.gallery));
   }, [work]);
 
   async function handleSubmit(event) {
@@ -66,17 +68,12 @@ export default function WorkEditForm({ id }) {
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        gallery: parseGalleryJson(gallery),
+        gallery: serializeGallery(gallery),
       });
 
       router.push("/admin");
       router.refresh();
     } catch (err) {
-      if (err instanceof SyntaxError) {
-        setSubmitError("gallery JSON 형식이 올바르지 않습니다.");
-        return;
-      }
-
       setSubmitError(err.message ?? "Work 수정에 실패했습니다.");
     }
   }
@@ -109,7 +106,7 @@ export default function WorkEditForm({ id }) {
     return <p className={styles.error}>Work를 찾을 수 없습니다.</p>;
   }
 
-  const saving = updating || deleting;
+  const saving = updating || deleting || galleryUploading;
 
   return (
     <div className={styles.card}>
@@ -242,15 +239,12 @@ export default function WorkEditForm({ id }) {
           />
         </label>
 
-        <label className={styles.label}>
-          gallery (JSON)
-          <textarea
-            className={styles.jsonTextarea}
-            value={gallery}
-            onChange={(event) => setGallery(event.target.value)}
-            placeholder='예: ["image-url-1", "image-url-2"]'
-          />
-        </label>
+        <GalleryInput
+          value={gallery}
+          onChange={setGallery}
+          disabled={saving}
+          onUploadingChange={setGalleryUploading}
+        />
 
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 

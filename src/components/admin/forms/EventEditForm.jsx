@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/event";
-import { parseGalleryJson, saveEditorContent } from "./formUtils";
+import GalleryInput from "./GalleryInput";
+import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 
@@ -19,7 +20,8 @@ export default function EventEditForm({ id }) {
   const [date, setDate] = useState("");
   const [spaceKo, setSpaceKo] = useState("");
   const [spaceEn, setSpaceEn] = useState("");
-  const [gallery, setGallery] = useState("");
+  const [gallery, setGallery] = useState([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { data: eventItem, loading, error } = useEvent(id);
@@ -36,9 +38,7 @@ export default function EventEditForm({ id }) {
     setDate(eventItem.date ?? "");
     setSpaceKo(eventItem.space_ko ?? "");
     setSpaceEn(eventItem.space_en ?? "");
-    setGallery(
-      eventItem.gallery ? JSON.stringify(eventItem.gallery, null, 2) : "",
-    );
+    setGallery(normalizeGallery(eventItem.gallery));
   }, [eventItem]);
 
   async function handleSubmit(event) {
@@ -54,17 +54,12 @@ export default function EventEditForm({ id }) {
         space_en: spaceEn.trim() || null,
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        gallery: parseGalleryJson(gallery),
+        gallery: serializeGallery(gallery),
       });
 
       router.push("/admin");
       router.refresh();
     } catch (err) {
-      if (err instanceof SyntaxError) {
-        setSubmitError("gallery JSON 형식이 올바르지 않습니다.");
-        return;
-      }
-
       setSubmitError(err.message ?? "Event 수정에 실패했습니다.");
     }
   }
@@ -97,7 +92,7 @@ export default function EventEditForm({ id }) {
     return <p className={styles.error}>Event를 찾을 수 없습니다.</p>;
   }
 
-  const saving = updating || deleting;
+  const saving = updating || deleting || galleryUploading;
 
   return (
     <div className={styles.card}>
@@ -162,15 +157,12 @@ export default function EventEditForm({ id }) {
           />
         </label>
 
-        <label className={styles.label}>
-          gallery (JSON)
-          <textarea
-            className={styles.jsonTextarea}
-            value={gallery}
-            onChange={(event) => setGallery(event.target.value)}
-            placeholder='예: ["image-url-1", "image-url-2"]'
-          />
-        </label>
+        <GalleryInput
+          value={gallery}
+          onChange={setGallery}
+          disabled={saving}
+          onUploadingChange={setGalleryUploading}
+        />
 
         <div key={eventItem.id}>
           <div className={styles.field}>

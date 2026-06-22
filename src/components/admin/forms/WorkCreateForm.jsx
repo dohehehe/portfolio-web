@@ -6,7 +6,8 @@ import { useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useCreateWork } from "@/hooks/work";
 import ForeignSelect from "./ForeignSelect";
-import { parseGalleryJson, saveEditorContent } from "./formUtils";
+import GalleryInput from "./GalleryInput";
+import { saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 
@@ -25,7 +26,8 @@ export default function WorkCreateForm() {
   const [dimensionKo, setDimensionKo] = useState("");
   const [dimensionEn, setDimensionEn] = useState("");
   const [projectId, setProjectId] = useState("");
-  const [gallery, setGallery] = useState("");
+  const [gallery, setGallery] = useState([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { create, loading } = useCreateWork();
@@ -48,17 +50,12 @@ export default function WorkCreateForm() {
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        gallery: parseGalleryJson(gallery),
+        gallery: serializeGallery(gallery),
       });
 
       router.push("/admin");
       router.refresh();
     } catch (error) {
-      if (error instanceof SyntaxError) {
-        setSubmitError("gallery JSON 형식이 올바르지 않습니다.");
-        return;
-      }
-
       setSubmitError(error.message ?? "Work 생성에 실패했습니다.");
     }
   }
@@ -176,19 +173,19 @@ export default function WorkCreateForm() {
           />
         </label>
 
-        <label className={styles.label}>
-          gallery (JSON)
-          <textarea
-            className={styles.jsonTextarea}
-            value={gallery}
-            onChange={(event) => setGallery(event.target.value)}
-            placeholder='예: ["image-url-1", "image-url-2"]'
-          />
-        </label>
+        <GalleryInput
+          value={gallery}
+          onChange={setGallery}
+          onUploadingChange={setGalleryUploading}
+        />
 
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 
-        <button className={styles.submitButton} type="submit" disabled={loading}>
+        <button
+          className={styles.submitButton}
+          type="submit"
+          disabled={loading || galleryUploading}
+        >
           {loading ? "저장 중..." : "생성"}
         </button>
       </form>

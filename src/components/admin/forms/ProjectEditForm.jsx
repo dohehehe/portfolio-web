@@ -9,7 +9,8 @@ import {
   useProject,
   useUpdateProject,
 } from "@/hooks/project";
-import { parseGalleryJson, saveEditorContent } from "./formUtils";
+import GalleryInput from "./GalleryInput";
+import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 export default function ProjectEditForm({ id }) {
@@ -22,7 +23,8 @@ export default function ProjectEditForm({ id }) {
   const [titleKo, setTitleKo] = useState("");
   const [titleEn, setTitleEn] = useState("");
   const [year, setYear] = useState("");
-  const [gallery, setGallery] = useState("");
+  const [gallery, setGallery] = useState([]);
+  const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { data: project, loading, error } = useProject(id);
@@ -37,9 +39,7 @@ export default function ProjectEditForm({ id }) {
     setTitleKo(project.title_ko ?? "");
     setTitleEn(project.title_en ?? "");
     setYear(project.year ?? "");
-    setGallery(
-      project.gallery ? JSON.stringify(project.gallery, null, 2) : "",
-    );
+    setGallery(normalizeGallery(project.gallery));
   }, [project]);
 
   async function handleSubmit(event) {
@@ -55,17 +55,12 @@ export default function ProjectEditForm({ id }) {
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        gallery: parseGalleryJson(gallery),
+        gallery: serializeGallery(gallery),
       });
 
       router.push("/admin");
       router.refresh();
     } catch (err) {
-      if (err instanceof SyntaxError) {
-        setSubmitError("gallery JSON 형식이 올바르지 않습니다.");
-        return;
-      }
-
       setSubmitError(err.message ?? "Project 수정에 실패했습니다.");
     }
   }
@@ -98,7 +93,7 @@ export default function ProjectEditForm({ id }) {
     return <p className={styles.error}>Project를 찾을 수 없습니다.</p>;
   }
 
-  const saving = updating || deleting;
+  const saving = updating || deleting || galleryUploading;
 
   return (
     <div className={styles.card}>
@@ -181,15 +176,12 @@ export default function ProjectEditForm({ id }) {
           </div>
         </div>
 
-        <label className={styles.label}>
-          gallery (JSON)
-          <textarea
-            className={styles.jsonTextarea}
-            value={gallery}
-            onChange={(event) => setGallery(event.target.value)}
-            placeholder='예: ["image-url-1", "image-url-2"]'
-          />
-        </label>
+        <GalleryInput
+          value={gallery}
+          onChange={setGallery}
+          disabled={saving}
+          onUploadingChange={setGalleryUploading}
+        />
 
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 
