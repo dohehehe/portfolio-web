@@ -7,13 +7,19 @@ import { useWorks } from "@/hooks/work";
 import { groupWorksByProject } from "./workListUtils";
 import styles from "./workList.module.css";
 
-function ListItem({ href, titleKo, year }) {
+function RowLink({ href, titleKo, year }) {
+  return (
+    <Link className={styles.link} href={href}>
+      <span className={styles.title}>{titleKo || "-"}</span>
+      {year ? <span className={styles.year}>{year}</span> : null}
+    </Link>
+  );
+}
+
+function WorkListItem({ href, titleKo, year }) {
   return (
     <li className={styles.item}>
-      <Link className={styles.link} href={href}>
-        <span className={styles.title}>{titleKo || "-"}</span>
-        {year ? <span className={styles.year}>{year}</span> : null}
-      </Link>
+      <RowLink href={href} titleKo={titleKo} year={year} />
     </li>
   );
 }
@@ -31,23 +37,16 @@ export default function WorkList() {
   const loading = projectsLoading || worksLoading;
   const error = projectsError ?? worksError;
 
-  if (loading) {
-    return <p className={styles.status}>불러오는 중...</p>;
-  }
-
   if (error) {
     return <p className={styles.status}>목록을 불러오지 못했습니다.</p>;
   }
 
-  if (groupedProjects.length === 0) {
-    return <p className={styles.status}>등록된 project가 없습니다.</p>;
-  }
 
   return (
     <ul className={styles.list}>
       {groupedProjects.map((project) => (
-        <li key={project.id} className={styles.projectGroup}>
-          <ListItem
+        <li key={project.id} className={`${styles.projectGroup} ${styles.item}`}>
+          <RowLink
             href={`/project/${project.id}`}
             titleKo={project.title_ko}
             year={project.year}
@@ -56,7 +55,7 @@ export default function WorkList() {
           {project.works.length > 0 ? (
             <ul className={styles.workList}>
               {project.works.map((work) => (
-                <ListItem
+                <WorkListItem
                   key={work.id}
                   href={`/work/${work.id}`}
                   titleKo={work.title_ko}
