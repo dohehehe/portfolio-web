@@ -1,0 +1,52 @@
+.header {
+  padding: 8px 16px 0px;
+  color: #1f1f1f;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  /* padding: 0 16px; */
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  /* margin-top: 8px; */
+  gap: 1rem;
+}
+
+.navigationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  display: block;
+  transition: all 0.3s ease-in-out;
+}
+
+.navigationSection .workList {
+  opacity: 0;
+  /* display: none; */
+  pointer-events: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.navigationSection.workListVisible .workList,
+.navigationSection:hover .workList {
+  opacity: 1;
+  pointer-events: auto;
+  /* display: block; */
+}
+
+.navigationLink {
+  text-decoration: none;
+  font-size: 1.7rem;
+  font-family: 'Arial narrow', var(--font-apple-gothic), sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.navigationLink:hover {
+  text-decoration: underline;
+}

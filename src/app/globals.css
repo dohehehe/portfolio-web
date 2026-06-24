@@ -11,6 +11,12 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  color: #1f1f1f;
+  font-size: 10px;
+}
+
+body {
+  font-family: var(--font-hei-regular), var(--font-apple-gothic), sans-serif;
 }
 
 * {
