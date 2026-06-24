@@ -1,0 +1,24 @@
+.header {
+  padding: 1rem;
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.navigationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.navigationLink {
+  text-decoration: none;
+}
+
+.navigationLink:hover {
+  text-decoration: underline;
+}

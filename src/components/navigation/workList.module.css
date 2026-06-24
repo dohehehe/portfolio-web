@@ -1,0 +1,47 @@
+.list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.projectGroup {
+  margin-bottom: 0.75rem;
+}
+
+.workList {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0 0 0 1rem;
+}
+
+.item {
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  color: #000000;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.title {
+  flex: 1;
+}
+
+.year {
+  flex-shrink: 0;
+  color: #666666;
+  font-size: 0.875rem;
+}
+
+.status {
+  margin: 0.5rem 0 0;
+  color: #666666;
+  font-size: 0.875rem;
+}
