@@ -1,0 +1,94 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  color: #444;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.hint {
+  color: #666;
+  font-size: 0.8125rem;
+}
+
+.status {
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  background: #fafafa;
+}
+
+.sectionTitle {
+  margin: 0;
+  color: #444;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.empty {
+  margin: 0;
+  color: #666;
+  font-size: 0.8125rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 280px;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.item {
+  margin: 0;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.checkboxLabel:hover:not(:has(input:disabled)) {
+  background: #f0f0f0;
+}
+
+.checkbox {
+  margin-top: 2px;
+}
+
+.itemText {
+  color: #333;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

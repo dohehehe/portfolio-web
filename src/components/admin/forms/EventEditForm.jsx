@@ -5,13 +5,22 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/event";
+import FileLinkInput from "./FileLinkInput";
 import GalleryInput from "./GalleryInput";
-import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
+import {
+  normalizeFileLink,
+  normalizeGallery,
+  saveEditorContent,
+  serializeFileLink,
+  serializeGallery,
+} from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 
 export default function EventEditForm({ id }) {
   const router = useRouter();
+  const contentKoRef = useRef(null);
+  const contentEnRef = useRef(null);
   const creditKoRef = useRef(null);
   const creditEnRef = useRef(null);
 
@@ -21,7 +30,9 @@ export default function EventEditForm({ id }) {
   const [spaceKo, setSpaceKo] = useState("");
   const [spaceEn, setSpaceEn] = useState("");
   const [gallery, setGallery] = useState([]);
+  const [fileLink, setFileLink] = useState([]);
   const [galleryUploading, setGalleryUploading] = useState(false);
+  const [fileLinkUploading, setFileLinkUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { data: eventItem, loading, error } = useEvent(id);
@@ -39,6 +50,7 @@ export default function EventEditForm({ id }) {
     setSpaceKo(eventItem.space_ko ?? "");
     setSpaceEn(eventItem.space_en ?? "");
     setGallery(normalizeGallery(eventItem.gallery));
+    setFileLink(normalizeFileLink(eventItem.file_link));
   }, [eventItem]);
 
   async function handleSubmit(event) {
@@ -52,9 +64,12 @@ export default function EventEditForm({ id }) {
         date: date.trim() || null,
         space_ko: spaceKo.trim() || null,
         space_en: spaceEn.trim() || null,
+        content_ko: await saveEditorContent(contentKoRef, "content_ko"),
+        content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
         gallery: serializeGallery(gallery),
+        file_link: serializeFileLink(fileLink),
       });
 
       router.push("/admin");
@@ -92,7 +107,7 @@ export default function EventEditForm({ id }) {
     return <p className={styles.error}>Event를 찾을 수 없습니다.</p>;
   }
 
-  const saving = updating || deleting || galleryUploading;
+  const saving = updating || deleting || galleryUploading || fileLinkUploading;
 
   return (
     <div className={styles.card}>
@@ -166,6 +181,24 @@ export default function EventEditForm({ id }) {
 
         <div key={eventItem.id}>
           <div className={styles.field}>
+            content_ko
+            <Editor
+              ref={contentKoRef}
+              holderId="editor-event-content-ko"
+              data={eventItem.content_ko}
+            />
+          </div>
+
+          <div className={styles.field}>
+            content_en
+            <Editor
+              ref={contentEnRef}
+              holderId="editor-event-content-en"
+              data={eventItem.content_en}
+            />
+          </div>
+
+          <div className={styles.field}>
             credit_ko
             <Editor
               ref={creditKoRef}
@@ -183,6 +216,13 @@ export default function EventEditForm({ id }) {
             />
           </div>
         </div>
+
+        <FileLinkInput
+          value={fileLink}
+          onChange={setFileLink}
+          disabled={saving}
+          onUploadingChange={setFileLinkUploading}
+        />
 
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 

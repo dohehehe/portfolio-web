@@ -2,12 +2,12 @@
  * AUTO-GENERATED FILE — DO NOT EDIT MANUALLY
  * Run `npm run db:sync` after changing Supabase tables.
  *
- * Synced at: 2026-06-22T06:11:46.820Z
+ * Synced at: 2026-06-24T12:29:10.138Z
  * Source: https://maewukpitcdwcippztnd.supabase.co
  */
 
 export const databaseSchema = {
-  "syncedAt": "2026-06-22T06:11:46.820Z",
+  "syncedAt": "2026-06-24T12:29:10.138Z",
   "supabaseUrl": "https://maewukpitcdwcippztnd.supabase.co",
   "tables": [
     {
@@ -81,6 +81,24 @@ export const databaseSchema = {
             "table": "event",
             "column": "id"
           }
+        },
+        {
+          "name": "event_title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "event_title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
         }
       ]
     },
@@ -217,6 +235,33 @@ export const databaseSchema = {
           "default": null,
           "isPrimaryKey": false,
           "foreignKey": null
+        },
+        {
+          "name": "content_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "file_link",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
         }
       ]
     },
@@ -271,7 +316,7 @@ export const databaseSchema = {
       ]
     },
     {
-      "name": "link_cv_work",
+      "name": "link_cv_item",
       "columns": [
         {
           "name": "id",
@@ -300,65 +345,6 @@ export const databaseSchema = {
           "isPrimaryKey": false,
           "foreignKey": {
             "table": "cv",
-            "column": "id"
-          }
-        },
-        {
-          "name": "project_id",
-          "type": "string",
-          "format": "uuid",
-          "nullable": true,
-          "default": "gen_random_uuid()",
-          "isPrimaryKey": false,
-          "foreignKey": {
-            "table": "project",
-            "column": "id"
-          }
-        },
-        {
-          "name": "work_id",
-          "type": "string",
-          "format": "uuid",
-          "nullable": true,
-          "default": "gen_random_uuid()",
-          "isPrimaryKey": false,
-          "foreignKey": {
-            "table": "work",
-            "column": "id"
-          }
-        }
-      ]
-    },
-    {
-      "name": "link_event_work",
-      "columns": [
-        {
-          "name": "id",
-          "type": "string",
-          "format": "uuid",
-          "nullable": false,
-          "default": "gen_random_uuid()",
-          "isPrimaryKey": true,
-          "foreignKey": null
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "format": "timestamp with time zone",
-          "nullable": false,
-          "default": "now()",
-          "isPrimaryKey": false,
-          "foreignKey": null
-        },
-        {
-          "name": "event_id",
-          "type": "string",
-          "format": "uuid",
-          "nullable": true,
-          "default": "gen_random_uuid()",
-          "isPrimaryKey": false,
-          "foreignKey": {
-            "table": "event",
             "column": "id"
           }
         },
@@ -476,6 +462,42 @@ export const databaseSchema = {
           "name": "gallery",
           "type": "unknown",
           "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "medium_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "medium_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "dimension_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "dimension_en",
+          "type": "string",
+          "format": "text",
           "nullable": true,
           "default": null,
           "isPrimaryKey": false,
@@ -756,8 +778,7 @@ export const tableNames = [
   "cv_type",
   "event",
   "info",
-  "link_cv_work",
-  "link_event_work",
+  "link_cv_item",
   "project",
   "text",
   "work"

@@ -46,3 +46,43 @@ export function serializeGallery(items) {
     caption_en: caption_en?.trim() || null,
   }));
 }
+
+export function normalizeFileLink(rawValue) {
+  if (!Array.isArray(rawValue)) {
+    return [];
+  }
+
+  return rawValue
+    .map((item) => {
+      if (typeof item === "string") {
+        return {
+          file_url: item,
+          title_ko: "",
+          title_en: "",
+        };
+      }
+
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+
+      return {
+        file_url: item.file_url ?? "",
+        title_ko: item.title_ko ?? "",
+        title_en: item.title_en ?? "",
+      };
+    })
+    .filter((item) => item?.file_url);
+}
+
+export function serializeFileLink(items) {
+  if (!items?.length) {
+    return null;
+  }
+
+  return items.map(({ file_url, title_ko, title_en }) => ({
+    file_url,
+    title_ko: title_ko?.trim() || null,
+    title_en: title_en?.trim() || null,
+  }));
+}

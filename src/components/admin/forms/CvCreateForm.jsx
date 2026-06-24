@@ -4,7 +4,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useCreateCv } from "@/hooks/cv";
+import {
+  useCreateLinkCvItem,
+} from "@/hooks/link_cv_item";
+import { useProjects } from "@/hooks/project";
+import { useWorks } from "@/hooks/work";
+import CvItemMultiSelect from "./CvItemMultiSelect";
 import ForeignSelect from "./ForeignSelect";
+import {
+  syncLinkCvItems,
+  toggleSelectedId,
+} from "./linkCvItemUtils";
 import styles from "../AdminForm.module.css";
 
 export default function CvCreateForm() {
@@ -15,21 +25,41 @@ export default function CvCreateForm() {
   const [year, setYear] = useState("");
   const [typeId, setTypeId] = useState("");
   const [exhibitionId, setExhibitionId] = useState("");
+  const [eventTitleKo, setEventTitleKo] = useState("");
+  const [eventTitleEn, setEventTitleEn] = useState("");
+  const [selectedProjectIds, setSelectedProjectIds] = useState([]);
+  const [selectedWorkIds, setSelectedWorkIds] = useState([]);
   const [submitError, setSubmitError] = useState(null);
 
+  const { data: projects = [], loading: projectsLoading } = useProjects();
+  const { data: works = [], loading: worksLoading } = useWorks();
   const { create, loading } = useCreateCv();
+  const { create: createLink } = useCreateLinkCvItem();
+
+  const itemsLoading = projectsLoading || worksLoading;
 
   async function handleSubmit(event) {
     event.preventDefault();
     setSubmitError(null);
 
     try {
-      await create({
+      const created = await create({
         title_ko: titleKo.trim() || null,
         title_en: titleEn.trim() || null,
         year: year.trim() || null,
         type_id: typeId || null,
         exhibition_id: exhibitionId || null,
+        event_title_ko: eventTitleKo.trim() || null,
+        event_title_en: eventTitleEn.trim() || null,
+      });
+
+      await syncLinkCvItems({
+        cvId: created.id,
+        projectIds: selectedProjectIds,
+        workIds: selectedWorkIds,
+        existingLinks: [],
+        createLink,
+        deleteLink: async () => {},
       });
 
       router.push("/admin");
@@ -102,9 +132,50 @@ export default function CvCreateForm() {
           />
         </label>
 
+        <label className={styles.label}>
+          event_title_ko
+          <input
+            className={styles.input}
+            type="text"
+            value={eventTitleKo}
+            onChange={(event) => setEventTitleKo(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          event_title_en
+          <input
+            className={styles.input}
+            type="text"
+            value={eventTitleEn}
+            onChange={(event) => setEventTitleEn(event.target.value)}
+          />
+        </label>
+
+        <CvItemMultiSelect
+          projects={projects}
+          works={works}
+          selectedProjectIds={selectedProjectIds}
+          selectedWorkIds={selectedWorkIds}
+          onToggleProject={(projectId) =>
+            setSelectedProjectIds((current) =>
+              toggleSelectedId(current, projectId),
+            )
+          }
+          onToggleWork={(workId) =>
+            setSelectedWorkIds((current) => toggleSelectedId(current, workId))
+          }
+          disabled={loading}
+          loading={itemsLoading}
+        />
+
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 
-        <button className={styles.submitButton} type="submit" disabled={loading}>
+        <button
+          className={styles.submitButton}
+          type="submit"
+          disabled={loading || itemsLoading}
+        >
           {loading ? "저장 중..." : "생성"}
         </button>
       </form>

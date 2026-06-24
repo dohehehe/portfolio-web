@@ -11,39 +11,41 @@ import {
   useDeleteWork,
 } from "@/hooks";
 import { useCvs } from "@/hooks/cv";
+import { useCvTypes } from "@/hooks/cv_type";
 import { useEvents } from "@/hooks/event";
 import { useInfos } from "@/hooks/info";
 import { useProjects } from "@/hooks/project";
 import { useTexts } from "@/hooks/text";
 import { useWorks } from "@/hooks/work";
+import CvGroupedTable from "./CvGroupedTable";
 import styles from "./AdminDataTables.module.css";
 
-const ADMIN_TABLES = ["cv", "event", "info", "project", "text", "work"];
+const ADMIN_TABLES = ["cv", "event", "project", "work", "text", "info"];
 
 const ADMIN_TABLE_CONFIG = {
   cv: {
     label: "CV",
     createHref: "/admin/cv/create",
     editHref: (id) => `/admin/cv/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "title_en"],
+    listColumns: ["created_at", "year", "title_ko", "event_title_ko"],
   },
   event: {
     label: "Event",
     createHref: "/admin/event/create",
     editHref: (id) => `/admin/event/edit/${id}`,
-    listColumns: ["created_at", "date", "title_ko", "title_en", "space_ko"],
-  },
-  info: {
-    label: "Info",
-    createHref: "/admin/info/create",
-    editHref: (id) => `/admin/info/edit/${id}`,
-    listColumns: ["created_at", "email", "bio_ko"],
+    listColumns: ["created_at", "date", "title_ko", "space_ko"],
   },
   project: {
     label: "Project",
     createHref: "/admin/project/create",
     editHref: (id) => `/admin/project/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "title_en"],
+    listColumns: ["created_at", "year", "title_ko"],
+  },
+  work: {
+    label: "Work",
+    createHref: "/admin/work/create",
+    editHref: (id) => `/admin/work/edit/${id}`,
+    listColumns: ["created_at", "year", "title_ko", "medium_ko"],
   },
   text: {
     label: "Text",
@@ -51,11 +53,11 @@ const ADMIN_TABLE_CONFIG = {
     editHref: (id) => `/admin/text/edit/${id}`,
     listColumns: ["created_at", "year", "title_ko", "writer_ko"],
   },
-  work: {
-    label: "Work",
-    createHref: "/admin/work/create",
-    editHref: (id) => `/admin/work/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "medium_ko"],
+  info: {
+    label: "Info",
+    createHref: "/admin/info/create",
+    editHref: (id) => `/admin/info/edit/${id}`,
+    listColumns: ["created_at", "email", "bio_ko"],
   },
 };
 
@@ -174,6 +176,11 @@ export default function AdminDataTables() {
   const [deletingId, setDeletingId] = useState(null);
 
   const { data, loading, error, refetch } = useAdminTableData(activeTable, true);
+  const { data: cvTypes = [], loading: cvTypesLoading } = useCvTypes({
+    enabled: activeTable === "cv",
+  });
+
+  const isLoading = loading || (activeTable === "cv" && cvTypesLoading);
 
   const cvDelete = useDeleteCv();
   const eventDelete = useDeleteEvent();
@@ -228,9 +235,8 @@ export default function AdminDataTables() {
           {ADMIN_TABLES.map((table) => (
             <button
               key={table}
-              className={`${styles.toggleButton} ${
-                activeTable === table ? styles.toggleButtonActive : ""
-              }`}
+              className={`${styles.toggleButton} ${activeTable === table ? styles.toggleButtonActive : ""
+                }`}
               type="button"
               onClick={() => setActiveTable(table)}
             >
@@ -244,13 +250,24 @@ export default function AdminDataTables() {
         </Link>
       </div>
 
-      {loading && <p className={styles.status}>Loading...</p>}
+      {isLoading && <p className={styles.status}>Loading...</p>}
 
-      {!loading && error && (
+      {!isLoading && error && (
         <p className={`${styles.status} ${styles.error}`}>{error.message}</p>
       )}
 
-      {!loading && !error && (
+      {!isLoading && !error && activeTable === "cv" && (
+        <CvGroupedTable
+          items={data}
+          cvTypes={cvTypes}
+          columns={config.listColumns}
+          editHref={config.editHref}
+          deletingId={deletingId}
+          onDelete={handleDelete}
+        />
+      )}
+
+      {!isLoading && !error && activeTable !== "cv" && (
         <ResourceTable
           table={activeTable}
           items={sortedItems}

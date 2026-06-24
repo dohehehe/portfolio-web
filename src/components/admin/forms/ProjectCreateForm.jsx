@@ -19,6 +19,10 @@ export default function ProjectCreateForm() {
   const [titleKo, setTitleKo] = useState("");
   const [titleEn, setTitleEn] = useState("");
   const [year, setYear] = useState("");
+  const [mediumKo, setMediumKo] = useState("");
+  const [mediumEn, setMediumEn] = useState("");
+  const [dimensionKo, setDimensionKo] = useState("");
+  const [dimensionEn, setDimensionEn] = useState("");
   const [gallery, setGallery] = useState([]);
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
@@ -34,6 +38,10 @@ export default function ProjectCreateForm() {
         title_ko: titleKo.trim() || null,
         title_en: titleEn.trim() || null,
         year: year.trim() || null,
+        medium_ko: mediumKo.trim() || null,
+        medium_en: mediumEn.trim() || null,
+        dimension_ko: dimensionKo.trim() || null,
+        dimension_en: dimensionEn.trim() || null,
         content_ko: await saveEditorContent(contentKoRef, "content_ko"),
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
@@ -88,6 +96,46 @@ export default function ProjectCreateForm() {
             type="text"
             value={year}
             onChange={(event) => setYear(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          medium_ko
+          <input
+            className={styles.input}
+            type="text"
+            value={mediumKo}
+            onChange={(event) => setMediumKo(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          medium_en
+          <input
+            className={styles.input}
+            type="text"
+            value={mediumEn}
+            onChange={(event) => setMediumEn(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          dimension_ko
+          <input
+            className={styles.input}
+            type="text"
+            value={dimensionKo}
+            onChange={(event) => setDimensionKo(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          dimension_en
+          <input
+            className={styles.input}
+            type="text"
+            value={dimensionEn}
+            onChange={(event) => setDimensionEn(event.target.value)}
           />
         </label>
 

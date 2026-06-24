@@ -2,9 +2,22 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useCv, useDeleteCv, useUpdateCv } from "@/hooks/cv";
+import {
+  useCreateLinkCvItem,
+  useDeleteLinkCvItem,
+  useLinkCvItems,
+} from "@/hooks/link_cv_item";
+import { useProjects } from "@/hooks/project";
+import { useWorks } from "@/hooks/work";
+import CvItemMultiSelect from "./CvItemMultiSelect";
 import ForeignSelect from "./ForeignSelect";
+import {
+  getCvLinkSelections,
+  syncLinkCvItems,
+  toggleSelectedId,
+} from "./linkCvItemUtils";
 import styles from "../AdminForm.module.css";
 
 export default function CvEditForm({ id }) {
@@ -15,11 +28,28 @@ export default function CvEditForm({ id }) {
   const [year, setYear] = useState("");
   const [typeId, setTypeId] = useState("");
   const [exhibitionId, setExhibitionId] = useState("");
+  const [eventTitleKo, setEventTitleKo] = useState("");
+  const [eventTitleEn, setEventTitleEn] = useState("");
+  const [selectedProjectIds, setSelectedProjectIds] = useState([]);
+  const [selectedWorkIds, setSelectedWorkIds] = useState([]);
+  const [linksInitialized, setLinksInitialized] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
   const { data: cvItem, loading, error } = useCv(id);
+  const { data: allLinks = [], loading: linksLoading } = useLinkCvItems();
+  const { data: projects = [], loading: projectsLoading } = useProjects();
+  const { data: works = [], loading: worksLoading } = useWorks();
   const { update, loading: updating } = useUpdateCv();
   const { remove, loading: deleting } = useDeleteCv();
+  const { create: createLink } = useCreateLinkCvItem();
+  const { remove: deleteLink } = useDeleteLinkCvItem();
+
+  const cvLinks = useMemo(
+    () => allLinks.filter((link) => link.cv_id === id),
+    [allLinks, id],
+  );
+
+  const itemsLoading = projectsLoading || worksLoading || linksLoading;
 
   useEffect(() => {
     if (!cvItem) {
@@ -31,7 +61,20 @@ export default function CvEditForm({ id }) {
     setYear(cvItem.year ?? "");
     setTypeId(cvItem.type_id ?? "");
     setExhibitionId(cvItem.exhibition_id ?? "");
+    setEventTitleKo(cvItem.event_title_ko ?? "");
+    setEventTitleEn(cvItem.event_title_en ?? "");
   }, [cvItem]);
+
+  useEffect(() => {
+    if (linksLoading) {
+      return;
+    }
+
+    const { projectIds, workIds } = getCvLinkSelections(allLinks, id);
+    setSelectedProjectIds(projectIds);
+    setSelectedWorkIds(workIds);
+    setLinksInitialized(true);
+  }, [allLinks, id, linksLoading]);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -44,6 +87,17 @@ export default function CvEditForm({ id }) {
         year: year.trim() || null,
         type_id: typeId || null,
         exhibition_id: exhibitionId || null,
+        event_title_ko: eventTitleKo.trim() || null,
+        event_title_en: eventTitleEn.trim() || null,
+      });
+
+      await syncLinkCvItems({
+        cvId: id,
+        projectIds: selectedProjectIds,
+        workIds: selectedWorkIds,
+        existingLinks: cvLinks,
+        createLink,
+        deleteLink,
       });
 
       router.push("/admin");
@@ -61,6 +115,10 @@ export default function CvEditForm({ id }) {
     setSubmitError(null);
 
     try {
+      for (const link of cvLinks) {
+        await deleteLink(link.id);
+      }
+
       await remove(id);
       router.push("/admin");
       router.refresh();
@@ -69,7 +127,7 @@ export default function CvEditForm({ id }) {
     }
   }
 
-  if (loading) {
+  if (loading || !linksInitialized) {
     return <p className={styles.status}>불러오는 중...</p>;
   }
 
@@ -145,6 +203,43 @@ export default function CvEditForm({ id }) {
             onChange={setExhibitionId}
           />
         </label>
+
+        <label className={styles.label}>
+          event_title_ko
+          <input
+            className={styles.input}
+            type="text"
+            value={eventTitleKo}
+            onChange={(event) => setEventTitleKo(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          event_title_en
+          <input
+            className={styles.input}
+            type="text"
+            value={eventTitleEn}
+            onChange={(event) => setEventTitleEn(event.target.value)}
+          />
+        </label>
+
+        <CvItemMultiSelect
+          projects={projects}
+          works={works}
+          selectedProjectIds={selectedProjectIds}
+          selectedWorkIds={selectedWorkIds}
+          onToggleProject={(projectId) =>
+            setSelectedProjectIds((current) =>
+              toggleSelectedId(current, projectId),
+            )
+          }
+          onToggleWork={(workId) =>
+            setSelectedWorkIds((current) => toggleSelectedId(current, workId))
+          }
+          disabled={saving}
+          loading={itemsLoading}
+        />
 
         {submitError ? <p className={styles.error}>{submitError}</p> : null}
 

@@ -113,6 +113,19 @@
   object-fit: cover;
 }
 
+.previewLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  padding: 12px;
+  color: #111;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  word-break: break-all;
+}
+
 .fields {
   display: flex;
   flex-direction: column;

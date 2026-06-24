@@ -134,3 +134,37 @@
   opacity: 0.6;
   cursor: not-allowed;
 }
+
+.cvGroupList {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cvGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cvGroupTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cvGroupCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
