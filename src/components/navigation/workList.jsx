@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import { usePathname } from "next/navigation";
 import { useProjects } from "@/hooks/project";
 import { useWorks } from "@/hooks/work";
 import { groupWorksByProject } from "./workListUtils";
@@ -24,7 +25,9 @@ function WorkListItem({ href, titleKo, year }) {
   );
 }
 
-export default function WorkList() {
+export default function WorkList({ className = "" }) {
+  const pathname = usePathname();
+  const isHome = pathname === "/";
   const { data: projects = [], loading: projectsLoading, error: projectsError } =
     useProjects();
   const { data: works = [], loading: worksLoading, error: worksError } = useWorks();
@@ -43,7 +46,9 @@ export default function WorkList() {
 
 
   return (
-    <ul className={styles.list}>
+    <ul
+      className={`${styles.list} ${isHome ? styles.listHome : ""} ${className}`.trim()}
+    >
       {groupedProjects.map((project) => (
         <li key={project.id} className={`${styles.projectGroup} ${styles.item}`}>
           <RowLink

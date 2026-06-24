@@ -1,6 +1,11 @@
 .header {
   padding: 8px 16px 0px;
   color: #1f1f1f;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
   /* padding: 0 16px; */
 }
 
@@ -16,12 +21,28 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  display: block;
+}
+
+.navigationSection .workList {
+  opacity: 0;
+  display: none;
+  pointer-events: none;
+}
+
+.navigationSection.workListVisible .workList,
+.navigationSection:hover .workList {
+  opacity: 1;
+  pointer-events: auto;
+  display: block;
 }
 
 .navigationLink {
   text-decoration: none;
   font-size: 1.7rem;
   font-family: 'Arial narrow', var(--font-apple-gothic), sans-serif;
+  position: relative;
+  z-index: 1;
 }
 
 .navigationLink:hover {
