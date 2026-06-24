@@ -22,19 +22,21 @@
   flex-direction: column;
   align-items: flex-start;
   display: block;
+  transition: all 0.3s ease-in-out;
 }
 
 .navigationSection .workList {
   opacity: 0;
-  display: none;
+  /* display: none; */
   pointer-events: none;
+  transition: all 0.3s ease-in-out;
 }
 
 .navigationSection.workListVisible .workList,
 .navigationSection:hover .workList {
   opacity: 1;
   pointer-events: auto;
-  display: block;
+  /* display: block; */
 }
 
 .navigationLink {
