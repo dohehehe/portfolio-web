@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import ProjectWorkPage from "@/components/work/ProjectWorkPage";
-import WorkItemDetail from "@/components/work/WorkItemDetail";
+import StandaloneWorkItem from "@/components/work/StandaloneWorkItem";
 import { getWorkRouteById } from "@/lib/data/workRoute";
 
 function getRouteTitle(route) {
@@ -47,7 +47,7 @@ export default async function WorkPage({ params }) {
   }
 
   if (route.type === "standalone") {
-    return <WorkItemDetail item={route.item} />;
+    return <StandaloneWorkItem item={route.item} />;
   }
 
   return (

@@ -1,0 +1,33 @@
+.switch {
+  position: fixed;
+  top: 16px;
+  right: 24px;
+  z-index: 6;
+  display: flex;
+  gap: 8px;
+  font-family: "Arial narrow", var(--font-apple-gothic), sans-serif;
+  font-size: 1.15rem;
+  color: #1c1c1c;
+}
+
+.button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.button:hover,
+.buttonActive {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .switch {
+    top: 12px;
+    right: 12px;
+    font-size: 1rem;
+  }
+}

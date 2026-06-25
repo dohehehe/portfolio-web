@@ -1,10 +1,12 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useLocale } from "@/components/locale/LocaleProvider";
+import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
 import styles from "./ProjectPageNav.module.css";
 
-function NavItem({ id, titleKo, year, nested = false, active, onNavigate }) {
+function NavItem({ id, title, year, nested = false, active, onNavigate }) {
   return (
     <li className={`${styles.item} ${nested ? styles.nestedItem : ""}`.trim()}>
       <button
@@ -12,7 +14,7 @@ function NavItem({ id, titleKo, year, nested = false, active, onNavigate }) {
         className={`${styles.link} ${active ? styles.linkActive : ""}`.trim()}
         onClick={() => onNavigate(id)}
       >
-        <span className={styles.title}>{titleKo || "-"}</span>
+        <span className={styles.title}>{title || "-"}</span>
         {year ? <span className={styles.year}>{year}</span> : null}
       </button>
     </li>
@@ -20,6 +22,7 @@ function NavItem({ id, titleKo, year, nested = false, active, onNavigate }) {
 }
 
 export default function ProjectPageNav({ project, works }) {
+  const { locale } = useLocale();
   const [activeId, setActiveId] = useState(project.id);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ export default function ProjectPageNav({ project, works }) {
       <ul className={styles.list}>
         <NavItem
           id={project.id}
-          titleKo={project.title_ko}
+          title={pickLocalized(project, "title", locale)}
           year={project.year}
           active={activeId === project.id}
           onNavigate={navigate}
@@ -55,7 +58,7 @@ export default function ProjectPageNav({ project, works }) {
           <NavItem
             key={work.id}
             id={work.id}
-            titleKo={work.title_ko}
+            title={pickLocalized(work, "title", locale)}
             year={work.year}
             nested
             active={activeId === work.id}
@@ -66,3 +69,4 @@ export default function ProjectPageNav({ project, works }) {
     </nav>
   );
 }
+
