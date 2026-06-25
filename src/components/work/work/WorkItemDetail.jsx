@@ -1,7 +1,7 @@
-import { normalizeGalleryItems, normalizeRecord } from "@/lib/locale/normalizeRecord";
+import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
+import WorkGallery from "@/components/work/gallery/WorkGallery";
 import EditorContent from "./EditorContent";
-import WorkGallery from "./WorkGallery";
-import styles from "./workDetail.module.css";
+import styles from "./WorkItemDetail.module.css";
 
 function MetaField({ label, value }) {
   if (!value) {
@@ -24,7 +24,7 @@ function ContentSection({ title, data }) {
   return (
     <section className={styles.section}>
       <h2 className={styles.sectionTitle}>{title}</h2>
-      <EditorContent data={data} />
+      <EditorContent data={data} styles={styles} />
     </section>
   );
 }

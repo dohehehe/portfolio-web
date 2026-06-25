@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
-import ProjectWorkPage from "@/components/work/ProjectWorkPage";
-import WorkItemDetail from "@/components/work/WorkItemDetail";
+import ProjectWorkPage from "@/components/work/project/ProjectWorkPage";
+import WorkItemDetail from "@/components/work/work/WorkItemDetail";
 import { getWorkRouteById } from "@/lib/data/workRoute";
 import {
   buildLanguageAlternates,

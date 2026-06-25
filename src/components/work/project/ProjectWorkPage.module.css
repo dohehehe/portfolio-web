@@ -1,0 +1,16 @@
+.main {
+  min-height: 100dvh;
+  padding: 60px 10px 30px 120px;
+  /* box-shadow: inset 0 0 10px 10px pink; */
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 64px;
+}
+
+.workSection {
+  padding-top: 64px;
+  border-top: 1px solid #e8e8e8;
+}

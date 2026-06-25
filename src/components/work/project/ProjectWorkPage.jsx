@@ -1,7 +1,8 @@
 import HashScroll from "./HashScroll";
+import ProjectItemDetail from "./ProjectItemDetail";
 import ProjectPageNav from "./ProjectPageNav";
-import WorkItemDetail from "./WorkItemDetail";
-import styles from "./workDetail.module.css";
+import WorkItemDetail from "@/components/work/work/WorkItemDetail";
+import styles from "./ProjectWorkPage.module.css";
 
 export default function ProjectWorkPage({
   project,
@@ -17,7 +18,7 @@ export default function ProjectWorkPage({
         locale={locale}
       />
       <ProjectPageNav project={project} works={works} locale={locale} />
-      <WorkItemDetail id={project.id} item={project} locale={locale} />
+      <ProjectItemDetail id={project.id} item={project} locale={locale} />
       {works.map((work) => (
         <WorkItemDetail
           key={work.id}
