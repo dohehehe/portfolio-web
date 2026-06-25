@@ -1,7 +1,4 @@
-"use client";
-
-import { useLocale } from "@/components/locale/LocaleProvider";
-import { pickLocalized } from "@/lib/locale/pickLocalized";
+import { normalizeGalleryItems, normalizeRecord } from "@/lib/locale/normalizeRecord";
 import EditorContent from "./EditorContent";
 import WorkGallery from "./WorkGallery";
 import styles from "./workDetail.module.css";
@@ -32,31 +29,25 @@ function ContentSection({ title, data }) {
   );
 }
 
-export default function WorkItemDetail({ id, item, className = "" }) {
-  const { locale } = useLocale();
-
-  const title = pickLocalized(item, "title", locale);
-  const medium = pickLocalized(item, "medium", locale);
-  const dimension = pickLocalized(item, "dimension", locale);
-  const content = pickLocalized(item, "content", locale);
-  const credit = pickLocalized(item, "credit", locale);
+export default function WorkItemDetail({ id, item, className = "", locale }) {
+  const galleryItems = normalizeGalleryItems(item.gallery, locale);
 
   return (
     <article id={id} className={`${styles.article} ${className}`.trim()}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
-          <h1 className={styles.title}>{title || "Untitled"}</h1>
+          <h1 className={styles.title}>{item.title || "Untitled"}</h1>
           {item.year ? <span className={styles.year}>{item.year}</span> : null}
         </div>
 
-        <MetaField label="medium" value={medium} />
-        <MetaField label="dimension" value={dimension} />
+        <MetaField label="medium" value={item.medium} />
+        <MetaField label="dimension" value={item.dimension} />
       </header>
 
-      <WorkGallery gallery={item.gallery} />
+      <WorkGallery items={galleryItems} />
 
-      <ContentSection title="content" data={content} />
-      <ContentSection title="credit" data={credit} />
+      <ContentSection title="content" data={item.content} />
+      <ContentSection title="credit" data={item.credit} />
     </article>
   );
 }

@@ -1,8 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { useLocale } from "@/components/locale/LocaleProvider";
-import { pickLocalized } from "@/lib/locale/pickLocalized";
+import { localizedPath } from "@/lib/locale/routing";
 import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
 import styles from "./ProjectPageNav.module.css";
 
@@ -21,8 +20,7 @@ function NavItem({ id, title, year, nested = false, active, onNavigate }) {
   );
 }
 
-export default function ProjectPageNav({ project, works }) {
-  const { locale } = useLocale();
+export default function ProjectPageNav({ project, works, locale }) {
   const [activeId, setActiveId] = useState(project.id);
 
   useEffect(() => {
@@ -38,10 +36,14 @@ export default function ProjectPageNav({ project, works }) {
   const navigate = useCallback(
     (id) => {
       scrollToSection(id, "smooth");
-      window.history.replaceState(null, "", `/work/${project.id}#${id}`);
+      window.history.replaceState(
+        null,
+        "",
+        localizedPath(`/work/${project.id}`, locale, id),
+      );
       setActiveId(id);
     },
-    [project.id],
+    [project.id, locale],
   );
 
   return (
@@ -49,7 +51,7 @@ export default function ProjectPageNav({ project, works }) {
       <ul className={styles.list}>
         <NavItem
           id={project.id}
-          title={pickLocalized(project, "title", locale)}
+          title={project.title}
           year={project.year}
           active={activeId === project.id}
           onNavigate={navigate}
@@ -58,7 +60,7 @@ export default function ProjectPageNav({ project, works }) {
           <NavItem
             key={work.id}
             id={work.id}
-            title={pickLocalized(work, "title", locale)}
+            title={work.title}
             year={work.year}
             nested
             active={activeId === work.id}
@@ -69,4 +71,3 @@ export default function ProjectPageNav({ project, works }) {
     </nav>
   );
 }
-

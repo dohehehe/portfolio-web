@@ -1,12 +1,13 @@
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
-import { WORK_KO_COLUMNS } from "@/lib/data/localizedSelect";
+import { getWorkColumns } from "@/lib/data/localizedSelect";
+import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export async function getWorksByProjectId(projectId) {
+export async function getWorksByProjectId(projectId, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("work")
-    .select(WORK_KO_COLUMNS)
+    .select(getWorkColumns(locale))
     .eq("project_id", projectId);
 
   if (error) {
@@ -16,11 +17,11 @@ export async function getWorksByProjectId(projectId) {
   return sortByYearDesc(data ?? []);
 }
 
-export async function getWorkById(id) {
+export async function getWorkById(id, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("work")
-    .select(WORK_KO_COLUMNS)
+    .select(getWorkColumns(locale))
     .eq("id", id)
     .single();
 

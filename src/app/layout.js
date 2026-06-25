@@ -1,15 +1,24 @@
+import { headers } from "next/headers";
 import { appleGothic, heiRegular } from "./fonts";
 import "./globals.css";
 import Navigation from "@/components/navigation/navigation";
+import { DEFAULT_LOCALE } from "@/lib/locale/constants";
+import { LOCALE_HEADER } from "@/lib/locale/routing";
 
 export const metadata = {
   title: "dohee kwak",
   description: "dohee kwak's portfolio",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  const headerStore = await headers();
+  const locale = headerStore.get(LOCALE_HEADER) ?? DEFAULT_LOCALE;
+
   return (
-    <html lang="en" className={`${appleGothic.variable} ${heiRegular.variable}`}>
+    <html
+      lang={locale}
+      className={`${appleGothic.variable} ${heiRegular.variable}`}
+    >
       <body>
         <Navigation />
         {children}

@@ -1,11 +1,12 @@
-import { PROJECT_KO_COLUMNS } from "@/lib/data/localizedSelect";
+import { getProjectColumns } from "@/lib/data/localizedSelect";
+import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export async function getProjectById(id) {
+export async function getProjectById(id, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("project")
-    .select(PROJECT_KO_COLUMNS)
+    .select(getProjectColumns(locale))
     .eq("id", id)
     .single();
 

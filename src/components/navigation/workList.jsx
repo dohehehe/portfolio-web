@@ -3,31 +3,39 @@
 import Link from "next/link";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
+import { pickLocalized } from "@/lib/locale/pickLocalized";
+import {
+  getLocaleFromPathname,
+  localizedPath,
+  stripLocaleFromPathname,
+} from "@/lib/locale/routing";
 import { useProjects } from "@/hooks/project";
 import { useWorks } from "@/hooks/work";
 import { groupWorksByProject } from "./workListUtils";
 import styles from "./workList.module.css";
 
-function RowLink({ href, titleKo, year }) {
+function RowLink({ href, title, year }) {
   return (
     <Link className={styles.link} href={href}>
-      <span className={styles.title}>{titleKo || "-"}</span>
+      <span className={styles.title}>{title || "-"}</span>
       {year ? <span className={styles.year}>{year}</span> : null}
     </Link>
   );
 }
 
-function WorkListItem({ href, titleKo, year }) {
+function WorkListItem({ href, title, year }) {
   return (
     <li className={styles.item}>
-      <RowLink href={href} titleKo={titleKo} year={year} />
+      <RowLink href={href} title={title} year={year} />
     </li>
   );
 }
 
 export default function WorkList({ className = "" }) {
   const pathname = usePathname();
-  const isHome = pathname === "/";
+  const locale = getLocaleFromPathname(pathname);
+  const path = stripLocaleFromPathname(pathname);
+  const isHome = path === "/";
   const { data: projects = [], loading: projectsLoading, error: projectsError } =
     useProjects();
   const { data: works = [], loading: worksLoading, error: worksError } = useWorks();
@@ -37,13 +45,11 @@ export default function WorkList({ className = "" }) {
     [projects, works],
   );
 
-  const loading = projectsLoading || worksLoading;
   const error = projectsError ?? worksError;
 
   if (error) {
     return <p className={styles.status}>목록을 불러오지 못했습니다.</p>;
   }
-
 
   return (
     <ul
@@ -52,8 +58,8 @@ export default function WorkList({ className = "" }) {
       {groupedProjects.map((project) => (
         <li key={project.id} className={`${styles.projectGroup} ${styles.item}`}>
           <RowLink
-            href={`/work/${project.id}`}
-            titleKo={project.title_ko}
+            href={localizedPath(`/work/${project.id}`, locale)}
+            title={pickLocalized(project, "title", locale)}
             year={project.year}
           />
 
@@ -62,8 +68,8 @@ export default function WorkList({ className = "" }) {
               {project.works.map((work) => (
                 <WorkListItem
                   key={work.id}
-                  href={`/work/${project.id}#${work.id}`}
-                  titleKo={work.title_ko}
+                  href={localizedPath(`/work/${project.id}`, locale, work.id)}
+                  title={pickLocalized(work, "title", locale)}
                   year={work.year}
                 />
               ))}

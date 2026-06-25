@@ -2,9 +2,14 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { localizedPath } from "@/lib/locale/routing";
 import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
 
-export default function HashScroll({ targetId = null, projectId = null }) {
+export default function HashScroll({
+  targetId = null,
+  projectId = null,
+  locale,
+}) {
   const pathname = usePathname();
 
   useEffect(() => {
@@ -16,7 +21,8 @@ export default function HashScroll({ targetId = null, projectId = null }) {
     }
 
     if (!hashTarget && targetId && projectId) {
-      window.history.replaceState(null, "", `/work/${projectId}#${targetId}`);
+      const path = localizedPath(`/work/${projectId}`, locale, targetId);
+      window.history.replaceState(null, "", path);
     }
 
     const frame = requestAnimationFrame(() => {
@@ -24,7 +30,7 @@ export default function HashScroll({ targetId = null, projectId = null }) {
     });
 
     return () => cancelAnimationFrame(frame);
-  }, [pathname, targetId, projectId]);
+  }, [pathname, targetId, projectId, locale]);
 
   useEffect(() => {
     function handleHashChange() {
