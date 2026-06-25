@@ -52,7 +52,7 @@ export default function WorkList({ className = "" }) {
       {groupedProjects.map((project) => (
         <li key={project.id} className={`${styles.projectGroup} ${styles.item}`}>
           <RowLink
-            href={`/project/${project.id}`}
+            href={`/work/${project.id}`}
             titleKo={project.title_ko}
             year={project.year}
           />
@@ -62,7 +62,7 @@ export default function WorkList({ className = "" }) {
               {project.works.map((work) => (
                 <WorkListItem
                   key={work.id}
-                  href={`/work/${work.id}`}
+                  href={`/work/${project.id}#${work.id}`}
                   titleKo={work.title_ko}
                   year={work.year}
                 />
