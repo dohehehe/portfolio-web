@@ -2,6 +2,20 @@
 
 import { useCallback } from "react";
 
+async function parseUploadResponse(response) {
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = await response.text();
+
+  return {
+    error: text || `Upload failed with status ${response.status}.`,
+  };
+}
+
 export function useFileUpload({ endpoint = "/api/upload/file" } = {}) {
   const uploadFileToServer = useCallback(
     async (file) => {
@@ -14,7 +28,7 @@ export function useFileUpload({ endpoint = "/api/upload/file" } = {}) {
           body: formData,
         });
 
-        const data = await response.json();
+        const data = await parseUploadResponse(response);
 
         if (!response.ok) {
           return {

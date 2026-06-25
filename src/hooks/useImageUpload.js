@@ -4,6 +4,20 @@ import { useCallback } from "react";
 import { IMAGE_UPLOAD_MAX_SIZE_MB } from "@/lib/imageUpload/constants";
 import { compressImageForUpload } from "@/utils/imageCompression";
 
+async function parseUploadResponse(response) {
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (contentType.includes("application/json")) {
+    return response.json();
+  }
+
+  const text = await response.text();
+
+  return {
+    error: text || `Upload failed with status ${response.status}.`,
+  };
+}
+
 export function useImageUpload({
   maxSizeInMB = IMAGE_UPLOAD_MAX_SIZE_MB,
   endpoint = "/api/upload",
@@ -22,7 +36,7 @@ export function useImageUpload({
           body: formData,
         });
 
-        const data = await response.json();
+        const data = await parseUploadResponse(response);
 
         if (!response.ok) {
           return {
