@@ -9,8 +9,6 @@ import {
   localizedPath,
   stripLocaleFromPathname,
 } from "@/lib/locale/routing";
-import { useProjects } from "@/hooks/project";
-import { useWorks } from "@/hooks/work";
 import { groupWorksByProject } from "./workListUtils";
 import styles from "./workList.module.css";
 
@@ -31,24 +29,23 @@ function WorkListItem({ href, title, year }) {
   );
 }
 
-export default function WorkList({ className = "" }) {
+export default function WorkList({
+  className = "",
+  initialProjects = [],
+  initialWorks = [],
+}) {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
   const path = stripLocaleFromPathname(pathname);
   const isHome = path === "/";
-  const { data: projects = [], loading: projectsLoading, error: projectsError } =
-    useProjects();
-  const { data: works = [], loading: worksLoading, error: worksError } = useWorks();
 
   const groupedProjects = useMemo(
-    () => groupWorksByProject(projects, works),
-    [projects, works],
+    () => groupWorksByProject(initialProjects, initialWorks),
+    [initialProjects, initialWorks],
   );
 
-  const error = projectsError ?? worksError;
-
-  if (error) {
-    return <p className={styles.status}>목록을 불러오지 못했습니다.</p>;
+  if (groupedProjects.length === 0) {
+    return null;
   }
 
   return (

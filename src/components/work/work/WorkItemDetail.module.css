@@ -31,7 +31,7 @@
 
 .year {
   flex-shrink: 0;
-  font-family: var(--font-hei-regular), var(--font-apple-gothic), sans-serif;
+  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
   color: #434343;
   font-size: 1.4rem;
 }
@@ -43,7 +43,7 @@
 }
 
 .metaLabel {
-  font-family: "Arial narrow", var(--font-apple-gothic), sans-serif;
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
   font-size: 1.2rem;
   color: #666666;
   text-transform: lowercase;
@@ -58,7 +58,7 @@
 }
 
 .sectionTitle {
-  font-family: "Arial narrow", var(--font-apple-gothic), sans-serif;
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
   font-size: 1.4rem;
   font-weight: 400;
   margin-bottom: 16px;

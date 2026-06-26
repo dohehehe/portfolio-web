@@ -56,7 +56,7 @@
 
 .year {
   flex-shrink: 0;
-  font-family: var(--font-hei-regular), var(--font-apple-gothic), sans-serif;
+  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
   color: #434343;
   font-size: 1.1rem;
   text-align: right;

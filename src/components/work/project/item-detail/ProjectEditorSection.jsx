@@ -1,6 +1,11 @@
 import { normalizeEditorHtml } from "@/lib/editorjs/normalizeEditorHtml";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
-import defaultStyles from "./ProjectItemDetail.module.css";
+import defaultStyles from "@/components/work/project/item-detail/ProjectItemDetail.module.css";
+
+const SECTION_CLASS = {
+  content: "editorContent",
+  credit: "creditContent",
+};
 
 function ParagraphBlock({ text, styles }) {
   if (!text) {
@@ -68,19 +73,21 @@ function Block({ block, styles }) {
   }
 }
 
-export default function ProjectEditorContent({
+export default function ProjectEditorSection({
+  variant,
   data,
   className = "",
   styles = defaultStyles,
 }) {
   const blocks = normalizeBlocks(data);
+  const sectionClass = SECTION_CLASS[variant];
 
-  if (blocks.length === 0) {
+  if (!sectionClass || blocks.length === 0) {
     return null;
   }
 
   return (
-    <section className={`${styles.editorContent} ${className}`.trim()}>
+    <section className={`${styles[sectionClass]} ${className}`.trim()}>
       {blocks.map((block, index) => (
         <Block key={`${block.type}-${index}`} block={block} styles={styles} />
       ))}

@@ -42,6 +42,8 @@ export default async function WorkPage({ params }) {
     <ProjectWorkPage
       project={route.project}
       works={route.works}
+      cvs={route.cvs}
+      texts={route.texts}
       scrollToId={route.scrollToId}
       locale={locale}
     />

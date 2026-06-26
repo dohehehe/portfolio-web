@@ -5,7 +5,7 @@
   z-index: 6;
   display: flex;
   gap: 8px;
-  font-family: "Arial narrow", var(--font-apple-gothic), sans-serif;
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
   font-size: 1.15rem;
   color: #1c1c1c;
 }

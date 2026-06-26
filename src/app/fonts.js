@@ -1,13 +1,28 @@
 import localFont from "next/font/local";
+import { Archivo_Narrow, Barlow, Gothic_A1 } from "next/font/google";
 
-export const appleGothic = localFont({
-  src: "./fonts/AppleGothic.subset.woff2",
-  variable: "--font-apple-gothic",
+export const eulyoo1945 = localFont({
+  src: "./font/Eulyoo1945-Regular.woff2",
+  variable: "--font-eulyoo1945",
   display: "swap",
 });
 
-export const heiRegular = localFont({
-  src: "./fonts/hei-regular.subset.woff2",
-  variable: "--font-hei-regular",
+export const archivoNarrow = Archivo_Narrow({
+  subsets: ["latin"],
+  variable: "--font-archivo-narrow",
+  display: "swap",
+});
+
+export const gothicA1 = Gothic_A1({
+  subsets: ["latin", "korean"],
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-gothic-a1",
+  display: "swap",
+});
+
+export const barlow = Barlow({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
+  variable: "--font-barlow",
   display: "swap",
 });

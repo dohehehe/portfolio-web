@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { localizedPath } from "@/lib/locale/routing";
 import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
-import styles from "./ProjectPageNav.module.css";
+import styles from "@/components/work/project/ProjectPageNav.module.css";
 
 function NavItem({ id, title, year, nested = false, active, onNavigate }) {
   return (

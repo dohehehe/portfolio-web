@@ -15,7 +15,7 @@ function isWorkListRoute(pathname) {
   return path === "/" || path === "/work";
 }
 
-export default function Navigation() {
+export default function Navigation({ initialProjects = [], initialWorks = [] }) {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
   const workListActive = isWorkListRoute(pathname);
@@ -29,7 +29,11 @@ export default function Navigation() {
           <Link className={styles.navigationLink} href={localizedPath("/work", locale)}>
             project - work
           </Link>
-          <WorkList className={styles.workList} />
+          <WorkList
+            className={styles.workList}
+            initialProjects={initialProjects}
+            initialWorks={initialWorks}
+          />
         </div>
 
         <Link className={styles.navigationLink} href={localizedPath("/event", locale)}>
