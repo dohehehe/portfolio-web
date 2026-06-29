@@ -20,7 +20,7 @@ export default function WorkProjectIndex({ projectId, projectTitle, locale }) {
       className={styles.workIndex}
       onClick={handleClick}
     >
-      {projectTitle}
+      {/* {projectTitle} */}
     </button>
   );
 }
