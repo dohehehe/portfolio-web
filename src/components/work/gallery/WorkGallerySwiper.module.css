@@ -1,26 +1,43 @@
-.swiper {
-  width: 100%;
-  position: relative;
-  z-index: 10;
+.gallery {
+  width: 100dvw;
+  margin-left: -259px;
+  padding-left: 259px;
   overflow: visible !important;
+
 }
 
-.swiper-slide {
-  width: auto !important;
+
+
+.track {
+  display: flex;
+  gap: 20px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
+  touch-action: pan-x pan-y;
+  scrollbar-width: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
 }
 
 .slide {
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
   margin: 0;
-  margin-right: 20px;
+  scroll-snap-align: start;
 }
 
 .image {
   display: block;
   width: auto;
   height: 70dvh;
+  max-width: none;
   -webkit-user-drag: none;
   user-select: none;
 }
