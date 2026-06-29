@@ -46,4 +46,8 @@
   .main {
     padding: 60px 10px 30px 10px;
   }
+
+  .workSection {
+    margin-left: 0;
+  }
 }

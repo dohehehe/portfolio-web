@@ -1,5 +1,5 @@
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
-import WorkGallery from "@/components/work/gallery/WorkGallery";
+import WorkGallerySwiper from "@/components/work/gallery/WorkGallerySwiper";
 import EditorContent from "./EditorContent";
 import styles from "./WorkItemDetail.module.css";
 
@@ -43,7 +43,7 @@ export default function WorkItemDetail({ id, item, className = "", locale }) {
         <MetaField label="dimension" value={item.dimension} />
       </header>
 
-      <WorkGallery items={galleryItems} />
+      <WorkGallerySwiper items={galleryItems} />
 
       <ContentSection title="content" data={item.content} />
       <ContentSection title="credit" data={item.credit} />
