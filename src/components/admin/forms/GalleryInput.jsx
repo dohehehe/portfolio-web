@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import styles from "./GalleryInput.module.css";
 
@@ -43,12 +43,14 @@ export default function GalleryInput({
   const uploading = uploadingCount > 0;
   const isDisabled = disabled || uploading;
 
+  useEffect(() => {
+    onUploadingChange?.(uploadingCount > 0);
+  }, [uploadingCount, onUploadingChange]);
+
   function setUploading(nextUploading) {
-    setUploadingCount((count) => {
-      const nextCount = nextUploading ? count + 1 : Math.max(0, count - 1);
-      onUploadingChange?.(nextCount > 0);
-      return nextCount;
-    });
+    setUploadingCount((count) =>
+      nextUploading ? count + 1 : Math.max(0, count - 1),
+    );
   }
 
   function updateItem(index, patch) {

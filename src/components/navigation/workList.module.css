@@ -58,7 +58,7 @@
 .link {
   display: flex;
   gap: 10px;
-  align-items: flex-start;
+  align-items: center;
   text-decoration: none;
 }
 
@@ -68,11 +68,12 @@
 
 .year {
   flex-shrink: 0;
-  font-family: var(--font-hei-regular), var(--font-apple-gothic), sans-serif;
-  color: #434343;
+  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  color: #202020;
   font-size: 1.23rem;
   text-align: right;
-  padding-bottom: 0.3px;
+  font-weight: 400;
+  padding-bottom: 1.5px;
 }
 
 .status {

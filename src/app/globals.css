@@ -16,7 +16,8 @@ body {
 }
 
 body {
-  font-family: var(--font-hei-regular), var(--font-apple-gothic), sans-serif;
+  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  font-weight: 400;
 }
 
 * {

@@ -2,15 +2,22 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  getLocaleFromPathname,
+  localizedPath,
+  stripLocaleFromPathname,
+} from "@/lib/locale/routing";
 import WorkList from "./workList";
 import styles from "./navigation.module.css";
 
 function isWorkListRoute(pathname) {
-  return pathname === "/" || pathname === "/work";
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/" || path === "/work";
 }
 
-export default function Navigation() {
+export default function Navigation({ initialProjects = [], initialWorks = [] }) {
   const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
   const workListActive = isWorkListRoute(pathname);
 
   return (
@@ -19,19 +26,23 @@ export default function Navigation() {
         <div
           className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""}`}
         >
-          <Link className={styles.navigationLink} href="/work">
+          <Link className={styles.navigationLink} href={localizedPath("/work", locale)}>
             project - work
           </Link>
-          <WorkList className={styles.workList} />
+          <WorkList
+            className={styles.workList}
+            initialProjects={initialProjects}
+            initialWorks={initialWorks}
+          />
         </div>
 
-        <Link className={styles.navigationLink} href="/event">
+        <Link className={styles.navigationLink} href={localizedPath("/event", locale)}>
           installation
         </Link>
-        <Link className={styles.navigationLink} href="/text">
+        <Link className={styles.navigationLink} href={localizedPath("/text", locale)}>
           text
         </Link>
-        <Link className={styles.navigationLink} href="/info">
+        <Link className={styles.navigationLink} href={localizedPath("/info", locale)}>
           dohee kwak
         </Link>
       </nav>

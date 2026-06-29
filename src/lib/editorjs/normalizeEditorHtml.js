@@ -1,0 +1,7 @@
+export function normalizeEditorHtml(html) {
+  if (!html) {
+    return html;
+  }
+
+  return html.replace(/&nbsp;/gi, " ").replace(/\u00A0/g, " ");
+}

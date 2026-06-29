@@ -46,9 +46,7 @@ export function createCrudHooks(client) {
             setError(err);
           }
         } finally {
-          if (!cancelled) {
-            setLoading(false);
-          }
+          setLoading(false);
         }
       }
 
@@ -109,9 +107,7 @@ export function createCrudHooks(client) {
             setError(err);
           }
         } finally {
-          if (!cancelled) {
-            setLoading(false);
-          }
+          setLoading(false);
         }
       }
 

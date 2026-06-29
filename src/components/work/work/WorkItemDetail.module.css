@@ -1,0 +1,99 @@
+.article {
+  max-width: 720px;
+  font-size: 1.4rem;
+  line-height: 1.5;
+  color: #1f1f1f;
+}
+
+.article[id] {
+  scroll-margin-top: 80px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.year {
+  flex-shrink: 0;
+  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  color: #434343;
+  font-size: 1.4rem;
+}
+
+.metaField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaLabel {
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
+  font-size: 1.2rem;
+  color: #666666;
+  text-transform: lowercase;
+}
+
+.metaValue {
+  margin: 0;
+}
+
+.section {
+  margin-top: 40px;
+}
+
+.sectionTitle {
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  margin-bottom: 16px;
+  text-transform: lowercase;
+}
+
+.editorContent {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.paragraph {
+  margin: 0;
+}
+
+.figure,
+.embed {
+  margin: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  margin-top: 8px;
+  color: #666666;
+  font-size: 1.2rem;
+}
+
+.embed iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: 0;
+}
