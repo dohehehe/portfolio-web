@@ -44,9 +44,8 @@ export default function GallerySwiper({ items, variant = "work" }) {
 
   return (
     <div
-      className={`${styles.gallery} ${variantClass} ${
-        hasMultipleSlides ? "" : styles.single
-      }`.trim()}
+      className={`${styles.gallery} ${variantClass} ${hasMultipleSlides ? "" : styles.single
+        }`.trim()}
     >
       <div className={styles.swiperWrap}>
         <button
@@ -62,8 +61,8 @@ export default function GallerySwiper({ items, variant = "work" }) {
         <Swiper
           className={styles.swiper}
           slidesPerView={1}
-          spaceBetween={0}
-          speed={320}
+          spaceBetween={10}
+          speed={520}
           grabCursor={hasMultipleSlides}
           watchOverflow
           onSwiper={(instance) => {
@@ -73,7 +72,7 @@ export default function GallerySwiper({ items, variant = "work" }) {
           onSlideChange={updateNavState}
         >
           {items.map((item, index) => (
-            <SwiperSlide key={`${item.img_url}-${index}`}>
+            <SwiperSlide key={`${item.img_url}-${index}`} style={{ width: 'auto' }}>
               <figure className={styles.slide}>
                 <div className={styles.imageWrap}>
                   <img
