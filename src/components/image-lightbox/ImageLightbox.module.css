@@ -1,6 +1,9 @@
 .overlay {
   position: fixed;
-  inset: 0;
+  height: 100dvh;
+  width: 100dvw;
+  left: 0;
+  top: 0;
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -24,7 +27,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: calc(100vh - 80px);
+  height: calc(100dvh - 80px);
   /* overflow: hidden; */
 
 }
@@ -32,9 +35,13 @@
 .hitArea {
   display: inline-block;
   max-width: 100%;
-  max-height: calc(100vh - 80px);
+  max-height: calc(100dvh - 80px);
   overflow: visible;
   line-height: 0;
+  cursor: default;
+}
+
+.hitAreaMouseZoom {
   cursor: crosshair;
 }
 
@@ -42,7 +49,7 @@
   display: block;
   padding: 18px 35px 0;
   max-width: 100%;
-  max-height: calc(100vh - 80px);
+  max-height: calc(100dvh - 80px);
   width: auto;
   height: auto;
   object-fit: contain;

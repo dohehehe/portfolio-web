@@ -5,9 +5,14 @@ import styles from "./ImageLightbox.module.css";
 
 const HOVER_SCALE = 2.4;
 const TRANSITION_MS = 600;
+const MOUSE_ZOOM_MEDIA = "(hover: hover) and (pointer: fine)";
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
+}
+
+function isRealMouseEvent(event) {
+  return !event.sourceCapabilities?.firesTouchEvents;
 }
 
 export default function ImageLightbox({
@@ -22,11 +27,31 @@ export default function ImageLightbox({
   const hitAreaRef = useRef(null);
   const [hover, setHover] = useState({ active: false, x: 50, y: 50 });
   const [isUnzooming, setIsUnzooming] = useState(false);
+  const [canMouseZoom, setCanMouseZoom] = useState(false);
 
   const currentItem = items[index];
   const hasMultipleItems = items.length > 1;
   const canGoPrev = hasMultipleItems && index > 0;
   const canGoNext = hasMultipleItems && index < items.length - 1;
+
+  useEffect(() => {
+    const media = window.matchMedia(MOUSE_ZOOM_MEDIA);
+    const update = () => {
+      setCanMouseZoom(media.matches);
+
+      if (!media.matches) {
+        setHover({ active: false, x: 50, y: 50 });
+        setIsUnzooming(false);
+      }
+    };
+
+    update();
+    media.addEventListener("change", update);
+
+    return () => {
+      media.removeEventListener("change", update);
+    };
+  }, []);
 
   useEffect(() => {
     setHover({ active: false, x: 50, y: 50 });
@@ -91,6 +116,10 @@ export default function ImageLightbox({
   }, [isOpen, canGoPrev, canGoNext, onClose, onPrev, onNext]);
 
   function handleHitAreaMouseMove(event) {
+    if (!canMouseZoom || !isRealMouseEvent(event)) {
+      return;
+    }
+
     const hitArea = hitAreaRef.current;
 
     if (!hitArea) {
@@ -111,7 +140,11 @@ export default function ImageLightbox({
     });
   }
 
-  function handleHitAreaMouseLeave() {
+  function handleHitAreaMouseLeave(event) {
+    if (!canMouseZoom || !isRealMouseEvent(event)) {
+      return;
+    }
+
     setHover((prev) => ({ ...prev, active: false }));
     setIsUnzooming(true);
   }
@@ -175,15 +208,15 @@ export default function ImageLightbox({
         <div className={styles.viewport}>
           <div
             ref={hitAreaRef}
-            className={styles.hitArea}
-            onMouseMove={handleHitAreaMouseMove}
-            onMouseLeave={handleHitAreaMouseLeave}
+            className={`${styles.hitArea} ${canMouseZoom ? styles.hitAreaMouseZoom : ""}`}
+            onMouseMove={canMouseZoom ? handleHitAreaMouseMove : undefined}
+            onMouseLeave={canMouseZoom ? handleHitAreaMouseLeave : undefined}
           >
             <img
               className={[
                 styles.image,
-                hover.active ? styles.imageZoomed : "",
-                isUnzooming ? styles.imageUnzooming : "",
+                canMouseZoom && hover.active ? styles.imageZoomed : "",
+                canMouseZoom && isUnzooming ? styles.imageUnzooming : "",
               ]
                 .filter(Boolean)
                 .join(" ")}
