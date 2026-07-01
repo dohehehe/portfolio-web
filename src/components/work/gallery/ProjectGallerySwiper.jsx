@@ -1,10 +1,27 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import styles from "./ProjectGallerySwiper.module.css";
+
+const SCROLL_EDGE_THRESHOLD = 2;
 
 export default function ProjectGallerySwiper({ items }) {
   const trackRef = useRef(null);
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+
+  const updateScrollState = useCallback(() => {
+    const node = trackRef.current;
+
+    if (!node) {
+      return;
+    }
+
+    const maxScroll = node.scrollWidth - node.clientWidth;
+
+    setCanScrollPrev(node.scrollLeft > SCROLL_EDGE_THRESHOLD);
+    setCanScrollNext(node.scrollLeft < maxScroll - SCROLL_EDGE_THRESHOLD);
+  }, []);
 
   function scrollGallery(direction) {
     const node = trackRef.current;
@@ -19,6 +36,28 @@ export default function ProjectGallerySwiper({ items }) {
     });
   }
 
+  useEffect(() => {
+    const node = trackRef.current;
+
+    if (!node) {
+      return undefined;
+    }
+
+    updateScrollState();
+
+    node.addEventListener("scroll", updateScrollState, { passive: true });
+    window.addEventListener("resize", updateScrollState);
+
+    const observer = new ResizeObserver(updateScrollState);
+    observer.observe(node);
+
+    return () => {
+      node.removeEventListener("scroll", updateScrollState);
+      window.removeEventListener("resize", updateScrollState);
+      observer.disconnect();
+    };
+  }, [items, updateScrollState]);
+
   if (!items?.length) {
     return null;
   }
@@ -29,6 +68,7 @@ export default function ProjectGallerySwiper({ items }) {
         type="button"
         className={`${styles.navButton} ${styles.navButtonPrev}`}
         aria-label="Scroll left"
+        disabled={!canScrollPrev}
         onClick={() => scrollGallery("prev")}
       >
         ‹
@@ -57,6 +97,7 @@ export default function ProjectGallerySwiper({ items }) {
         type="button"
         className={`${styles.navButton} ${styles.navButtonNext}`}
         aria-label="Scroll right"
+        disabled={!canScrollNext}
         onClick={() => scrollGallery("next")}
       >
         ›

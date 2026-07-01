@@ -1,5 +1,6 @@
 .article {
-  max-width: 720px;
+  width: 80%;
+  max-width: 800px;
   font-size: 1.4rem;
   line-height: 1.5;
   color: #1f1f1f;
@@ -12,7 +13,6 @@
 .header {
   display: flex;
   flex-direction: column;
-  gap: 12px;
   margin-bottom: 32px;
 }
 
@@ -21,6 +21,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
+  margin-bottom: 16px;
 }
 
 .title {
@@ -36,22 +37,6 @@
   font-size: 1.4rem;
 }
 
-.metaField {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.metaLabel {
-  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
-  font-size: 1.2rem;
-  color: #666666;
-  text-transform: lowercase;
-}
-
-.metaValue {
-  margin: 0;
-}
 
 .section {
   margin-top: 40px;
