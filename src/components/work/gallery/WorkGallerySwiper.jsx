@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useImageLightbox } from "@/components/image-lightbox";
 import styles from "./WorkGallerySwiper.module.css";
 
 const GALLERY_GAP = 14;
@@ -85,6 +86,7 @@ function getPairRowHeight(items, imageMeta, galleryWidth) {
 
 export default function WorkGallerySwiper({ items }) {
   const galleryRef = useRef(null);
+  const { open: openImageLightbox } = useImageLightbox();
   const [galleryWidth, setGalleryWidth] = useState(0);
   const [imageMeta, setImageMeta] = useState({});
 
@@ -170,6 +172,7 @@ export default function WorkGallerySwiper({ items }) {
                     alt={item.caption || ""}
                     draggable={false}
                     loading={index === 0 ? "eager" : "lazy"}
+                    onClick={() => openImageLightbox({ items, index })}
                     onLoad={(event) => handleImageLoad(index, event.currentTarget)}
                   />
                 </figure>
@@ -194,6 +197,7 @@ export default function WorkGallerySwiper({ items }) {
               alt={item.caption || ""}
               draggable={false}
               loading={index === 0 ? "eager" : "lazy"}
+              onClick={() => openImageLightbox({ items, index })}
               onLoad={(event) => handleImageLoad(index, event.currentTarget)}
             />
           </figure>

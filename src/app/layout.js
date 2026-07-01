@@ -1,6 +1,7 @@
 import { headers } from "next/headers";
 import { archivoNarrow, barlow, gothicA1 } from "./fonts";
 import "./globals.css";
+import { ImageLightboxProvider } from "@/components/image-lightbox";
 import Navigation from "@/components/navigation/navigation";
 import { getNavigationWorkListData } from "@/lib/data/navigationWorkList";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
@@ -22,8 +23,10 @@ export default async function RootLayout({ children }) {
       className={`${gothicA1.variable} ${barlow.variable} ${archivoNarrow.variable}`}
     >
       <body>
-        <Navigation initialProjects={projects} initialWorks={works} />
-        {children}
+        <ImageLightboxProvider>
+          <Navigation initialProjects={projects} initialWorks={works} />
+          {children}
+        </ImageLightboxProvider>
       </body>
     </html>
   );

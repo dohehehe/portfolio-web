@@ -37,6 +37,7 @@
   height: auto;
   -webkit-user-drag: none;
   user-select: none;
+  cursor: zoom-in;
 }
 
 .pairImage {
@@ -46,6 +47,7 @@
   object-fit: cover;
   -webkit-user-drag: none;
   user-select: none;
+  cursor: zoom-in;
 }
 
 .caption {

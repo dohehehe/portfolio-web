@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useImageLightbox } from "@/components/image-lightbox";
 import styles from "./ProjectGallerySwiper.module.css";
 
 const SCROLL_EDGE_THRESHOLD = 2;
 
 export default function ProjectGallerySwiper({ items }) {
   const trackRef = useRef(null);
+  const { open: openImageLightbox } = useImageLightbox();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
   const [canScrollNext, setCanScrollNext] = useState(false);
 
@@ -83,6 +85,7 @@ export default function ProjectGallerySwiper({ items }) {
               alt={item.caption || ""}
               draggable={false}
               loading={index === 0 ? "eager" : "lazy"}
+              onClick={() => openImageLightbox({ items, index })}
             />
             {item.caption ? (
               <figcaption className={styles.caption}>
