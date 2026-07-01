@@ -1,18 +1,29 @@
 .gallery {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 70px;
+  box-sizing: border-box;
+}
+
+.track {
+  flex: 1;
   width: 100vw;
   margin-left: -110px;
   padding-left: 110px;
-  padding-right: 110px;
-  position: relative;
-  margin-bottom: 70px;
   display: flex;
   gap: 15px;
-  box-shadow: inset 0 0 10px 10px pink;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
   scrollbar-width: none;
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
+  box-shadow: inset 0 0 10px 10px pink;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
 }
 
 .slide {
@@ -25,6 +36,7 @@
 .image {
   height: 70vh;
   display: block;
+  width: auto;
   object-fit: contain;
   -webkit-user-drag: none;
   user-select: none;
@@ -37,4 +49,36 @@
   line-height: 1.4;
   text-align: left;
   padding: 0 1px;
+  overflow-wrap: break-word;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 0;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1f1f1f;
+  font-size: 2.8rem;
+  line-height: 1;
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 100;
+}
+
+.navButton:hover {
+  color: #000000;
+}
+
+.navButtonPrev {
+  left: 30px;
+}
+
+.navButtonNext {
+  right: 30px;
 }
