@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import styles from "./ImageLightbox.module.css";
 
-const HOVER_SCALE = 2.5;
+const HOVER_SCALE = 2.4;
+const TRANSITION_MS = 600;
 
 function clamp(value, min, max) {
   return Math.min(Math.max(value, min), max);
@@ -20,6 +21,7 @@ export default function ImageLightbox({
   const closeButtonRef = useRef(null);
   const hitAreaRef = useRef(null);
   const [hover, setHover] = useState({ active: false, x: 50, y: 50 });
+  const [isUnzooming, setIsUnzooming] = useState(false);
 
   const currentItem = items[index];
   const hasMultipleItems = items.length > 1;
@@ -28,7 +30,22 @@ export default function ImageLightbox({
 
   useEffect(() => {
     setHover({ active: false, x: 50, y: 50 });
+    setIsUnzooming(false);
   }, [index, isOpen]);
+
+  useEffect(() => {
+    if (!isUnzooming) {
+      return undefined;
+    }
+
+    const timer = window.setTimeout(() => {
+      setIsUnzooming(false);
+    }, TRANSITION_MS);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [isUnzooming]);
 
   useEffect(() => {
     if (!isOpen) {
@@ -86,6 +103,7 @@ export default function ImageLightbox({
       return;
     }
 
+    setIsUnzooming(false);
     setHover({
       active: true,
       x: clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100),
@@ -95,6 +113,7 @@ export default function ImageLightbox({
 
   function handleHitAreaMouseLeave() {
     setHover((prev) => ({ ...prev, active: false }));
+    setIsUnzooming(true);
   }
 
   if (!isOpen || !currentItem) {
@@ -161,7 +180,13 @@ export default function ImageLightbox({
             onMouseLeave={handleHitAreaMouseLeave}
           >
             <img
-              className={`${styles.image} ${hover.active ? styles.imageZoomed : ""}`}
+              className={[
+                styles.image,
+                hover.active ? styles.imageZoomed : "",
+                isUnzooming ? styles.imageUnzooming : "",
+              ]
+                .filter(Boolean)
+                .join(" ")}
               src={currentItem.src}
               alt={currentItem.alt || ""}
               draggable={false}
