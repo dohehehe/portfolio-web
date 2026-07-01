@@ -1,3 +1,4 @@
+import Eulyoo1945Font from "@/components/fonts/Eulyoo1945Font";
 import HashScroll from "@/components/work/project/HashScroll";
 import ProjectItemDetail from "@/components/work/project/item-detail/ProjectItemDetail";
 import ProjectPageNav from "@/components/work/project/ProjectPageNav";
@@ -15,6 +16,7 @@ export default function ProjectWorkPage({
 }) {
   return (
     <div className={styles.page}>
+      <Eulyoo1945Font />
       <HashScroll
         targetId={scrollToId}
         projectId={project.id}

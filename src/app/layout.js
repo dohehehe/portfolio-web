@@ -1,5 +1,5 @@
 import { headers } from "next/headers";
-import { archivoNarrow, barlow, eulyoo1945, gothicA1 } from "./fonts";
+import { archivoNarrow, barlow, gothicA1 } from "./fonts";
 import "./globals.css";
 import Navigation from "@/components/navigation/navigation";
 import { getNavigationWorkListData } from "@/lib/data/navigationWorkList";
@@ -19,7 +19,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang={locale}
-      className={`${gothicA1.variable} ${barlow.variable} ${archivoNarrow.variable} ${eulyoo1945.variable}`}
+      className={`${gothicA1.variable} ${barlow.variable} ${archivoNarrow.variable}`}
     >
       <body>
         <Navigation initialProjects={projects} initialWorks={works} />
