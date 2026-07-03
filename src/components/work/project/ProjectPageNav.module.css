@@ -1,13 +1,23 @@
 .nav {
   position: fixed;
   top: 44px;
-  right: 24px;
+  right: 15px;
   z-index: 5;
-  width: min(240px, calc(100vw - 320px));
-  max-height: calc(100dvh - 32px);
-  overflow-y: auto;
+  width: 250px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
   scrollbar-width: none;
   -ms-overflow-style: none;
+}
+
+.navHidden {
+  opacity: 0;
+  transform: translateX(12px);
+  pointer-events: none;
 }
 
 .nav::-webkit-scrollbar {
@@ -19,8 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 1.15rem;
-  color: #1c1c1c;
+  font-size: 1.2rem;
 }
 
 .item {
@@ -28,7 +37,7 @@
 }
 
 .nestedItem {
-  margin-left: 16px;
+  margin-left: 20px;
 }
 
 .link {
@@ -39,10 +48,20 @@
   padding: 0;
   border: 0;
   background: none;
-  color: inherit;
   font: inherit;
   text-align: left;
   cursor: pointer;
+  color: #1c1c1c;
+}
+
+.link:not(.linkActive) .year {
+  opacity: 0.8;
+}
+
+.linkActive {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
 }
 
 .link:hover,
@@ -57,17 +76,20 @@
 .year {
   flex-shrink: 0;
   font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
-  color: #434343;
   font-size: 1.1rem;
   text-align: right;
 }
 
 @media (max-width: 768px) {
   .nav {
-    top: 40px;
-    right: 12px;
-    width: min(180px, calc(100vw - 24px));
-    font-size: 1rem;
+    top: 45px;
+    right: 16px;
+    font-size: 1.3rem;
+    width: 200px;
+  }
+
+  .list {
+    font-size: 1.3rem;
   }
 
   .nestedItem {
