@@ -82,3 +82,9 @@
   aspect-ratio: 16 / 9;
   border: 0;
 }
+
+@media (max-width: 780px) {
+  .article {
+    width: 100%;
+  }
+}

@@ -5,6 +5,7 @@ import { useImageLightbox } from "@/components/image-lightbox";
 import styles from "./WorkGallerySwiper.module.css";
 
 const GALLERY_GAP = 14;
+const MOBILE_BREAKPOINT = 780;
 
 function getOrientation(naturalWidth, naturalHeight) {
   if (!naturalWidth || !naturalHeight) {
@@ -22,7 +23,14 @@ function getOrientation(naturalWidth, naturalHeight) {
   return "portrait";
 }
 
-function buildGalleryRows(items, imageMeta) {
+function buildGalleryRows(items, imageMeta, isMobile) {
+  if (isMobile) {
+    return items.map((item, index) => ({
+      type: "full-width",
+      items: [{ item, index }],
+    }));
+  }
+
   const rows = [];
   let portraitBuffer = [];
 
@@ -142,9 +150,11 @@ export default function WorkGallerySwiper({ items }) {
     return () => observer.disconnect();
   }, []);
 
+  const isMobile = galleryWidth > 0 && galleryWidth <= MOBILE_BREAKPOINT;
+
   const rows = useMemo(
-    () => buildGalleryRows(items, imageMeta),
-    [items, imageMeta],
+    () => buildGalleryRows(items, imageMeta, isMobile),
+    [items, imageMeta, isMobile],
   );
 
   if (!items?.length) {

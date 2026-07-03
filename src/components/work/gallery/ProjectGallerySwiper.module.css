@@ -4,6 +4,7 @@
   gap: 8px;
   margin-bottom: 65px;
   box-sizing: border-box;
+  position: relative;
 }
 
 .track {
@@ -87,4 +88,41 @@
 
 .navButtonNext {
   right: 30px;
+}
+
+@media (max-width: 780px) {
+  .gallery {
+    margin-bottom: 40px;
+    width: 100vw;
+    margin-left: -10px;
+    padding-left: 10px;
+  }
+
+  .track {
+    flex: 1;
+    margin-left: -10px;
+    padding-left: 10px;
+    width: 100vw;
+    display: flex;
+    gap: 15px;
+    padding-right: 10px;
+  }
+
+  .image {
+    height: 50vh;
+  }
+
+  .caption {
+    font-size: 0.85rem;
+    line-height: 1.4;
+  }
+
+  .navButtonPrev {
+    left: 4px;
+  }
+
+  .navButtonNext {
+    right: 4px;
+  }
+
 }

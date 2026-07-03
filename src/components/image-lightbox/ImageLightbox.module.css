@@ -164,3 +164,53 @@
 .navButtonNext {
   right: 16px;
 }
+
+@media (max-width: 780px) {
+  .overlay {
+    padding: 0 5px;
+  }
+
+  .image {
+    padding: 10px 7px 0;
+  }
+
+  .caption {
+    padding: 0 50px 10px;
+    word-break: keep-all;
+  }
+
+  .navButtonPrev {
+    left: 0px;
+  }
+
+  .navButtonNext {
+    right: 0px;
+  }
+
+  .navButton {
+    position: absolute;
+    top: unset;
+    bottom: 20px;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: rgb(255 255 255 / 80%);
+    font-size: 3.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transform: unset;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+}

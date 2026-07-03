@@ -57,3 +57,22 @@
   line-height: 1.4;
   text-align: left;
 }
+
+@media (max-width: 780px) {
+  .gallery {
+    gap: 5px;
+  }
+
+  .singlePortrait {
+    width: 100%;
+  }
+
+
+  .portraitPairRow {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+
+}
