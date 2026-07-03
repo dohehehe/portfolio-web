@@ -1,0 +1,216 @@
+.overlay {
+  position: fixed;
+  height: 100dvh;
+  width: 100dvw;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 88%);
+  backdrop-filter: blur(5px);
+  /* box-shadow: inset 0 0 10px 10px pink; */
+}
+
+.content {
+  position: relative;
+  overflow: visible;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+}
+
+.viewport {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: calc(100dvh - 80px);
+  /* overflow: hidden; */
+
+}
+
+.hitArea {
+  display: inline-block;
+  max-width: 100%;
+  max-height: calc(100dvh - 80px);
+  overflow: visible;
+  line-height: 0;
+  cursor: default;
+}
+
+.hitAreaMouseZoom {
+  cursor: crosshair;
+}
+
+.image {
+  display: block;
+  padding: 18px 35px 0;
+  max-width: 100%;
+  max-height: calc(100dvh - 80px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  transform: scale(1);
+  transform-origin: center center;
+  filter: blur(0);
+  transition: transform 0.6s ease-in-out;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+  will-change: transform, filter;
+}
+
+.imageZoomed {
+  transform: scale(var(--hover-scale, 2.5));
+  animation: lightboxZoomIn 0.6s ease-in-out forwards;
+}
+
+.imageUnzooming {
+  animation: lightboxZoomOut 0.6s ease-in-out forwards;
+}
+
+@keyframes lightboxZoomIn {
+  from {
+    filter: blur(3px);
+  }
+
+  to {
+    filter: blur(0);
+  }
+}
+
+@keyframes lightboxZoomOut {
+  0% {
+    filter: blur(0);
+  }
+
+  45% {
+    filter: blur(3px);
+  }
+
+  100% {
+    filter: blur(0);
+  }
+}
+
+.caption {
+  margin: 0;
+  max-width: 100%;
+  color: rgb(255 255 255 / 72%);
+  font-size: 1.2rem;
+  line-height: 1.4;
+  text-align: center;
+  padding-bottom: 18px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgb(255 255 255 / 80%);
+  font-size: 3.2rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  color: #ffffff;
+}
+
+.navButton {
+  position: absolute;
+  top: 50%;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgb(255 255 255 / 80%);
+  font-size: 3.6rem;
+  line-height: 1;
+  cursor: pointer;
+  transform: translateY(-50%);
+}
+
+.navButton:hover:not(:disabled) {
+  color: #ffffff;
+}
+
+.navButton:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.navButtonPrev {
+  left: 16px;
+}
+
+.navButtonNext {
+  right: 16px;
+}
+
+@media (max-width: 780px) {
+  .overlay {
+    padding: 0 5px;
+  }
+
+  .image {
+    padding: 10px 7px 0;
+  }
+
+  .caption {
+    padding: 0 50px 10px;
+    word-break: keep-all;
+  }
+
+  .navButtonPrev {
+    left: 0px;
+  }
+
+  .navButtonNext {
+    right: 0px;
+  }
+
+  .navButton {
+    position: absolute;
+    top: unset;
+    bottom: 20px;
+    z-index: 1001;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: rgb(255 255 255 / 80%);
+    font-size: 3.6rem;
+    line-height: 1;
+    cursor: pointer;
+    transform: unset;
+  }
+
+  .closeButton {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+
+}

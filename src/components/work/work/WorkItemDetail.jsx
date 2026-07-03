@@ -10,7 +10,6 @@ function MetaField({ label, value }) {
 
   return (
     <div className={styles.metaField}>
-      <span className={styles.metaLabel}>{label}</span>
       <p className={styles.metaValue}>{value}</p>
     </div>
   );

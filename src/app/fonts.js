@@ -1,11 +1,4 @@
-import localFont from "next/font/local";
 import { Archivo_Narrow, Barlow, Gothic_A1 } from "next/font/google";
-
-export const eulyoo1945 = localFont({
-  src: "./font/Eulyoo1945-Regular.woff2",
-  variable: "--font-eulyoo1945",
-  display: "swap",
-});
 
 export const archivoNarrow = Archivo_Narrow({
   subsets: ["latin"],
