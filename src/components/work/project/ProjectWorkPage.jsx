@@ -22,7 +22,7 @@ export default function ProjectWorkPage({
         projectId={project.id}
         locale={locale}
       />
-      {/* <ProjectPageNav project={project} works={works} locale={locale} /> */}
+      <ProjectPageNav project={project} works={works} locale={locale} />
       <ProjectItemDetail
         id={project.id}
         item={project}

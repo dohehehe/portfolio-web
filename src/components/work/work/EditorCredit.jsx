@@ -15,28 +15,6 @@ function ParagraphBlock({ text, styles }) {
   );
 }
 
-function HeaderBlock({ text, level = 2, styles }) {
-  if (!text) {
-    return null;
-  }
-
-  const safeLevel = Math.min(Math.max(level, 1), 6);
-  const Tag = `h${safeLevel}`;
-  const levelClassName = {
-    1: styles.editorHeader1,
-    2: styles.editorHeader2,
-    3: styles.editorHeader3,
-    4: styles.editorHeader4,
-  }[safeLevel];
-
-  return (
-    <Tag
-      className={`${styles.editorHeader} ${levelClassName ?? ""}`.trim()}
-      dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(text) }}
-    />
-  );
-}
-
 function ImageBlock({ file, caption, styles }) {
   const url = file?.url;
 
@@ -69,14 +47,6 @@ function Block({ block, styles }) {
   switch (block.type) {
     case "paragraph":
       return <ParagraphBlock text={block.data?.text} styles={styles} />;
-    case "header":
-      return (
-        <HeaderBlock
-          text={block.data?.text}
-          level={block.data?.level}
-          styles={styles}
-        />
-      );
     case "image":
       return (
         <ImageBlock
@@ -98,7 +68,7 @@ function Block({ block, styles }) {
   }
 }
 
-export default function EditorContent({
+export default function EditorCredit({
   data,
   className = "",
   styles = defaultStyles,
@@ -110,7 +80,7 @@ export default function EditorContent({
   }
 
   return (
-    <div className={`${styles.editorContent} ${className}`.trim()}>
+    <div className={`${styles.editorCredit} ${className}`.trim()}>
       {blocks.map((block, index) => (
         <Block key={`${block.type}-${index}`} block={block} styles={styles} />
       ))}

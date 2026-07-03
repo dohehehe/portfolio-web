@@ -42,12 +42,17 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
           return;
         }
 
-        const [{ default: EditorJS }, { default: Embed }, { default: ImageTool }] =
-          await Promise.all([
-            import("@editorjs/editorjs"),
-            import("@editorjs/embed"),
-            import("@editorjs/image"),
-          ]);
+        const [
+          { default: EditorJS },
+          { default: Embed },
+          { default: Header },
+          { default: ImageTool },
+        ] = await Promise.all([
+          import("@editorjs/editorjs"),
+          import("@editorjs/embed"),
+          import("@editorjs/header"),
+          import("@editorjs/image"),
+        ]);
 
         if (cancelled) {
           return;
@@ -57,6 +62,15 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
           holder: holderId,
           placeholder: "내용을 입력하세요...",
           tools: {
+            header: {
+              class: Header,
+              inlineToolbar: ["link", "bold", "italic"],
+              config: {
+                placeholder: "제목을 입력하세요",
+                levels: [2, 3, 4],
+                defaultLevel: 2,
+              },
+            },
             embed: {
               class: Embed,
               inlineToolbar: ["link", "bold", "italic"],

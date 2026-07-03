@@ -14,6 +14,8 @@
   display: flex;
   flex-direction: column;
   margin-bottom: 32px;
+  margin-right: 20px;
+  font-size: 1.4rem;
 }
 
 .titleRow {
@@ -21,20 +23,25 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 16px;
+  margin-bottom: 4px;
 }
 
 .title {
-  font-size: 2rem;
+  display: inline;
+  gap: 4px;
+  font-size: 1.6rem;
+  padding-top: 2px;
   font-weight: 400;
   line-height: 1.2;
+  word-break: keep-all;
 }
 
 .year {
   flex-shrink: 0;
   font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  font-weight: 400;
   color: #434343;
-  font-size: 1.4rem;
+  font-size: 1.5rem;
 }
 
 
@@ -58,6 +65,23 @@
 
 .paragraph {
   margin: 0;
+}
+
+.editorHeader {
+  margin: 0;
+  font-weight: 400;
+}
+
+.editorHeader2 {
+  font-size: 1.6rem;
+}
+
+.editorHeader3 {
+  font-size: 1.45rem;
+}
+
+.editorHeader4 {
+  font-size: 1.3rem;
 }
 
 .figure,
@@ -85,6 +109,37 @@
 
 @media (max-width: 780px) {
   .article {
-    width: 100%;
+    width: 90%;
+    margin-left: auto;
   }
+
+  .header {
+    margin-bottom: 32px;
+    margin-right: 0px;
+  }
+
+  .titleRow {
+    align-items: flex-start;
+    gap: 5px;
+    margin-bottom: 10px;
+    margin-left: -10%;
+  }
+
+  .title {
+    font-size: 1.45rem;
+    font-weight: 400;
+    line-height: 1.2;
+    word-break: keep-all;
+    vertical-align: top;
+    padding-top: 4px;
+  }
+
+  .year {
+    flex-shrink: 0;
+    font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+    font-weight: 400;
+    color: #434343;
+    font-size: 1.45rem;
+  }
+
 }

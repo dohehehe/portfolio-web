@@ -1,7 +1,12 @@
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import WorkGallery from "@/components/work/gallery/WorkGallery";
 import EditorContent from "./EditorContent";
+import EditorCredit from "./EditorCredit";
 import styles from "./WorkItemDetail.module.css";
+
+function getBilingualTitles(item) {
+  return [...new Set([item.titleKo, item.titleEn].filter(Boolean))];
+}
 
 function MetaField({ label, value }) {
   if (!value) {
@@ -22,20 +27,39 @@ function ContentSection({ title, data }) {
 
   return (
     <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>{title}</h2>
       <EditorContent data={data} styles={styles} />
     </section>
   );
 }
 
+function CreditSection({ data }) {
+  if (!data) {
+    return null;
+  }
+
+  return <section className={styles.section}>
+    <EditorCredit data={data} styles={styles} />
+  </section>;
+}
+
+
 export default function WorkItemDetail({ id, item, className = "", locale }) {
   const galleryItems = normalizeGalleryItems(item.gallery, locale);
+  const titles = getBilingualTitles(item);
 
   return (
     <article id={id} className={`${styles.article} ${className}`.trim()}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
-          <h1 className={styles.title}>{item.title || "Untitled"}</h1>
+          <h1 className={styles.title}>
+            {titles.length > 0
+              ? titles.map((title) => (
+                <span key={title} className={styles.titleLine}>
+                  {title}
+                </span>
+              ))
+              : "Untitled"}
+          </h1>
           {item.year ? <span className={styles.year}>{item.year}</span> : null}
         </div>
 
@@ -46,7 +70,8 @@ export default function WorkItemDetail({ id, item, className = "", locale }) {
       <WorkGallery items={galleryItems} />
 
       <ContentSection title="content" data={item.content} />
-      <ContentSection title="credit" data={item.credit} />
+      <CreditSection title="credit" data={item.credit} />
     </article>
   );
 }
+
