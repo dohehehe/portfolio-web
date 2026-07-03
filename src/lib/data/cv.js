@@ -21,6 +21,32 @@ function normalizeCvRecord(record, locale) {
   };
 }
 
+export async function getCvsByWorkId(workId, locale = DEFAULT_LOCALE) {
+  const supabase = createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("link_cv_item")
+    .select(CV_LINK_SELECT)
+    .eq("work_id", workId);
+
+  if (error) {
+    return [];
+  }
+
+  const seen = new Set();
+  const cvs = [];
+
+  for (const link of data ?? []) {
+    if (!link.cv || seen.has(link.cv.id)) {
+      continue;
+    }
+
+    seen.add(link.cv.id);
+    cvs.push(normalizeCvRecord(link.cv, locale));
+  }
+
+  return sortByYearDesc(cvs);
+}
+
 export async function getCvsByProjectId(projectId, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase

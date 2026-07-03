@@ -61,6 +61,8 @@
 @media (max-width: 780px) {
   .gallery {
     gap: 5px;
+    width: 75%;
+    margin-left: auto;
   }
 
   .singlePortrait {

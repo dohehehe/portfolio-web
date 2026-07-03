@@ -210,7 +210,7 @@
   .contentRow {
     flex-direction: column-reverse;
     gap: 50px;
-    margin-top: 40px;
+    margin-top: 20px;
   }
 
   .editorContent {

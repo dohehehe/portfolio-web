@@ -14,6 +14,22 @@ function normalizeTextRecord(record, locale) {
   };
 }
 
+export async function getTextsByWorkId(workId, locale = DEFAULT_LOCALE) {
+  const supabase = createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("text")
+    .select(TEXT_COLUMNS)
+    .eq("work_id", workId);
+
+  if (error) {
+    return [];
+  }
+
+  return sortByYearDesc(
+    (data ?? []).map((record) => normalizeTextRecord(record, locale)),
+  );
+}
+
 export async function getTextsByProjectId(projectId, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase

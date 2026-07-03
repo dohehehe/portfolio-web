@@ -40,6 +40,8 @@ export default function ProjectWorkPage({
           />
           <WorkItemDetail
             item={work}
+            cvs={work.cvs}
+            texts={work.texts}
             locale={locale}
             className={styles.workSection}
           />

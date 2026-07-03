@@ -1,5 +1,7 @@
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import WorkGallery from "@/components/work/gallery/WorkGallery";
+import ProjectEventList from "@/components/work/project/item-detail/ProjectEventList";
+import ProjectTextList from "@/components/work/project/item-detail/ProjectTextList";
 import EditorContent from "./EditorContent";
 import EditorCredit from "./EditorCredit";
 import styles from "./WorkItemDetail.module.css";
@@ -26,24 +28,34 @@ function ContentSection({ title, data }) {
   }
 
   return (
-    <section className={styles.section}>
-      <EditorContent data={data} styles={styles} />
-    </section>
+    <EditorContent data={data} styles={styles} />
   );
 }
 
-function CreditSection({ data }) {
-  if (!data) {
+function CreditSection({ data, cvs = [], texts = [], locale }) {
+  if (!data && !cvs.length && !texts.length) {
     return null;
   }
 
-  return <section className={styles.section}>
-    <EditorCredit data={data} styles={styles} />
-  </section>;
+  return (
+    <div className={styles.creditRow}>
+      <ProjectEventList items={cvs} locale={locale} styles={styles} />
+      <ProjectTextList items={texts} locale={locale} styles={styles} />
+      {data ? <EditorCredit data={data} styles={styles} /> : null}
+    </div>
+
+  );
 }
 
 
-export default function WorkItemDetail({ id, item, className = "", locale }) {
+export default function WorkItemDetail({
+  id,
+  item,
+  cvs = [],
+  texts = [],
+  className = "",
+  locale,
+}) {
   const galleryItems = normalizeGalleryItems(item.gallery, locale);
   const titles = getBilingualTitles(item);
 
@@ -69,8 +81,15 @@ export default function WorkItemDetail({ id, item, className = "", locale }) {
 
       <WorkGallery items={galleryItems} />
 
-      <ContentSection title="content" data={item.content} />
-      <CreditSection title="credit" data={item.credit} />
+      <div className={styles.creditContent}>
+        <CreditSection
+          data={item.credit}
+          cvs={cvs}
+          texts={texts}
+          locale={locale}
+        />
+        <ContentSection title="content" data={item.content} />
+      </div>
     </article>
   );
 }
