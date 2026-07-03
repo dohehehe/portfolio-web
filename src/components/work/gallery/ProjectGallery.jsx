@@ -2,11 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
-import styles from "./ProjectGallerySwiper.module.css";
+import styles from "./ProjectGallery.module.css";
 
 const SCROLL_EDGE_THRESHOLD = 2;
 
-export default function ProjectGallerySwiper({ items }) {
+export default function ProjectGallery({ items }) {
   const trackRef = useRef(null);
   const { open: openImageLightbox } = useImageLightbox();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -78,7 +78,7 @@ export default function ProjectGallerySwiper({ items }) {
 
       <div ref={trackRef} className={styles.track}>
         {items.map((item, index) => (
-          <figure key={`${item.img_url}-${index}`} className={styles.slide}>
+          <figure key={`${item.img_url}-${index}`} className={styles.item}>
             <img
               className={styles.image}
               src={item.img_url}

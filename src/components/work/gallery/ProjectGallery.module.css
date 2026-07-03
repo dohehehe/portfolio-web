@@ -20,14 +20,13 @@
   -ms-overflow-style: none;
   -webkit-overflow-scrolling: touch;
   touch-action: pan-x;
-  /* box-shadow: inset 0 0 10px 10px pink; */
 }
 
 .track::-webkit-scrollbar {
   display: none;
 }
 
-.slide {
+.item {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -124,5 +123,4 @@
   .navButtonNext {
     right: 4px;
   }
-
 }

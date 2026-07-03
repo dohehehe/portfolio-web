@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
-import styles from "./WorkGallerySwiper.module.css";
+import styles from "./WorkGallery.module.css";
 
 const GALLERY_GAP = 14;
 const MOBILE_BREAKPOINT = 780;
@@ -92,7 +92,7 @@ function getPairRowHeight(items, imageMeta, galleryWidth) {
   );
 }
 
-export default function WorkGallerySwiper({ items }) {
+export default function WorkGallery({ items }) {
   const galleryRef = useRef(null);
   const { open: openImageLightbox } = useImageLightbox();
   const [galleryWidth, setGalleryWidth] = useState(0);
@@ -192,13 +192,13 @@ export default function WorkGallerySwiper({ items }) {
         }
 
         const { item, index } = row.items[0];
-        const slideClassName =
+        const itemClassName =
           row.type === "single-portrait" ? styles.singlePortrait : styles.fullWidth;
 
         return (
           <figure
             key={`${item.img_url}-${index}`}
-            className={`${styles.slide} ${slideClassName}`}
+            className={`${styles.item} ${itemClassName}`}
           >
             <img
               ref={setImageRef(index)}

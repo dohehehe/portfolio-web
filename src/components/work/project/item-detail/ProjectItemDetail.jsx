@@ -1,5 +1,5 @@
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
-import ProjectGallerySwiper from "@/components/work/gallery/ProjectGallerySwiper";
+import ProjectGallery from "@/components/work/gallery/ProjectGallery";
 import ProjectEditorSection from "@/components/work/project/item-detail/ProjectEditorSection";
 import ProjectEventList from "@/components/work/project/item-detail/ProjectEventList";
 import ProjectTextList from "@/components/work/project/item-detail/ProjectTextList";
@@ -53,7 +53,7 @@ export default function ProjectItemDetail({
         </h2>
       </header>
 
-      <ProjectGallerySwiper items={galleryItems} />
+      <ProjectGallery items={galleryItems} />
 
       <div className={styles.contentRow}>
         <ProjectEditorSection variant="content" data={item.content} styles={styles} />
