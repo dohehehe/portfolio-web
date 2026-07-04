@@ -1,0 +1,38 @@
+.player {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  --media-object-fit: contain;
+  --controls: none;
+  --loading-indicator: none;
+  --dialog: none;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.pair {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  --media-object-fit: cover;
+}
+
+.carousel {
+  height: 64vh;
+  width: auto;
+  aspect-ratio: 16 / 9;
+}
+
+.preview {
+  width: 100%;
+  height: 120px;
+  aspect-ratio: 16 / 9;
+}
+
+@media (max-width: 780px) {
+  .carousel {
+    height: 50vh;
+  }
+}

@@ -28,11 +28,12 @@ export function normalizeGallery(rawValue) {
 
       return {
         img_url: item.img_url ?? "",
+        video_url: item.video_url ?? "",
         caption_ko: item.caption_ko ?? "",
         caption_en: item.caption_en ?? "",
       };
     })
-    .filter((item) => item?.img_url);
+    .filter((item) => item?.img_url || item?.video_url);
 }
 
 export function serializeGallery(items) {
@@ -40,11 +41,23 @@ export function serializeGallery(items) {
     return null;
   }
 
-  return items.map(({ img_url, caption_ko, caption_en }) => ({
-    img_url,
-    caption_ko: caption_ko?.trim() || null,
-    caption_en: caption_en?.trim() || null,
-  }));
+  return items.map(({ img_url, video_url, caption_ko, caption_en }) => {
+    const trimmedVideoUrl = video_url?.trim() || null;
+
+    if (img_url) {
+      return {
+        img_url,
+        caption_ko: caption_ko?.trim() || null,
+        caption_en: caption_en?.trim() || null,
+      };
+    }
+
+    return {
+      video_url: trimmedVideoUrl,
+      caption_ko: caption_ko?.trim() || null,
+      caption_en: caption_en?.trim() || null,
+    };
+  });
 }
 
 export function normalizeFileLink(rawValue) {

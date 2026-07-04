@@ -1,15 +1,22 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
+import { getMuxPlaybackId } from "@/components/work/gallery/galleryUtils";
 import { useImageUpload } from "@/hooks/useImageUpload";
 import styles from "./GalleryInput.module.css";
 
-function createEmptyItem() {
+function createEmptyVideoItem() {
   return {
     img_url: "",
+    video_url: "",
     caption_ko: "",
     caption_en: "",
   };
+}
+
+function isImageItem(item) {
+  return Boolean(item?.img_url);
 }
 
 function moveItem(items, fromIndex, toIndex) {
@@ -87,8 +94,10 @@ export default function GalleryInput({
         }
 
         uploadedItems.push({
-          ...createEmptyItem(),
           img_url: result.file.url,
+          video_url: "",
+          caption_ko: "",
+          caption_en: "",
         });
       }
 
@@ -99,6 +108,10 @@ export default function GalleryInput({
       setUploading(false);
       event.target.value = "";
     }
+  }
+
+  function addVideoItem() {
+    onChange([...value, createEmptyVideoItem()]);
   }
 
   function handleDragStart(index) {
@@ -142,18 +155,32 @@ export default function GalleryInput({
             />
             {uploading ? "업로드 중..." : "이미지 추가"}
           </label>
+
+          <button
+            className={styles.addButton}
+            type="button"
+            disabled={isDisabled}
+            onClick={addVideoItem}
+          >
+            비디오 추가
+          </button>
         </div>
       </div>
 
       {uploadError ? <p className={styles.error}>{uploadError}</p> : null}
 
       {!value.length ? (
-        <p className={styles.empty}>이미지를 추가하면 gallery가 생성됩니다.</p>
+        <p className={styles.empty}>
+          이미지 또는 비디오를 추가하면 gallery가 생성됩니다.
+        </p>
       ) : (
         <ul className={styles.list}>
-          {value.map((item, index) => (
+          {value.map((item, index) => {
+            const imageItem = isImageItem(item);
+
+            return (
             <li
-              key={`${item.img_url}-${index}`}
+              key={`${item.video_url || item.img_url || "item"}-${index}`}
               className={[
                 styles.item,
                 dragIndex === index ? styles.itemDragging : "",
@@ -172,41 +199,94 @@ export default function GalleryInput({
               </div>
 
               <div className={styles.previewWrap}>
-                {item.img_url ? (
+                {imageItem ? (
                   <img
                     className={styles.previewImage}
                     src={item.img_url}
                     alt=""
                   />
-                ) : null}
+                ) : getMuxPlaybackId(item.video_url) ? (
+                  <GalleryMuxVideo
+                    videoUrl={item.video_url}
+                    variant="preview"
+                  />
+                ) : (
+                  <div className={styles.previewPlaceholder}>Mux ID</div>
+                )}
               </div>
 
               <div className={styles.fields}>
-                <label className={styles.captionLabel}>
-                  caption_ko
-                  <input
-                    className={styles.captionInput}
-                    type="text"
-                    value={item.caption_ko ?? ""}
-                    disabled={isDisabled}
-                    onChange={(event) =>
-                      updateItem(index, { caption_ko: event.target.value })
-                    }
-                  />
-                </label>
+                {imageItem ? (
+                  <>
+                    <label className={styles.captionLabel}>
+                      caption_ko
+                      <input
+                        className={styles.captionInput}
+                        type="text"
+                        value={item.caption_ko ?? ""}
+                        disabled={isDisabled}
+                        onChange={(event) =>
+                          updateItem(index, { caption_ko: event.target.value })
+                        }
+                      />
+                    </label>
 
-                <label className={styles.captionLabel}>
-                  caption_en
-                  <input
-                    className={styles.captionInput}
-                    type="text"
-                    value={item.caption_en ?? ""}
-                    disabled={isDisabled}
-                    onChange={(event) =>
-                      updateItem(index, { caption_en: event.target.value })
-                    }
-                  />
-                </label>
+                    <label className={styles.captionLabel}>
+                      caption_en
+                      <input
+                        className={styles.captionInput}
+                        type="text"
+                        value={item.caption_en ?? ""}
+                        disabled={isDisabled}
+                        onChange={(event) =>
+                          updateItem(index, { caption_en: event.target.value })
+                        }
+                      />
+                    </label>
+                  </>
+                ) : (
+                  <>
+                    <label className={styles.captionLabel}>
+                      Mux playback ID
+                      <input
+                        className={styles.captionInput}
+                        type="text"
+                        value={item.video_url ?? ""}
+                        disabled={isDisabled}
+                        placeholder="playback ID"
+                        onChange={(event) =>
+                          updateItem(index, { video_url: event.target.value.trim() })
+                        }
+                      />
+                    </label>
+
+                    <label className={styles.captionLabel}>
+                      caption_ko
+                      <input
+                        className={styles.captionInput}
+                        type="text"
+                        value={item.caption_ko ?? ""}
+                        disabled={isDisabled}
+                        onChange={(event) =>
+                          updateItem(index, { caption_ko: event.target.value })
+                        }
+                      />
+                    </label>
+
+                    <label className={styles.captionLabel}>
+                      caption_en
+                      <input
+                        className={styles.captionInput}
+                        type="text"
+                        value={item.caption_en ?? ""}
+                        disabled={isDisabled}
+                        onChange={(event) =>
+                          updateItem(index, { caption_en: event.target.value })
+                        }
+                      />
+                    </label>
+                  </>
+                )}
               </div>
 
               <div className={styles.actions}>
@@ -238,7 +318,8 @@ export default function GalleryInput({
                 </button>
               </div>
             </li>
-          ))}
+            );
+          })}
         </ul>
       )}
     </div>

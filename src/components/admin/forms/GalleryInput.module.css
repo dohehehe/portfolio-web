@@ -49,6 +49,28 @@
   cursor: not-allowed;
 }
 
+.addButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  background: #fff;
+  color: #444;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.addButton:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.addButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .empty {
   padding: 16px;
   border: 1px dashed #d0d7de;
@@ -111,6 +133,16 @@
   width: 100%;
   height: 120px;
   object-fit: cover;
+}
+
+.previewPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  color: #888;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
 
 .previewLink {

@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
+import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
+import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
 import styles from "./WorkGallery.module.css";
 
 const GALLERY_GAP = 14;
@@ -52,7 +54,9 @@ function buildGalleryRows(items, imageMeta, isMobile) {
   };
 
   items.forEach((item, index) => {
-    const orientation = imageMeta[index]?.orientation ?? "portrait";
+    const orientation = isGalleryVideo(item)
+      ? "landscape"
+      : (imageMeta[index]?.orientation ?? "portrait");
     const entry = { item, index };
 
     if (orientation === "portrait") {
@@ -174,17 +178,25 @@ export default function WorkGallery({ items }) {
               style={rowHeight ? { height: rowHeight } : undefined}
             >
               {row.items.map(({ item, index }) => (
-                <figure key={`${item.img_url}-${index}`} className={styles.pairCell}>
-                  <img
-                    ref={setImageRef(index)}
-                    className={styles.pairImage}
-                    src={item.img_url}
-                    alt={item.caption || ""}
-                    draggable={false}
-                    loading={index === 0 ? "eager" : "lazy"}
-                    onClick={() => openImageLightbox({ items, index })}
-                    onLoad={(event) => handleImageLoad(index, event.currentTarget)}
-                  />
+                <figure key={getGalleryItemKey(item, index)} className={styles.pairCell}>
+                  {isGalleryVideo(item) ? (
+                    <GalleryMuxVideo
+                      videoUrl={item.video_url}
+                      title={item.caption}
+                      variant="pair"
+                    />
+                  ) : (
+                    <img
+                      ref={setImageRef(index)}
+                      className={styles.pairImage}
+                      src={item.img_url}
+                      alt={item.caption || ""}
+                      draggable={false}
+                      loading={index === 0 ? "eager" : "lazy"}
+                      onClick={() => openImageLightbox({ items, index })}
+                      onLoad={(event) => handleImageLoad(index, event.currentTarget)}
+                    />
+                  )}
                 </figure>
               ))}
             </div>
@@ -197,19 +209,27 @@ export default function WorkGallery({ items }) {
 
         return (
           <figure
-            key={`${item.img_url}-${index}`}
+            key={getGalleryItemKey(item, index)}
             className={`${styles.item} ${itemClassName}`}
           >
-            <img
-              ref={setImageRef(index)}
-              className={styles.image}
-              src={item.img_url}
-              alt={item.caption || ""}
-              draggable={false}
-              loading={index === 0 ? "eager" : "lazy"}
-              onClick={() => openImageLightbox({ items, index })}
-              onLoad={(event) => handleImageLoad(index, event.currentTarget)}
-            />
+            {isGalleryVideo(item) ? (
+              <GalleryMuxVideo
+                videoUrl={item.video_url}
+                title={item.caption}
+                variant="fullWidth"
+              />
+            ) : (
+              <img
+                ref={setImageRef(index)}
+                className={styles.image}
+                src={item.img_url}
+                alt={item.caption || ""}
+                draggable={false}
+                loading={index === 0 ? "eager" : "lazy"}
+                onClick={() => openImageLightbox({ items, index })}
+                onLoad={(event) => handleImageLoad(index, event.currentTarget)}
+              />
+            )}
           </figure>
         );
       })}
