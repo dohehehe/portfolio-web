@@ -1,13 +1,9 @@
 .switch {
-  position: fixed;
-  top: 16px;
-  right: 24px;
-  z-index: 6;
   display: flex;
   gap: 8px;
   font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
-  font-size: 1.15rem;
-  color: #1c1c1c;
+  font-size: 1.7rem;
+  color: #3c3c3c;
 }
 
 .button {
@@ -16,6 +12,7 @@
   background: none;
   color: inherit;
   font: inherit;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -26,8 +23,6 @@
 
 @media (max-width: 768px) {
   .switch {
-    top: 12px;
-    right: 12px;
-    font-size: 1rem;
+    font-size: 1.4rem;
   }
 }

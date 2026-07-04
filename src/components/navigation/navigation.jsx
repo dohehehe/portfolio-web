@@ -9,6 +9,7 @@ import {
 } from "@/lib/locale/routing";
 import WorkList from "./workList";
 import styles from "./navigation.module.css";
+import LanguageSwitch from "../locale/LanguageSwitch";
 
 function isWorkListRoute(pathname) {
   const path = stripLocaleFromPathname(pathname);
@@ -42,6 +43,7 @@ export default function Navigation({ initialProjects = [], initialWorks = [] }) 
         <Link className={styles.navigationLink} href={localizedPath("/text", locale)}>
           text
         </Link>
+        <LanguageSwitch />
         <Link className={styles.navigationLink} href={localizedPath("/info", locale)}>
           dohee kwak
         </Link>
