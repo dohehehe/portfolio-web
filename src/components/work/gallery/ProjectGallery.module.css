@@ -53,6 +53,10 @@
   overflow-wrap: break-word;
 }
 
+.caption :is(i, em) {
+  font-style: italic;
+}
+
 .navButton {
   display: flex;
   align-items: center;

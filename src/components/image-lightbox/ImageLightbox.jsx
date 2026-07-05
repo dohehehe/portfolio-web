@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import Caption from "@/components/ui/Caption";
 import styles from "./ImageLightbox.module.css";
 
 export default function ImageLightbox({
@@ -154,9 +155,7 @@ export default function ImageLightbox({
           </div>
         </div>
 
-        {currentItem.caption ? (
-          <p className={styles.caption}>{currentItem.caption}</p>
-        ) : null}
+        <Caption as="p" className={styles.caption} text={currentItem.caption} />
       </div>
     </div>
   );

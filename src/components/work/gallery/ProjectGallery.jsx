@@ -3,6 +3,8 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
+import Caption from "@/components/ui/Caption";
+import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
 import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
 import styles from "./ProjectGallery.module.css";
@@ -85,14 +87,14 @@ export default function ProjectGallery({ items }) {
             {isGalleryVideo(item) ? (
               <GalleryMuxVideo
                 videoUrl={item.video_url}
-                title={item.caption}
+                title={getCaptionPlainText(item.caption)}
                 variant="carousel"
               />
             ) : (
               <AspectRatioImage
                 className={styles.image}
                 src={item.img_url}
-                alt={item.caption || ""}
+                alt={getCaptionPlainText(item.caption)}
                 width={item.width}
                 height={item.height}
                 draggable={false}
@@ -100,11 +102,7 @@ export default function ProjectGallery({ items }) {
                 onClick={() => openImageLightbox({ items, index })}
               />
             )}
-            {item.caption ? (
-              <figcaption className={styles.caption}>
-                {item.caption}
-              </figcaption>
-            ) : null}
+            <Caption as="figcaption" className={styles.caption} text={item.caption} />
           </figure>
         ))}
       </div>

@@ -1,6 +1,7 @@
-import { normalizeEditorHtml } from "@/lib/editorjs/normalizeEditorHtml";
+import { normalizeEditorHtml, getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
+import Caption from "@/components/ui/Caption";
 import defaultStyles from "./WorkItemDetail.module.css";
 
 function ParagraphBlock({ text, styles }) {
@@ -50,11 +51,11 @@ function ImageBlock({ file, caption, styles }) {
       <AspectRatioImage
         className={styles.image}
         src={url}
-        alt={caption || ""}
+        alt={getCaptionPlainText(caption)}
         width={file?.width}
         height={file?.height}
       />
-      {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+      <Caption as="figcaption" className={styles.caption} text={caption} />
     </figure>
   );
 }
@@ -67,7 +68,7 @@ function EmbedBlock({ embed, caption, styles }) {
   return (
     <figure className={styles.embed}>
       <div dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(embed) }} />
-      {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+      <Caption as="figcaption" className={styles.caption} text={caption} />
     </figure>
   );
 }

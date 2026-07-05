@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
 import ImageLightbox from "./ImageLightbox";
 
 const ImageLightboxContext = createContext(null);
@@ -8,7 +9,7 @@ const ImageLightboxContext = createContext(null);
 function normalizeItem(item) {
   return {
     src: item.src ?? item.img_url ?? "",
-    alt: item.alt ?? item.caption ?? "",
+    alt: item.alt ?? getCaptionPlainText(item.caption),
     caption: item.caption ?? "",
   };
 }
