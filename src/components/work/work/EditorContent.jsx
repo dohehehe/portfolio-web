@@ -1,5 +1,6 @@
 import { normalizeEditorHtml } from "@/lib/editorjs/normalizeEditorHtml";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
+import AspectRatioImage from "@/components/ui/AspectRatioImage";
 import defaultStyles from "./WorkItemDetail.module.css";
 
 function ParagraphBlock({ text, styles }) {
@@ -46,7 +47,13 @@ function ImageBlock({ file, caption, styles }) {
 
   return (
     <figure className={styles.figure}>
-      <img className={styles.image} src={url} alt={caption || ""} />
+      <AspectRatioImage
+        className={styles.image}
+        src={url}
+        alt={caption || ""}
+        width={file?.width}
+        height={file?.height}
+      />
       {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
     </figure>
   );

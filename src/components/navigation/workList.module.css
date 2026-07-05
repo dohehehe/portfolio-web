@@ -68,7 +68,7 @@
 
 .year {
   flex-shrink: 0;
-  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  font-family: var(--font-barlow), sans-serif;
   color: #202020;
   font-size: 1.23rem;
   text-align: right;

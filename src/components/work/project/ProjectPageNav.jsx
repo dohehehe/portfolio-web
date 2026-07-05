@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { barlow } from "@/app/fonts";
 import { localizedPath } from "@/lib/locale/routing";
 import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
 import styles from "@/components/work/project/ProjectPageNav.module.css";
@@ -105,7 +106,7 @@ export default function ProjectPageNav({ project, works, locale }) {
 
   return (
     <nav
-      className={`${styles.nav} ${isVisible ? "" : styles.navHidden}`.trim()}
+      className={`${barlow.variable} ${styles.nav} ${isVisible ? "" : styles.navHidden}`.trim()}
       aria-label="Project sections"
       aria-hidden={!isVisible}
     >

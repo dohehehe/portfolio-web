@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
+import AspectRatioImage from "@/components/ui/AspectRatioImage";
 import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
 import styles from "./ProjectGallery.module.css";
@@ -88,10 +89,12 @@ export default function ProjectGallery({ items }) {
                 variant="carousel"
               />
             ) : (
-              <img
+              <AspectRatioImage
                 className={styles.image}
                 src={item.img_url}
                 alt={item.caption || ""}
+                width={item.width}
+                height={item.height}
                 draggable={false}
                 loading={index === 0 ? "eager" : "lazy"}
                 onClick={() => openImageLightbox({ items, index })}

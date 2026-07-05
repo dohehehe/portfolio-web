@@ -12,14 +12,19 @@
 .header {
   display: flex;
   flex-direction: column;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
   padding-left: 5px;
+  margin-top: 10px;
+  text-align: center;
+  margin-right: 110px;
+  /* margin-left: auto;
+  margin-right: auto; */
   /* box-shadow: inset 0 0 10px 10px pink; */
 }
 
 .title {
   display: inline;
-  font-size: 1.7rem;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 1.2;
   word-break: keep-all;
@@ -34,8 +39,8 @@
 }
 
 .year {
-  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
-  font-size: 1.7rem;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 2rem;
   font-weight: 400;
   padding-left: 2px;
   /* margin-bottom: -4px; */
@@ -61,7 +66,7 @@
   flex-direction: column;
   flex-grow: 1;
   max-width: 680px;
-  font-size: 1.7rem;
+  font-size: 1.75rem;
   text-align: center;
   word-break: keep-all;
   line-height: 1.73;
@@ -69,7 +74,7 @@
   margin: 0 auto;
   padding-left: 5px;
   padding-right: 20px;
-  font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+  font-family: var(--font-inter), "Eulyoo1945", var(--font-gothic-a1), sans-serif;
   /* box-shadow: inset 0 0 10px 10px aqua; */
 
   & .paragraph {
@@ -86,8 +91,14 @@
 
   & .editorHeader4 {
     font-size: 1.4rem;
-    font-weight: 500;
+    font-weight: 400;
   }
+}
+
+:global(html[lang="en"]) .editorContent {
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 1.7rem;
 }
 
 
@@ -97,15 +108,19 @@
   gap: 58px;
   width: 30%;
   max-width: 370px;
-  padding-right: 20px;
-  font-size: 1.3rem;
+  padding-right: 40px;
+  font-size: 1.25rem;
   /* box-shadow: inset 0 0 10px 10px red; */
+}
+
+:global(html[lang="en"]) .creditRow {
+  font-size: 1.35rem;
 }
 
 .eventContent {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 20px;
   word-break: keep-all;
 }
 
@@ -132,6 +147,7 @@
 }
 
 .eventYear {
+  font-family: var(--font-barlow), sans-serif;
   font-size: 1.35rem;
   flex-shrink: 0;
   display: inline-block;
@@ -140,8 +156,18 @@
   margin-top: -1.5px;
 }
 
+:global(html[lang="en"]) .eventYear {
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+
+
 .eventTitle {
   margin: 0;
+}
+
+.eventTitleEn {
+  font-style: italic;
 }
 
 .eventMeta {
@@ -156,7 +182,7 @@
 
 
   & .paragraph {
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
 
   .figure,
@@ -192,25 +218,48 @@
 @media (max-width: 780px) {
   .header {
     padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+    margin-bottom: 30px;
+  }
+
+  .title {
+    font-size: unset;
   }
 
   .titleLine {
-    font-size: 1.6rem;
-    font-weight: 400;
+    font-size: 1.65rem;
+    font-weight: 500;
     line-height: 1.2;
   }
 
+  :global(html[lang="en"]) {
+    .titleLine {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+
+    .year {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+  }
+
   .year {
-    font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
-    font-size: 1.6rem;
-    font-weight: 400;
+    font-family: var(--font-barlow), sans-serif;
+    font-size: 1.65rem;
+    font-weight: 500;
     padding-left: 2px;
   }
 
   .contentRow {
-    flex-direction: column-reverse;
-    gap: 50px;
-    margin-top: 20px;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 30px;
+  }
+
+  :global(html[lang="en"]) .year {
+    font-size: 1.23rem;
   }
 
   .editorContent {
@@ -218,7 +267,8 @@
     padding-right: 10px;
     max-width: none;
     width: 100%;
-    font-size: 1.5rem;
+    font-size: 1.57rem;
+    line-height: 1.75;
 
     & .paragraph {
       width: 100%;
@@ -228,15 +278,31 @@
     }
   }
 
+  :global(html[lang="en"]) .editorContent {
+    line-height: 1.45;
+    font-size: 1.45rem;
+    font-weight: 400;
+  }
+
+
   .creditRow {
     width: 75%;
     max-width: none;
     margin-right: 0;
     margin-left: auto;
     padding-right: 0;
-    font-size: 1.2rem;
+    padding-top: 50px;
+    font-size: 1.25rem;
     gap: 30px;
+    word-break: keep-all;
   }
 
+  :global(html[lang="en"]) .creditRow {
+    font-size: 1.23rem;
+  }
+
+  .eventItem {
+    gap: 5px;
+  }
 
 }

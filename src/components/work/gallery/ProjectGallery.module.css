@@ -10,8 +10,8 @@
 .track {
   flex: 1;
   width: 100vw;
-  margin-left: -110px;
-  padding-left: 110px;
+  margin-left: -70px;
+  padding-left: 70px;
   display: flex;
   gap: 15px;
   overflow-x: auto;
@@ -34,7 +34,7 @@
 }
 
 .image {
-  height: 64vh;
+  height: 70vh;
   display: block;
   width: auto;
   object-fit: contain;
@@ -45,11 +45,11 @@
 
 .caption {
   margin: 0;
+  padding: 0 3px;
   color: #666666;
   font-size: 1.2rem;
   line-height: 1.4;
   text-align: left;
-  padding: 0 1px;
   overflow-wrap: break-word;
 }
 
@@ -102,12 +102,12 @@
     padding-left: 10px;
     width: 100vw;
     display: flex;
-    gap: 15px;
+    gap: 5px;
     padding-right: 10px;
   }
 
   .image {
-    height: 50vh;
+    height: 54vh;
   }
 
   .caption {

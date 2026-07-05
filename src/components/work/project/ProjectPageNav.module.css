@@ -75,7 +75,7 @@
 
 .year {
   flex-shrink: 0;
-  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  font-family: var(--font-barlow), sans-serif;
   font-size: 1.1rem;
   text-align: right;
 }

@@ -95,6 +95,8 @@ export default function GalleryInput({
 
         uploadedItems.push({
           img_url: result.file.url,
+          width: result.file.width,
+          height: result.file.height,
           video_url: "",
           caption_ko: "",
           caption_en: "",

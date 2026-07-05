@@ -1,3 +1,4 @@
+import { barlow } from "@/app/fonts";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import WorkGallery from "@/components/work/gallery/WorkGallery";
 import ProjectEventList from "@/components/work/project/item-detail/ProjectEventList";
@@ -60,7 +61,7 @@ export default function WorkItemDetail({
   const titles = getBilingualTitles(item);
 
   return (
-    <article id={id} className={`${styles.article} ${className}`.trim()}>
+    <article id={id} className={`${barlow.variable} ${styles.article} ${className}`.trim()}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
           <h1 className={styles.title}>
@@ -75,20 +76,25 @@ export default function WorkItemDetail({
           {item.year ? <span className={styles.year}>{item.year}</span> : null}
         </div>
 
-        <MetaField label="medium" value={item.medium} />
-        <MetaField label="dimension" value={item.dimension} />
+        <MetaField label="medium" value={item.medium} classname={styles.metaField} />
+        <MetaField label="dimension" value={item.dimension} classname={styles.metaField} />
+        <div className={styles.creditContent}>
+          <CreditSection
+            data={item.credit}
+            cvs={cvs}
+            texts={texts}
+            locale={locale}
+          />
+          <ContentSection title="content" data={item.content} />
+        </div>
       </header>
 
-      <WorkGallery items={galleryItems} />
+      <div className={styles.contentContainer}>
 
-      <div className={styles.creditContent}>
-        <CreditSection
-          data={item.credit}
-          cvs={cvs}
-          texts={texts}
-          locale={locale}
-        />
-        <ContentSection title="content" data={item.content} />
+        <WorkGallery items={galleryItems} />
+
+
+
       </div>
     </article>
   );

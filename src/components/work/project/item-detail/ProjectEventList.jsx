@@ -27,7 +27,13 @@ export default function ProjectEventList({
                 {item.year ? <span className={styles.eventYear}>{item.year}</span> : null}
               </div>
               <div className={styles.eventItemRow}>
-                {label ? <span className={styles.eventTitle}>《{label}》, </span> : null}
+                {label ? (
+                  <span
+                    className={`${styles.eventTitle} ${locale === "en" ? styles.eventTitleEn : ""}`.trim()}
+                  >
+                    {locale === "en" ? `${label}, ` : `《${label}》, `}
+                  </span>
+                ) : null}
                 {item.space ? <span className={styles.eventMeta}>{item.space}</span> : null}
               </div>
             </>

@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { IMAGE_UPLOAD_MAX_SIZE_MB } from "@/lib/imageUpload/constants";
 import { compressImageForUpload } from "@/utils/imageCompression";
+import { readImageDimensionsFromFile } from "@/utils/imageDimensions";
 
 async function parseUploadResponse(response) {
   const contentType = response.headers.get("content-type") ?? "";
@@ -25,6 +26,7 @@ export function useImageUpload({
   const uploadImageToServer = useCallback(
     async (file) => {
       try {
+        const dimensions = await readImageDimensionsFromFile(file);
         const compressedFile = await compressImageForUpload(file, {
           maxSizeInMB,
         });
@@ -47,7 +49,11 @@ export function useImageUpload({
 
         return {
           success: true,
-          file: { url: data.url },
+          file: {
+            url: data.url,
+            width: dimensions.width,
+            height: dimensions.height,
+          },
         };
       } catch (error) {
         return {

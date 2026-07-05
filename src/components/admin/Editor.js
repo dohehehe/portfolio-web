@@ -98,7 +98,11 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
                       if (result?.success && result?.file?.url) {
                         return {
                           success: 1,
-                          file: { url: result.file.url },
+                          file: {
+                            url: result.file.url,
+                            width: result.file.width,
+                            height: result.file.height,
+                          },
                         };
                       }
 

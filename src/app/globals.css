@@ -1,10 +1,19 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --font-size-root: 10px;
 }
 
 html {
   height: 100%;
+  font-size: var(--font-size-root);
+}
+
+
+@media (max-width: 780px) {
+  html[lang="en"] {
+    --font-size-root: 10.5px;
+  }
 }
 
 html,
@@ -12,12 +21,13 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   color: #1f1f1f;
-  font-size: 10px;
 }
 
 body {
-  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
+  font-family: var(--font-inter), var(--font-gothic-a1), sans-serif;
   font-weight: 400;
+  /* -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; */
 }
 
 * {

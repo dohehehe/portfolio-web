@@ -32,10 +32,11 @@ export default function ProjectWorkPage({
       />
 
       {works.map((work) => (
-        <div id={work.id} key={work.id}>
+        <div id={work.id} key={work.id} className={styles.workArticle}>
           <WorkProjectIndex
             projectId={project.id}
             projectTitle={project.title}
+            projectYear={project.year}
             locale={locale}
           />
           <WorkItemDetail
