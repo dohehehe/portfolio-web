@@ -65,5 +65,36 @@ export function useImageUpload({
     [endpoint, maxSizeInMB],
   );
 
-  return { uploadImageToServer };
+  const deleteImageFromServer = useCallback(
+    async (url) => {
+      try {
+        const response = await fetch(endpoint, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await parseUploadResponse(response);
+
+        if (!response.ok) {
+          return {
+            success: false,
+            error: data.error ?? "Image delete failed.",
+          };
+        }
+
+        return { success: true };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.message ?? "Image delete failed.",
+        };
+      }
+    },
+    [endpoint],
+  );
+
+  return { uploadImageToServer, deleteImageFromServer };
 }

@@ -1,6 +1,7 @@
 import { requireAdmin } from "@/lib/api/requireAdmin";
 import { apiError, supabaseError } from "@/lib/api/errors";
 import { IMAGE_UPLOAD_BUCKET } from "@/lib/imageUpload/constants";
+import { parseImageStoragePathFromUrl } from "@/lib/imageUpload/storagePath";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 
 function buildStoragePath(file) {
@@ -49,6 +50,43 @@ export async function POST(request) {
       .getPublicUrl(filePath);
 
     return Response.json({ url: data.publicUrl });
+  } catch (error) {
+    return apiError(error.message, 500);
+  }
+}
+
+export async function DELETE(request) {
+  try {
+    const { response: unauthorized } = await requireAdmin();
+
+    if (unauthorized) {
+      return unauthorized;
+    }
+
+    const body = await request.json();
+    const url = body?.url;
+
+    if (!url || typeof url !== "string") {
+      return apiError("url is required.", 400);
+    }
+
+    const filePath = parseImageStoragePathFromUrl(url);
+
+    if (!filePath) {
+      return Response.json({ success: true, skipped: true });
+    }
+
+    const storageSupabase = createSupabaseServiceRoleClient();
+
+    const { error } = await storageSupabase.storage
+      .from(IMAGE_UPLOAD_BUCKET)
+      .remove([filePath]);
+
+    if (error) {
+      return supabaseError(error, "Failed to delete image.");
+    }
+
+    return Response.json({ success: true });
   } catch (error) {
     return apiError(error.message, 500);
   }

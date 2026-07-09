@@ -45,7 +45,7 @@ export default function GalleryInput({
   const [dragIndex, setDragIndex] = useState(null);
   const [dragOverIndex, setDragOverIndex] = useState(null);
   const [uploadingCount, setUploadingCount] = useState(0);
-  const { uploadImageToServer } = useImageUpload();
+  const { uploadImageToServer, deleteImageFromServer } = useImageUpload();
 
   const uploading = uploadingCount > 0;
   const isDisabled = disabled || uploading;
@@ -68,7 +68,25 @@ export default function GalleryInput({
     );
   }
 
-  function removeItem(index) {
+  async function removeItem(index) {
+    const item = value[index];
+
+    if (isImageItem(item) && item.img_url) {
+      setUploadError(null);
+      setUploading(true);
+
+      try {
+        const result = await deleteImageFromServer(item.img_url);
+
+        if (!result.success) {
+          setUploadError(result.error ?? "이미지 삭제에 실패했습니다.");
+          return;
+        }
+      } finally {
+        setUploading(false);
+      }
+    }
+
     onChange(value.filter((_, itemIndex) => itemIndex !== index));
   }
 
