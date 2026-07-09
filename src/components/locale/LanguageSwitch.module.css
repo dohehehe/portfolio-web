@@ -14,15 +14,19 @@
   font: inherit;
   text-decoration: none;
   cursor: pointer;
+  font-weight: 500;
+  opacity: 0.3;
 }
 
 .button:hover,
 .buttonActive {
-  text-decoration: underline;
+  opacity: 1;
 }
 
 @media (max-width: 768px) {
   .switch {
-    font-size: 1.4rem;
+    font-size: 1.53rem;
+    gap: 3px;
+    font-weight: 500;
   }
 }

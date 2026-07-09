@@ -4,9 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   getLocaleFromPathname,
+  isDetailRoute,
   localizedPath,
   stripLocaleFromPathname,
 } from "@/lib/locale/routing";
+import { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";
 import WorkList from "./workList";
 import styles from "./navigation.module.css";
 import LanguageSwitch from "../locale/LanguageSwitch";
@@ -20,10 +22,15 @@ export default function Navigation({ initialProjects = [], initialWorks = [] }) 
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
   const workListActive = isWorkListRoute(pathname);
+  const detailRoute = isDetailRoute(pathname);
+  const { isHidden, show } = useNavigationScrollHide(detailRoute);
 
   return (
     <header className={styles.header}>
-      <nav className={styles.navigation}>
+      <nav
+        className={`${styles.navigation} ${detailRoute && isHidden ? styles.navigationHidden : ""}`.trim()}
+        onTouchStart={detailRoute ? show : undefined}
+      >
         <div
           className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""}`}
         >

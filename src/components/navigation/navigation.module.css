@@ -17,6 +17,24 @@
   gap: 1rem;
 }
 
+.navigationSection,
+.navigation > .navigationLink {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.navigationHidden .navigationSection,
+.navigationHidden > .navigationLink {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navigationHidden:hover .navigationSection,
+.navigationHidden:hover > .navigationLink {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .navigationSection {
   display: flex;
   flex-direction: column;

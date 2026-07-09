@@ -246,13 +246,12 @@
   }
 
   .header {
-    margin-bottom: 80px;
+    margin-bottom: 30px;
     margin-right: 0px;
     padding-left: 0px;
     padding-right: 0px;
     width: 100%;
     color: #434343;
-
   }
 
   .titleRow {
@@ -288,6 +287,10 @@
     font-weight: 400;
   }
 
+  :global(html[lang="en"]) .metaField {
+    font-size: 1.32rem;
+  }
+
   .contentContainer {
     width: 100%;
     display: block;
@@ -296,10 +299,11 @@
   .creditContent {
     display: flex;
     flex-direction: row-reverse;
-    gap: 16px;
+    gap: 20px;
     width: 100%;
     margin-bottom: 20px;
     margin-right: 0px;
+    margin-top: 60px;
     /* padding-left: 6px; */
   }
 
@@ -307,18 +311,22 @@
     margin-right: auto;
     width: 70%;
     min-width: 62%;
-    font-size: 1.35rem;
+    font-size: 1.28rem;
   }
 
   :global(html[lang="en"]) .editorContent {
-    min-width: 50%;
+    min-width: 53%;
   }
 
   .creditRow {
-    font-size: 1.2rem;
+    font-size: 1.18rem;
     gap: 40px;
     line-height: 1.45;
     padding-top: 3px;
+  }
+
+  :global(html[lang="en"]) .creditRow {
+    font-size: 1.12rem;
   }
 
   .eventContent {

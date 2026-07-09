@@ -48,6 +48,19 @@ export function getInternalLocalePath(pathname, locale) {
   return path === "/" ? `/${locale}` : `/${locale}${path}`;
 }
 
+const LIST_ONLY_ROUTES = new Set(["/work", "/text", "/event", "/info"]);
+
+export function isDetailRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+
+  if (LIST_ONLY_ROUTES.has(path)) {
+    return false;
+  }
+
+  const segments = path.split("/").filter(Boolean);
+  return segments.length === 2;
+}
+
 export function shouldSkipLocaleRouting(pathname) {
   return (
     pathname.startsWith("/admin") ||
