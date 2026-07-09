@@ -18,9 +18,10 @@ import { useProjects } from "@/hooks/project";
 import { useTexts } from "@/hooks/text";
 import { useWorks } from "@/hooks/work";
 import CvGroupedTable from "./CvGroupedTable";
+import ProjectWorkGroupedTable from "./ProjectWorkGroupedTable";
 import styles from "./AdminDataTables.module.css";
 
-const ADMIN_TABLES = ["cv", "event", "project", "work", "text", "info"];
+const ADMIN_TABLES = ["cv", "event", "project-work", "text", "info"];
 
 const ADMIN_TABLE_CONFIG = {
   cv: {
@@ -35,17 +36,13 @@ const ADMIN_TABLE_CONFIG = {
     editHref: (id) => `/admin/event/edit/${id}`,
     listColumns: ["created_at", "date", "title_ko", "space_ko"],
   },
-  project: {
-    label: "Project",
-    createHref: "/admin/project/create",
-    editHref: (id) => `/admin/project/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko"],
-  },
-  work: {
-    label: "Work",
-    createHref: "/admin/work/create",
-    editHref: (id) => `/admin/work/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "medium_ko"],
+  "project-work": {
+    label: "Project / Work",
+    tabLabel: "project / work",
+    createLinks: [
+      { href: "/admin/project/create", label: "Project 생성" },
+      { href: "/admin/work/create", label: "Work 생성" },
+    ],
   },
   text: {
     label: "Text",
@@ -110,12 +107,17 @@ function useAdminTableData(table, enabled) {
   const cv = useCvs({ enabled: enabled && table === "cv" });
   const event = useEvents({ enabled: enabled && table === "event" });
   const info = useInfos({ enabled: enabled && table === "info" });
-  const project = useProjects({ enabled: enabled && table === "project" });
   const text = useTexts({ enabled: enabled && table === "text" });
-  const work = useWorks({ enabled: enabled && table === "work" });
 
-  const states = { cv, event, info, project, text, work };
-  return states[table];
+  const states = { cv, event, info, text };
+  return (
+    states[table] ?? {
+      data: [],
+      loading: false,
+      error: null,
+      refetch: async () => [],
+    }
+  );
 }
 
 function ResourceTable({ table, items, deletingId, onDelete }) {
@@ -175,12 +177,31 @@ export default function AdminDataTables() {
   const [activeTable, setActiveTable] = useState(ADMIN_TABLES[0]);
   const [deletingId, setDeletingId] = useState(null);
 
-  const { data, loading, error, refetch } = useAdminTableData(activeTable, true);
+  const isProjectWork = activeTable === "project-work";
+  const { data, loading, error, refetch } = useAdminTableData(
+    activeTable,
+    !isProjectWork,
+  );
+  const {
+    data: projects = [],
+    loading: projectsLoading,
+    error: projectsError,
+    refetch: refetchProjects,
+  } = useProjects({ enabled: isProjectWork });
+  const {
+    data: works = [],
+    loading: worksLoading,
+    error: worksError,
+    refetch: refetchWorks,
+  } = useWorks({ enabled: isProjectWork });
   const { data: cvTypes = [], loading: cvTypesLoading } = useCvTypes({
     enabled: activeTable === "cv",
   });
 
-  const isLoading = loading || (activeTable === "cv" && cvTypesLoading);
+  const isLoading = isProjectWork
+    ? projectsLoading || worksLoading
+    : loading || (activeTable === "cv" && cvTypesLoading);
+  const tableError = isProjectWork ? projectsError || worksError : error;
 
   const cvDelete = useDeleteCv();
   const eventDelete = useDeleteEvent();
@@ -194,17 +215,13 @@ export default function AdminDataTables() {
       cv: cvDelete.remove,
       event: eventDelete.remove,
       info: infoDelete.remove,
-      project: projectDelete.remove,
       text: textDelete.remove,
-      work: workDelete.remove,
     }),
     [
       cvDelete.remove,
       eventDelete.remove,
       infoDelete.remove,
-      projectDelete.remove,
       textDelete.remove,
-      workDelete.remove,
     ],
   );
 
@@ -228,6 +245,44 @@ export default function AdminDataTables() {
     }
   }
 
+  async function handleDeleteProject(id) {
+    if (!window.confirm("이 project 항목을 삭제할까요?")) {
+      return;
+    }
+
+    setDeletingId(id);
+
+    try {
+      await projectDelete.remove(id);
+      await Promise.all([refetchProjects(), refetchWorks()]);
+    } catch (err) {
+      window.alert(err.message ?? "삭제에 실패했습니다.");
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
+  async function handleDeleteWork(id) {
+    if (!window.confirm("이 work 항목을 삭제할까요?")) {
+      return;
+    }
+
+    setDeletingId(id);
+
+    try {
+      await workDelete.remove(id);
+      await refetchWorks();
+    } catch (err) {
+      window.alert(err.message ?? "삭제에 실패했습니다.");
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
+  async function handleOrdersSaved() {
+    await refetchWorks();
+  }
+
   return (
     <section className={styles.section}>
       <div className={styles.toolbar}>
@@ -235,28 +290,45 @@ export default function AdminDataTables() {
           {ADMIN_TABLES.map((table) => (
             <button
               key={table}
-              className={`${styles.toggleButton} ${activeTable === table ? styles.toggleButtonActive : ""
-                }`}
+              className={`${styles.toggleButton} ${
+                activeTable === table ? styles.toggleButtonActive : ""
+              }`}
               type="button"
               onClick={() => setActiveTable(table)}
             >
-              {table}
+              {ADMIN_TABLE_CONFIG[table].tabLabel ?? table}
             </button>
           ))}
         </div>
 
-        <Link className={styles.createLink} href={config.createHref}>
-          {config.label} 생성
-        </Link>
+        {config.createLinks ? (
+          <div className={styles.createLinks}>
+            {config.createLinks.map((link) => (
+              <Link
+                key={link.href}
+                className={styles.createLink}
+                href={link.href}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <Link className={styles.createLink} href={config.createHref}>
+            {config.label} 생성
+          </Link>
+        )}
       </div>
 
       {isLoading && <p className={styles.status}>Loading...</p>}
 
-      {!isLoading && error && (
-        <p className={`${styles.status} ${styles.error}`}>{error.message}</p>
+      {!isLoading && tableError && (
+        <p className={`${styles.status} ${styles.error}`}>
+          {tableError.message}
+        </p>
       )}
 
-      {!isLoading && !error && activeTable === "cv" && (
+      {!isLoading && !tableError && activeTable === "cv" && (
         <CvGroupedTable
           items={data}
           cvTypes={cvTypes}
@@ -267,14 +339,28 @@ export default function AdminDataTables() {
         />
       )}
 
-      {!isLoading && !error && activeTable !== "cv" && (
-        <ResourceTable
-          table={activeTable}
-          items={sortedItems}
+      {!isLoading && !tableError && isProjectWork && (
+        <ProjectWorkGroupedTable
+          projects={projects}
+          works={works}
           deletingId={deletingId}
-          onDelete={handleDelete}
+          onDeleteProject={handleDeleteProject}
+          onDeleteWork={handleDeleteWork}
+          onOrdersSaved={handleOrdersSaved}
         />
       )}
+
+      {!isLoading &&
+        !tableError &&
+        activeTable !== "cv" &&
+        !isProjectWork && (
+          <ResourceTable
+            table={activeTable}
+            items={sortedItems}
+            deletingId={deletingId}
+            onDelete={handleDelete}
+          />
+        )}
     </section>
   );
 }

@@ -1,8 +1,12 @@
-import { sortByYearDesc } from "@/components/navigation/workListUtils";
+import {
+  sortByYearDesc,
+  sortWorksByOrder,
+} from "@/components/navigation/workListUtils";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const NAV_PROJECT_COLUMNS = "id,created_at,year,title_ko,title_en";
-const NAV_WORK_COLUMNS = "id,created_at,year,project_id,title_ko,title_en";
+const NAV_WORK_COLUMNS =
+  'id,created_at,year,project_id,title_ko,title_en,"order"';
 
 export async function getNavigationWorkListData() {
   const supabase = createSupabaseServerClient();
@@ -18,6 +22,6 @@ export async function getNavigationWorkListData() {
 
   return {
     projects: sortByYearDesc(projectsResult.data ?? []),
-    works: sortByYearDesc(worksResult.data ?? []),
+    works: sortWorksByOrder(worksResult.data ?? []),
   };
 }
