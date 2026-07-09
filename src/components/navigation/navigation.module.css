@@ -1,5 +1,5 @@
 .header {
-  padding: 8px 16px 0px;
+  padding: 2px 16px 0px;
   color: #1f1f1f;
   position: fixed;
   left: 0;
@@ -12,7 +12,7 @@
 .navigation {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   /* margin-top: 8px; */
   gap: 1rem;
 }
@@ -51,4 +51,10 @@
 
 .navigationLink:hover {
   text-decoration: underline;
+}
+
+@media (max-width: 780px) {
+  .header {
+    padding: 2px 13px 0px;
+  }
 }

@@ -28,7 +28,7 @@ export default function Navigation({ initialProjects = [], initialWorks = [] }) 
           className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""}`}
         >
           <Link className={styles.navigationLink} href={localizedPath("/work", locale)}>
-            project - work
+            work
           </Link>
           <WorkList
             className={styles.workList}
@@ -43,10 +43,13 @@ export default function Navigation({ initialProjects = [], initialWorks = [] }) 
         <Link className={styles.navigationLink} href={localizedPath("/text", locale)}>
           text
         </Link>
-        <LanguageSwitch />
+        <a className={styles.navigationLink} href={"https://log.doheekwak.com"} target="_blank">
+          log
+        </a>
         <Link className={styles.navigationLink} href={localizedPath("/info", locale)}>
           dohee kwak
         </Link>
+        <LanguageSwitch />
       </nav>
     </header>
   );
