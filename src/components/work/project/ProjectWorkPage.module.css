@@ -16,7 +16,7 @@
   /* max-width: 1000px; */
   /* padding-right: 100px; */
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 40px 0 0px;
   width: 100%;
 }
 
@@ -58,7 +58,7 @@
 
 @media (max-width: 780px) {
   .main {
-    padding: 63px 10px 30px 10px;
+    padding: 63px 14px 30px 14px;
   }
 
   .workArticle {

@@ -134,7 +134,8 @@
 .eventItem {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 14px;
+  line-height: 1.4;
 }
 
 .eventLink {
@@ -259,11 +260,7 @@
   .contentRow {
     flex-direction: column;
     gap: 40px;
-    margin-top: 30px;
-  }
-
-  :global(html[lang="en"]) .year {
-    font-size: 1.23rem;
+    margin-top: 40px;
   }
 
   .editorContent {
@@ -271,8 +268,8 @@
     padding-right: 10px;
     max-width: none;
     width: 100%;
-    font-size: 1.57rem;
-    line-height: 1.75;
+    font-size: 1.52rem;
+    line-height: 1.7;
 
     & .paragraph {
       width: 100%;

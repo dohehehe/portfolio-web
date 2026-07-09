@@ -90,11 +90,7 @@ export default function WorkItemDetail({
       </header>
 
       <div className={styles.contentContainer}>
-
         <WorkGallery items={galleryItems} />
-
-
-
       </div>
     </article>
   );

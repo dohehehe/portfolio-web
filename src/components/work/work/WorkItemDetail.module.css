@@ -22,7 +22,7 @@
   padding-left: 0px;
   padding-right: 56px;
   flex-grow: 1;
-  width: 47%;
+  width: 52%;
   flex-shrink: 0;
   margin-right: auto;
 }
@@ -33,7 +33,7 @@
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 4px;
-  margin-left: -60px;
+  /* margin-left: -60px; */
   margin-right: -50px;
 }
 
@@ -41,7 +41,7 @@
   display: inline;
   font-size: 1.6rem;
   padding-top: 4px;
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.2;
   word-break: keep-all;
 }
@@ -50,13 +50,18 @@
   margin-right: 4px;
 }
 
-
 .year {
   flex-shrink: 0;
   font-family: var(--font-barlow), sans-serif;
-  font-weight: 400;
-  color: #434343;
+  font-weight: 500;
+  /* color: #434343; */
   font-size: 1.6rem;
+}
+
+.metaField {
+  line-height: 1.4;
+  font-size: 1.45rem;
+  margin-left: 60px;
 }
 
 .contentContainer {
@@ -64,7 +69,7 @@
   /* flex-shrink: 0; */
   /* flex-direction: column; */
   gap: 10px;
-  min-width: 50%;
+  min-width: 45%;
   /* box-shadow: inset 0 0 10px 10px blue; */
 }
 
@@ -103,7 +108,7 @@
   width: 100%;
   word-break: keep-all;
   padding-right: 13px;
-  min-width: 54%;
+  min-width: 50%;
 
 
   .paragraph {
@@ -111,14 +116,14 @@
   }
 }
 
-:global(html[lang="en"]) .editorContent {
-  line-height: 1.4;
-}
-
 .paragraph {
   margin: 0;
   line-height: 1.4;
   margin-bottom: 7px;
+}
+
+:global(html[lang="en"]) .paragraph {
+  line-height: 1.45
 }
 
 .editorHeader {
@@ -241,42 +246,46 @@
   }
 
   .header {
-    margin-bottom: 12px;
+    margin-bottom: 80px;
     margin-right: 0px;
     padding-left: 0px;
     padding-right: 0px;
     width: 100%;
+    color: #434343;
+
   }
 
   .titleRow {
     align-items: flex-start;
     gap: 5px;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     font-size: 1.35rem;
     margin-left: 0px;
     margin-right: 0px;
-    padding-left: 40px;
+    /* padding-left: 40px; */
   }
 
   .title {
     font-size: 1.5rem;
-    font-weight: 500;
+    font-weight: 600;
     line-height: 1.2;
     word-break: keep-all;
     vertical-align: top;
     padding-top: 4px;
+
   }
 
   .year {
     flex-shrink: 0;
     font-family: var(--font-barlow), sans-serif;
     font-weight: 500;
-    color: #434343;
     font-size: 1.45rem;
   }
 
   .metaField {
-    margin-left: 40px;
+    margin-left: 50px;
+    font-size: 1.35rem;
+    font-weight: 400;
   }
 
   .contentContainer {
@@ -298,7 +307,7 @@
     margin-right: auto;
     width: 70%;
     min-width: 62%;
-    font-size: 1.32rem;
+    font-size: 1.35rem;
   }
 
   :global(html[lang="en"]) .editorContent {
