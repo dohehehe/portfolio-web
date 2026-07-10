@@ -2,12 +2,12 @@
  * AUTO-GENERATED FILE — DO NOT EDIT MANUALLY
  * Run `npm run db:sync` after changing Supabase tables.
  *
- * Synced at: 2026-06-24T12:29:10.138Z
+ * Synced at: 2026-07-09T16:47:01.127Z
  * Source: https://maewukpitcdwcippztnd.supabase.co
  */
 
 export const databaseSchema = {
-  "syncedAt": "2026-06-24T12:29:10.138Z",
+  "syncedAt": "2026-07-09T16:47:01.127Z",
   "supabaseUrl": "https://maewukpitcdwcippztnd.supabase.co",
   "tables": [
     {
@@ -763,6 +763,15 @@ export const databaseSchema = {
           "name": "gallery",
           "type": "unknown",
           "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "order",
+          "type": "number",
+          "format": "numeric",
           "nullable": true,
           "default": null,
           "isPrimaryKey": false,

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import LanguageSwitch from "@/components/locale/LanguageSwitch";
 import { LocaleProvider } from "@/components/locale/LocaleProvider";
 import { LOCALES } from "@/lib/locale/constants";
 
@@ -15,9 +14,6 @@ export default async function LocaleLayout({ children, params }) {
   }
 
   return (
-    <LocaleProvider locale={locale}>
-      <LanguageSwitch />
-      {children}
-    </LocaleProvider>
+    <LocaleProvider locale={locale}>{children}</LocaleProvider>
   );
 }

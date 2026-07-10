@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { IMAGE_UPLOAD_MAX_SIZE_MB } from "@/lib/imageUpload/constants";
 import { compressImageForUpload } from "@/utils/imageCompression";
+import { readImageDimensionsFromFile } from "@/utils/imageDimensions";
 
 async function parseUploadResponse(response) {
   const contentType = response.headers.get("content-type") ?? "";
@@ -25,6 +26,7 @@ export function useImageUpload({
   const uploadImageToServer = useCallback(
     async (file) => {
       try {
+        const dimensions = await readImageDimensionsFromFile(file);
         const compressedFile = await compressImageForUpload(file, {
           maxSizeInMB,
         });
@@ -47,7 +49,11 @@ export function useImageUpload({
 
         return {
           success: true,
-          file: { url: data.url },
+          file: {
+            url: data.url,
+            width: dimensions.width,
+            height: dimensions.height,
+          },
         };
       } catch (error) {
         return {
@@ -59,5 +65,36 @@ export function useImageUpload({
     [endpoint, maxSizeInMB],
   );
 
-  return { uploadImageToServer };
+  const deleteImageFromServer = useCallback(
+    async (url) => {
+      try {
+        const response = await fetch(endpoint, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ url }),
+        });
+
+        const data = await parseUploadResponse(response);
+
+        if (!response.ok) {
+          return {
+            success: false,
+            error: data.error ?? "Image delete failed.",
+          };
+        }
+
+        return { success: true };
+      } catch (error) {
+        return {
+          success: false,
+          error: error.message ?? "Image delete failed.",
+        };
+      }
+    },
+    [endpoint],
+  );
+
+  return { uploadImageToServer, deleteImageFromServer };
 }

@@ -4,7 +4,7 @@ import { localizedPath } from "@/lib/locale/routing";
 import { scrollToSection } from "@/lib/scroll/scrollToSection";
 import styles from "@/components/work/project/ProjectWorkPage.module.css";
 
-export default function WorkProjectIndex({ projectId, projectTitle, locale }) {
+export default function WorkProjectIndex({ projectId, projectTitle, projectYear, locale }) {
   function handleClick() {
     scrollToSection(projectId, "smooth");
     window.history.replaceState(
@@ -20,7 +20,9 @@ export default function WorkProjectIndex({ projectId, projectTitle, locale }) {
       className={styles.workIndex}
       onClick={handleClick}
     >
-      {/* {projectTitle} */}
+      ⠸
+      <span>{projectTitle}</span>
+      ⠸
     </button>
   );
 }

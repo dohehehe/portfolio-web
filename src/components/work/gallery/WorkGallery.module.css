@@ -50,6 +50,13 @@
   cursor: zoom-in;
 }
 
+.video {
+  display: block;
+  width: 100%;
+  border: none;
+  aspect-ratio: 16 / 9;
+}
+
 .caption {
   margin: 0;
   color: #666666;
@@ -61,6 +68,7 @@
 @media (max-width: 780px) {
   .gallery {
     gap: 5px;
+    width: 100%;
   }
 
   .singlePortrait {

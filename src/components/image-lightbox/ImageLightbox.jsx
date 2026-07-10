@@ -1,19 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Caption from "@/components/ui/Caption";
 import styles from "./ImageLightbox.module.css";
-
-const HOVER_SCALE = 2.4;
-const TRANSITION_MS = 600;
-const MOUSE_ZOOM_MEDIA = "(hover: hover) and (pointer: fine)";
-
-function clamp(value, min, max) {
-  return Math.min(Math.max(value, min), max);
-}
-
-function isRealMouseEvent(event) {
-  return !event.sourceCapabilities?.firesTouchEvents;
-}
 
 export default function ImageLightbox({
   isOpen,
@@ -24,10 +13,6 @@ export default function ImageLightbox({
   onNext,
 }) {
   const closeButtonRef = useRef(null);
-  const hitAreaRef = useRef(null);
-  const [hover, setHover] = useState({ active: false, x: 50, y: 50 });
-  const [isUnzooming, setIsUnzooming] = useState(false);
-  const [canMouseZoom, setCanMouseZoom] = useState(false);
 
   const currentItem = items[index];
   const hasMultipleItems = items.length > 1;
@@ -35,53 +20,41 @@ export default function ImageLightbox({
   const canGoNext = hasMultipleItems && index < items.length - 1;
 
   useEffect(() => {
-    const media = window.matchMedia(MOUSE_ZOOM_MEDIA);
-    const update = () => {
-      setCanMouseZoom(media.matches);
-
-      if (!media.matches) {
-        setHover({ active: false, x: 50, y: 50 });
-        setIsUnzooming(false);
-      }
-    };
-
-    update();
-    media.addEventListener("change", update);
-
-    return () => {
-      media.removeEventListener("change", update);
-    };
-  }, []);
-
-  useEffect(() => {
-    setHover({ active: false, x: 50, y: 50 });
-    setIsUnzooming(false);
-  }, [index, isOpen]);
-
-  useEffect(() => {
-    if (!isUnzooming) {
-      return undefined;
-    }
-
-    const timer = window.setTimeout(() => {
-      setIsUnzooming(false);
-    }, TRANSITION_MS);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [isUnzooming]);
-
-  useEffect(() => {
     if (!isOpen) {
       return undefined;
     }
 
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const scrollY = window.scrollY;
+    const { style: bodyStyle } = document.body;
+    const { style: htmlStyle } = document.documentElement;
+    const scrollbarWidth =
+      window.innerWidth - document.documentElement.clientWidth;
+
+    const previousBodyOverflow = bodyStyle.overflow;
+    const previousHtmlOverflow = htmlStyle.overflow;
+    const previousBodyPosition = bodyStyle.position;
+    const previousBodyTop = bodyStyle.top;
+    const previousBodyWidth = bodyStyle.width;
+    const previousBodyPaddingRight = bodyStyle.paddingRight;
+
+    bodyStyle.overflow = "hidden";
+    htmlStyle.overflow = "hidden";
+    bodyStyle.position = "fixed";
+    bodyStyle.top = `-${scrollY}px`;
+    bodyStyle.width = "100%";
+
+    if (scrollbarWidth > 0) {
+      bodyStyle.paddingRight = `${scrollbarWidth}px`;
+    }
 
     return () => {
-      document.body.style.overflow = previousOverflow;
+      bodyStyle.overflow = previousBodyOverflow;
+      htmlStyle.overflow = previousHtmlOverflow;
+      bodyStyle.position = previousBodyPosition;
+      bodyStyle.top = previousBodyTop;
+      bodyStyle.width = previousBodyWidth;
+      bodyStyle.paddingRight = previousBodyPaddingRight;
+      window.scrollTo(0, scrollY);
     };
   }, [isOpen]);
 
@@ -114,40 +87,6 @@ export default function ImageLightbox({
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, canGoPrev, canGoNext, onClose, onPrev, onNext]);
-
-  function handleHitAreaMouseMove(event) {
-    if (!canMouseZoom || !isRealMouseEvent(event)) {
-      return;
-    }
-
-    const hitArea = hitAreaRef.current;
-
-    if (!hitArea) {
-      return;
-    }
-
-    const rect = hitArea.getBoundingClientRect();
-
-    if (!rect.width || !rect.height) {
-      return;
-    }
-
-    setIsUnzooming(false);
-    setHover({
-      active: true,
-      x: clamp(((event.clientX - rect.left) / rect.width) * 100, 0, 100),
-      y: clamp(((event.clientY - rect.top) / rect.height) * 100, 0, 100),
-    });
-  }
-
-  function handleHitAreaMouseLeave(event) {
-    if (!canMouseZoom || !isRealMouseEvent(event)) {
-      return;
-    }
-
-    setHover((prev) => ({ ...prev, active: false }));
-    setIsUnzooming(true);
-  }
 
   if (!isOpen || !currentItem) {
     return null;
@@ -206,34 +145,17 @@ export default function ImageLightbox({
         onClick={(event) => event.stopPropagation()}
       >
         <div className={styles.viewport}>
-          <div
-            ref={hitAreaRef}
-            className={`${styles.hitArea} ${canMouseZoom ? styles.hitAreaMouseZoom : ""}`}
-            onMouseMove={canMouseZoom ? handleHitAreaMouseMove : undefined}
-            onMouseLeave={canMouseZoom ? handleHitAreaMouseLeave : undefined}
-          >
+          <div className={styles.hitArea}>
             <img
-              className={[
-                styles.image,
-                canMouseZoom && hover.active ? styles.imageZoomed : "",
-                canMouseZoom && isUnzooming ? styles.imageUnzooming : "",
-              ]
-                .filter(Boolean)
-                .join(" ")}
+              className={styles.image}
               src={currentItem.src}
               alt={currentItem.alt || ""}
               draggable={false}
-              style={{
-                transformOrigin: `${hover.x}% ${hover.y}%`,
-                "--hover-scale": HOVER_SCALE,
-              }}
             />
           </div>
         </div>
 
-        {currentItem.caption ? (
-          <p className={styles.caption}>{currentItem.caption}</p>
-        ) : null}
+        <Caption as="p" className={styles.caption} text={currentItem.caption} />
       </div>
     </div>
   );

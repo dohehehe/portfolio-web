@@ -9,6 +9,7 @@ import {
   localizedPath,
   stripLocaleFromPathname,
 } from "@/lib/locale/routing";
+import { barlow } from "@/app/fonts";
 import { groupWorksByProject } from "./workListUtils";
 import styles from "./workList.module.css";
 
@@ -50,7 +51,7 @@ export default function WorkList({
 
   return (
     <ul
-      className={`${styles.list} ${isHome ? styles.listHome : ""} ${className}`.trim()}
+      className={`${barlow.variable} ${styles.list} ${isHome ? styles.listHome : ""} ${className}`.trim()}
     >
       {groupedProjects.map((project) => (
         <li key={project.id} className={`${styles.projectGroup} ${styles.item}`}>

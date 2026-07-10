@@ -1,3 +1,4 @@
+import { barlow } from "@/app/fonts";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import ProjectGallery from "@/components/work/gallery/ProjectGallery";
 import ProjectEditorSection from "@/components/work/project/item-detail/ProjectEditorSection";
@@ -23,7 +24,7 @@ export default function ProjectItemDetail({
   const titles = getBilingualTitles(item);
 
   return (
-    <article id={id} className={`${styles.article} ${className}`.trim()}>
+    <article id={id} className={`${barlow.variable} ${styles.article} ${className}`.trim()}>
 
       <header className={styles.header}>
         <h1 className={styles.title}>

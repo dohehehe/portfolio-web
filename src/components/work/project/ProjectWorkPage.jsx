@@ -22,7 +22,7 @@ export default function ProjectWorkPage({
         projectId={project.id}
         locale={locale}
       />
-      {/* <ProjectPageNav project={project} works={works} locale={locale} /> */}
+      <ProjectPageNav project={project} works={works} locale={locale} />
       <ProjectItemDetail
         id={project.id}
         item={project}
@@ -32,14 +32,17 @@ export default function ProjectWorkPage({
       />
 
       {works.map((work) => (
-        <div id={work.id} key={work.id}>
+        <div id={work.id} key={work.id} className={styles.workArticle}>
           <WorkProjectIndex
             projectId={project.id}
             projectTitle={project.title}
+            projectYear={project.year}
             locale={locale}
           />
           <WorkItemDetail
             item={work}
+            cvs={work.cvs}
+            texts={work.texts}
             locale={locale}
             className={styles.workSection}
           />

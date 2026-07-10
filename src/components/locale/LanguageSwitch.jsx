@@ -20,7 +20,7 @@ export default function LanguageSwitch() {
         aria-current={activeLocale === "ko" ? "page" : undefined}
       >
         ko
-      </Link>
+      </Link>/
       <Link
         href={swapLocalePathname(pathname, "en")}
         className={`${styles.button} ${activeLocale === "en" ? styles.buttonActive : ""}`.trim()}

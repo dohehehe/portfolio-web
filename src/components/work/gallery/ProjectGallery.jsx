@@ -2,6 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
+import AspectRatioImage from "@/components/ui/AspectRatioImage";
+import Caption from "@/components/ui/Caption";
+import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
+import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
+import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
 import styles from "./ProjectGallery.module.css";
 
 const SCROLL_EDGE_THRESHOLD = 2;
@@ -78,20 +83,26 @@ export default function ProjectGallery({ items }) {
 
       <div ref={trackRef} className={styles.track}>
         {items.map((item, index) => (
-          <figure key={`${item.img_url}-${index}`} className={styles.item}>
-            <img
-              className={styles.image}
-              src={item.img_url}
-              alt={item.caption || ""}
-              draggable={false}
-              loading={index === 0 ? "eager" : "lazy"}
-              onClick={() => openImageLightbox({ items, index })}
-            />
-            {item.caption ? (
-              <figcaption className={styles.caption}>
-                {item.caption}
-              </figcaption>
-            ) : null}
+          <figure key={getGalleryItemKey(item, index)} className={styles.item}>
+            {isGalleryVideo(item) ? (
+              <GalleryMuxVideo
+                videoUrl={item.video_url}
+                title={getCaptionPlainText(item.caption)}
+                variant="carousel"
+              />
+            ) : (
+              <AspectRatioImage
+                className={styles.image}
+                src={item.img_url}
+                alt={getCaptionPlainText(item.caption)}
+                width={item.width}
+                height={item.height}
+                draggable={false}
+                loading={index === 0 ? "eager" : "lazy"}
+                onClick={() => openImageLightbox({ items, index })}
+              />
+            )}
+            <Caption as="figcaption" className={styles.caption} text={item.caption} />
           </figure>
         ))}
       </div>

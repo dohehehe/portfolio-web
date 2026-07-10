@@ -1,4 +1,4 @@
-import { sortByYearDesc } from "@/components/navigation/workListUtils";
+import { sortWorksByOrder } from "@/components/navigation/workListUtils";
 import { getWorkColumns } from "@/lib/data/localizedSelect";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -14,7 +14,7 @@ export async function getWorksByProjectId(projectId, locale = DEFAULT_LOCALE) {
     return [];
   }
 
-  return sortByYearDesc(data ?? []);
+  return sortWorksByOrder(data ?? []);
 }
 
 export async function getWorkById(id, locale = DEFAULT_LOCALE) {

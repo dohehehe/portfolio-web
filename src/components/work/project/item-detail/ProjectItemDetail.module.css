@@ -12,24 +12,26 @@
 .header {
   display: flex;
   flex-direction: column;
-  margin-bottom: 12px;
+  margin-bottom: 32px;
+  padding-left: 5px;
+  margin-top: 10px;
+  text-align: center;
+  margin-right: 110px;
+  /* margin-left: auto;
+  margin-right: auto; */
   /* box-shadow: inset 0 0 10px 10px pink; */
 }
 
 .title {
-  display: flex;
-  gap: 4px;
+  display: inline;
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 1.2;
+  word-break: keep-all;
 }
 
 .titleLine {
-  display: block;
-  font-size: 1.8rem;
-  font-weight: 400;
-  line-height: 1.2;
-  /* display: flex;
-  flex-direction: column;
-  gap: 2px; */
-  word-break: keep-all;
+  padding-right: 3px;
 }
 
 .subtitle {
@@ -37,8 +39,8 @@
 }
 
 .year {
-  font-family: var(--font-barlow), var(--font-gothic-a1), sans-serif;
-  font-size: 1.8rem;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 2rem;
   font-weight: 400;
   padding-left: 2px;
   /* margin-bottom: -4px; */
@@ -54,35 +56,49 @@
 
 .contentRow {
   display: flex;
-  /* gap: 40px; */
-  /* box-shadow: inset 0 0 10px 10px yellow; */
   justify-content: space-between;
-  gap: 10px;
+  gap: 60px;
+  margin-top: 85px;
 }
 
 .editorContent {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  max-width: 940px;
-  width: 100%;
-  font-size: 1.8rem;
+  max-width: 700px;
+  font-size: 1.75rem;
   text-align: center;
   word-break: keep-all;
-  /* margin: 0 auto; */
-  line-height: 1.83;
+  line-height: 1.73;
   color: #2f2f2f;
-  padding-left: 20px;
-  padding-right: 60px;
-  font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+  margin: 0 auto;
+  padding-left: 5px;
+  padding-right: 40px;
+  font-family: var(--font-inter), "Eulyoo1945", var(--font-gothic-a1), sans-serif;
   /* box-shadow: inset 0 0 10px 10px aqua; */
 
   & .paragraph {
-    width: 100%;
-    max-width: 680px;
-    margin: 0 auto;
     margin-bottom: 25px;
   }
+
+  & .editorHeader2 {
+    font-size: 2rem;
+  }
+
+  & .editorHeader3 {
+    font-size: 1.85rem;
+  }
+
+  & .editorHeader4 {
+    font-size: 1.4rem;
+    font-weight: 400;
+  }
+}
+
+:global(html[lang="en"]) .editorContent {
+  font-weight: 400;
+  line-height: 1.5;
+  font-size: 1.7rem;
 }
 
 
@@ -91,18 +107,20 @@
   flex-direction: column;
   gap: 58px;
   width: 30%;
-  max-width: 370px;
-  margin-right: auto;
-  margin-left: 20px;
-  padding-right: 20px;
+  max-width: 470px;
+  padding-right: 40px;
+  font-size: 1.25rem;
   /* box-shadow: inset 0 0 10px 10px red; */
+}
+
+:global(html[lang="en"]) .creditRow {
+  font-size: 1.35rem;
 }
 
 .eventContent {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  font-size: 1.3rem;
+  gap: 20px;
   word-break: keep-all;
 }
 
@@ -115,7 +133,9 @@
 
 .eventItem {
   display: flex;
-  gap: 10px;
+  align-items: flex-start;
+  gap: 14px;
+  line-height: 1.4;
 }
 
 .eventLink {
@@ -127,18 +147,28 @@
   text-decoration: underline;
 }
 
-.eventItemRow {}
-
 .eventYear {
-  font-size: 1.4rem;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 1.35rem;
   flex-shrink: 0;
   display: inline-block;
   width: 31px;
-  font-weight: 500;
+  font-weight: 400;
+  margin-top: -1.5px;
 }
+
+:global(html[lang="en"]) .eventYear {
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+
 
 .eventTitle {
   margin: 0;
+}
+
+.eventTitleEn {
+  font-style: italic;
 }
 
 .eventMeta {
@@ -147,13 +177,13 @@
 
 
 .creditContent {
-  font-size: 1.3rem;
+  line-height: 1.4;
   word-break: keep-all;
   /* box-shadow: inset 0 0 10px 10px blue; */
 
 
   & .paragraph {
-    margin-bottom: 4px;
+    margin-bottom: 10px;
   }
 
   .figure,
@@ -161,8 +191,6 @@
     margin: 0;
   }
 }
-
-
 
 .figure,
 .embed {
@@ -181,6 +209,10 @@
   font-size: 1.2rem;
 }
 
+.caption :is(i, em) {
+  font-style: italic;
+}
+
 .embed iframe {
   width: 100%;
   aspect-ratio: 16 / 9;
@@ -189,8 +221,46 @@
 
 
 @media (max-width: 780px) {
+  .header {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-right: 0px;
+    margin-bottom: 30px;
+  }
+
+  .title {
+    font-size: unset;
+  }
+
+  .titleLine {
+    font-size: 1.65rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  :global(html[lang="en"]) {
+    .titleLine {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+
+    .year {
+      font-weight: 500;
+      font-size: 1.6rem;
+    }
+  }
+
+  .year {
+    font-family: var(--font-barlow), sans-serif;
+    font-size: 1.65rem;
+    font-weight: 500;
+    padding-left: 2px;
+  }
+
   .contentRow {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    gap: 40px;
+    margin-top: 40px;
   }
 
   .editorContent {
@@ -198,7 +268,8 @@
     padding-right: 10px;
     max-width: none;
     width: 100%;
-    font-size: 1.5rem;
+    font-size: 1.52rem;
+    line-height: 1.7;
 
     & .paragraph {
       width: 100%;
@@ -206,15 +277,33 @@
       margin: 0 auto;
       margin-bottom: 25px;
     }
-
   }
+
+  :global(html[lang="en"]) .editorContent {
+    line-height: 1.45;
+    font-size: 1.45rem;
+    font-weight: 400;
+  }
+
 
   .creditRow {
-    width: 100%;
+    width: 75%;
     max-width: none;
     margin-right: 0;
-    margin-left: 0;
+    margin-left: auto;
     padding-right: 0;
-    font-size: 1.38rem;
+    padding-top: 50px;
+    font-size: 1.25rem;
+    gap: 30px;
+    word-break: keep-all;
   }
+
+  :global(html[lang="en"]) .creditRow {
+    font-size: 1.23rem;
+  }
+
+  .eventItem {
+    gap: 5px;
+  }
+
 }

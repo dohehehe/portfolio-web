@@ -1,5 +1,7 @@
-import { normalizeEditorHtml } from "@/lib/editorjs/normalizeEditorHtml";
+import { normalizeEditorHtml, getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
+import AspectRatioImage from "@/components/ui/AspectRatioImage";
+import Caption from "@/components/ui/Caption";
 import defaultStyles from "./WorkItemDetail.module.css";
 
 function ParagraphBlock({ text, styles }) {
@@ -15,6 +17,28 @@ function ParagraphBlock({ text, styles }) {
   );
 }
 
+function HeaderBlock({ text, level = 2, styles }) {
+  if (!text) {
+    return null;
+  }
+
+  const safeLevel = Math.min(Math.max(level, 1), 6);
+  const Tag = `h${safeLevel}`;
+  const levelClassName = {
+    1: styles.editorHeader1,
+    2: styles.editorHeader2,
+    3: styles.editorHeader3,
+    4: styles.editorHeader4,
+  }[safeLevel];
+
+  return (
+    <Tag
+      className={`${styles.editorHeader} ${levelClassName ?? ""}`.trim()}
+      dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(text) }}
+    />
+  );
+}
+
 function ImageBlock({ file, caption, styles }) {
   const url = file?.url;
 
@@ -24,8 +48,14 @@ function ImageBlock({ file, caption, styles }) {
 
   return (
     <figure className={styles.figure}>
-      <img className={styles.image} src={url} alt={caption || ""} />
-      {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+      <AspectRatioImage
+        className={styles.image}
+        src={url}
+        alt={getCaptionPlainText(caption)}
+        width={file?.width}
+        height={file?.height}
+      />
+      <Caption as="figcaption" className={styles.caption} text={caption} />
     </figure>
   );
 }
@@ -38,7 +68,7 @@ function EmbedBlock({ embed, caption, styles }) {
   return (
     <figure className={styles.embed}>
       <div dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(embed) }} />
-      {caption ? <figcaption className={styles.caption}>{caption}</figcaption> : null}
+      <Caption as="figcaption" className={styles.caption} text={caption} />
     </figure>
   );
 }
@@ -47,6 +77,14 @@ function Block({ block, styles }) {
   switch (block.type) {
     case "paragraph":
       return <ParagraphBlock text={block.data?.text} styles={styles} />;
+    case "header":
+      return (
+        <HeaderBlock
+          text={block.data?.text}
+          level={block.data?.level}
+          styles={styles}
+        />
+      );
     case "image":
       return (
         <ImageBlock

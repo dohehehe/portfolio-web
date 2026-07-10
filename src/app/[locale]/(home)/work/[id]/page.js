@@ -35,7 +35,14 @@ export default async function WorkPage({ params }) {
   }
 
   if (route.type === "standalone") {
-    return <WorkItemDetail item={route.item} locale={locale} />;
+    return (
+      <WorkItemDetail
+        item={route.item}
+        cvs={route.cvs}
+        texts={route.texts}
+        locale={locale}
+      />
+    );
   }
 
   return (

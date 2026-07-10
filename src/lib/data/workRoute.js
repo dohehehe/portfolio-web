@@ -1,7 +1,7 @@
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { normalizeRecord } from "@/lib/locale/normalizeRecord";
-import { getCvsByProjectId } from "@/lib/data/cv";
-import { getTextsByProjectId } from "@/lib/data/text";
+import { getCvsByProjectId, getCvsByWorkId } from "@/lib/data/cv";
+import { getTextsByProjectId, getTextsByWorkId } from "@/lib/data/text";
 import { getProjectById } from "@/lib/data/project";
 import { getWorkById, getWorksByProjectId } from "@/lib/data/work";
 
@@ -11,10 +11,25 @@ async function normalizeProjectRoute(project, works, locale, scrollToId = null) 
     getTextsByProjectId(project.id, locale),
   ]);
 
+  const worksWithRelations = await Promise.all(
+    works.map(async (work) => {
+      const [workCvs, workTexts] = await Promise.all([
+        getCvsByWorkId(work.id, locale),
+        getTextsByWorkId(work.id, locale),
+      ]);
+
+      return {
+        ...normalizeRecord(work, locale),
+        cvs: workCvs,
+        texts: workTexts,
+      };
+    }),
+  );
+
   return {
     type: "project",
     project: normalizeRecord(project, locale),
-    works: works.map((work) => normalizeRecord(work, locale)),
+    works: worksWithRelations,
     cvs,
     texts,
     scrollToId,
@@ -36,18 +51,32 @@ export async function getWorkRouteById(id, locale = DEFAULT_LOCALE) {
   }
 
   if (!work.project_id) {
+    const [cvs, texts] = await Promise.all([
+      getCvsByWorkId(work.id, locale),
+      getTextsByWorkId(work.id, locale),
+    ]);
+
     return {
       type: "standalone",
       item: normalizeRecord(work, locale),
+      cvs,
+      texts,
     };
   }
 
   const parentProject = await getProjectById(work.project_id, locale);
 
   if (!parentProject) {
+    const [cvs, texts] = await Promise.all([
+      getCvsByWorkId(work.id, locale),
+      getTextsByWorkId(work.id, locale),
+    ]);
+
     return {
       type: "standalone",
       item: normalizeRecord(work, locale),
+      cvs,
+      texts,
     };
   }
 

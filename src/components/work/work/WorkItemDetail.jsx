@@ -1,7 +1,15 @@
+import { barlow } from "@/app/fonts";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import WorkGallery from "@/components/work/gallery/WorkGallery";
+import ProjectEventList from "@/components/work/project/item-detail/ProjectEventList";
+import ProjectTextList from "@/components/work/project/item-detail/ProjectTextList";
 import EditorContent from "./EditorContent";
+import EditorCredit from "./EditorCredit";
 import styles from "./WorkItemDetail.module.css";
+
+function getBilingualTitles(item) {
+  return [...new Set([item.titleKo, item.titleEn].filter(Boolean))];
+}
 
 function MetaField({ label, value }) {
   if (!value) {
@@ -21,32 +29,70 @@ function ContentSection({ title, data }) {
   }
 
   return (
-    <section className={styles.section}>
-      <h2 className={styles.sectionTitle}>{title}</h2>
-      <EditorContent data={data} styles={styles} />
-    </section>
+    <EditorContent data={data} styles={styles} />
   );
 }
 
-export default function WorkItemDetail({ id, item, className = "", locale }) {
-  const galleryItems = normalizeGalleryItems(item.gallery, locale);
+function CreditSection({ data, cvs = [], texts = [], locale }) {
+  if (!data && !cvs.length && !texts.length) {
+    return null;
+  }
 
   return (
-    <article id={id} className={`${styles.article} ${className}`.trim()}>
+    <div className={styles.creditRow}>
+      <ProjectEventList items={cvs} locale={locale} styles={styles} />
+      <ProjectTextList items={texts} locale={locale} styles={styles} />
+      {data ? <EditorCredit data={data} styles={styles} /> : null}
+    </div>
+
+  );
+}
+
+
+export default function WorkItemDetail({
+  id,
+  item,
+  cvs = [],
+  texts = [],
+  className = "",
+  locale,
+}) {
+  const galleryItems = normalizeGalleryItems(item.gallery, locale);
+  const titles = getBilingualTitles(item);
+
+  return (
+    <article id={id} className={`${barlow.variable} ${styles.article} ${className}`.trim()}>
       <header className={styles.header}>
         <div className={styles.titleRow}>
-          <h1 className={styles.title}>{item.title || "Untitled"}</h1>
+          <h1 className={styles.title}>
+            {titles.length > 0
+              ? titles.map((title) => (
+                <span key={title} className={styles.titleLine}>
+                  {title}
+                </span>
+              ))
+              : "Untitled"}
+          </h1>
           {item.year ? <span className={styles.year}>{item.year}</span> : null}
         </div>
 
-        <MetaField label="medium" value={item.medium} />
-        <MetaField label="dimension" value={item.dimension} />
+        <MetaField label="medium" value={item.medium} classname={styles.metaField} />
+        <MetaField label="dimension" value={item.dimension} classname={styles.metaField} />
+        <div className={styles.creditContent}>
+          <CreditSection
+            data={item.credit}
+            cvs={cvs}
+            texts={texts}
+            locale={locale}
+          />
+          <ContentSection title="content" data={item.content} />
+        </div>
       </header>
 
-      <WorkGallery items={galleryItems} />
-
-      <ContentSection title="content" data={item.content} />
-      <ContentSection title="credit" data={item.credit} />
+      <div className={styles.contentContainer}>
+        <WorkGallery items={galleryItems} />
+      </div>
     </article>
   );
 }
+

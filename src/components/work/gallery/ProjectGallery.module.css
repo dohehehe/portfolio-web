@@ -2,7 +2,7 @@
   display: flex;
   align-items: flex-start;
   gap: 8px;
-  margin-bottom: 65px;
+  /* margin-bottom: 65px; */
   box-sizing: border-box;
   position: relative;
 }
@@ -10,8 +10,8 @@
 .track {
   flex: 1;
   width: 100vw;
-  margin-left: -110px;
-  padding-left: 110px;
+  margin-left: -70px;
+  padding-left: 70px;
   display: flex;
   gap: 15px;
   overflow-x: auto;
@@ -30,7 +30,7 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 8px;
+  gap: 4px;
 }
 
 .image {
@@ -45,12 +45,16 @@
 
 .caption {
   margin: 0;
+  padding: 0 3px;
   color: #666666;
   font-size: 1.2rem;
   line-height: 1.4;
   text-align: left;
-  padding: 0 1px;
   overflow-wrap: break-word;
+}
+
+.caption :is(i, em) {
+  font-style: italic;
 }
 
 .navButton {
@@ -91,24 +95,23 @@
 
 @media (max-width: 780px) {
   .gallery {
-    margin-bottom: 40px;
     width: 100vw;
-    margin-left: -10px;
-    padding-left: 10px;
+    margin-left: -14px;
+    padding-left: 14px;
   }
 
   .track {
     flex: 1;
-    margin-left: -10px;
-    padding-left: 10px;
+    margin-left: -14px;
+    padding-left: 14px;
     width: 100vw;
     display: flex;
-    gap: 15px;
+    gap: 5px;
     padding-right: 10px;
   }
 
   .image {
-    height: 50vh;
+    height: 54vh;
   }
 
   .caption {

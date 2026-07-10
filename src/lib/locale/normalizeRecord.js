@@ -25,6 +25,9 @@ export function normalizeRecord(record, locale) {
 export function normalizeGalleryItems(gallery, locale) {
   return normalizeGallery(gallery).map((item) => ({
     img_url: item.img_url,
+    video_url: item.video_url,
+    width: item.width,
+    height: item.height,
     caption: pickGalleryCaption(item, locale),
   }));
 }
