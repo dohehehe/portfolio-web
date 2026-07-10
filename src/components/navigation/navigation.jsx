@@ -1,0 +1,63 @@
+"use client";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import {
+  getLocaleFromPathname,
+  isDetailRoute,
+  localizedPath,
+  stripLocaleFromPathname,
+} from "@/lib/locale/routing";
+import { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";
+import WorkList from "./workList";
+import styles from "./navigation.module.css";
+import LanguageSwitch from "../locale/LanguageSwitch";
+
+function isWorkListRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/" || path === "/work";
+}
+
+export default function Navigation({ initialProjects = [], initialWorks = [] }) {
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+  const workListActive = isWorkListRoute(pathname);
+  const detailRoute = isDetailRoute(pathname);
+  const { isHidden, show } = useNavigationScrollHide(detailRoute);
+
+  return (
+    <header className={styles.header}>
+      <nav
+        className={`${styles.navigation} ${detailRoute && isHidden ? styles.navigationHidden : ""}`.trim()}
+        onTouchStart={detailRoute ? show : undefined}
+      >
+        <div
+          className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""}`}
+        >
+          <Link className={styles.navigationLink} href={localizedPath("/work", locale)}>
+            work
+          </Link>
+          <WorkList
+            className={styles.workList}
+            initialProjects={initialProjects}
+            initialWorks={initialWorks}
+          />
+        </div>
+
+        <Link className={styles.navigationLink} href={localizedPath("/event", locale)}>
+          installation
+        </Link>
+        <Link className={styles.navigationLink} href={localizedPath("/text", locale)}>
+          text
+        </Link>
+        <a className={styles.navigationLink} href={"https://log.doheekwak.com"} target="_blank">
+          log
+        </a>
+        <Link className={styles.navigationLink} href={localizedPath("/info", locale)}>
+          dohee kwak
+        </Link>
+        <LanguageSwitch />
+      </nav>
+    </header>
+  );
+}

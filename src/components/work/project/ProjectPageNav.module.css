@@ -1,0 +1,98 @@
+.nav {
+  position: fixed;
+  top: 37px;
+  right: 17px;
+  z-index: 5;
+  width: 250px;
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: auto;
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.navHidden {
+  opacity: 0;
+  transform: translateX(12px);
+  pointer-events: none;
+}
+
+.nav::-webkit-scrollbar {
+  display: none;
+}
+
+.list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 1.2rem;
+}
+
+.item {
+  margin: 0;
+}
+
+.nestedItem {
+  margin-left: 20px;
+}
+
+.link {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  color: #1c1c1c;
+}
+
+.link:not(.linkActive) .year {
+  opacity: 0.8;
+}
+
+.linkActive {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+
+.link:hover,
+.linkActive {
+  text-decoration: underline;
+}
+
+.title {
+  flex: 1;
+}
+
+.year {
+  flex-shrink: 0;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 1.1rem;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .nav {
+    top: 32px;
+    right: 15px;
+    font-size: 1.3rem;
+    width: 200px;
+  }
+
+  .list {
+    font-size: 1.3rem;
+  }
+
+  .nestedItem {
+    margin-left: 12px;
+  }
+}

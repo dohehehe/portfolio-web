@@ -1,0 +1,345 @@
+.section {
+  margin-top: 8px;
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.toggleGroup {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.toggleButton {
+  padding: 8px 16px;
+  border: 1px solid #e1e5e9;
+  border-radius: 6px;
+  background: #fff;
+  color: #444;
+  font: inherit;
+  cursor: pointer;
+}
+
+.toggleButton:hover {
+  background: #f5f5f5;
+}
+
+.toggleButtonActive {
+  border-color: #111;
+  background: #111;
+  color: #fff;
+}
+
+.toggleButtonActive:hover {
+  background: #222;
+}
+
+.createLinks {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.createLink {
+  display: inline-block;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  background: #111;
+  color: #fff;
+  font: inherit;
+  text-decoration: none;
+}
+
+.createLink:hover {
+  background: #222;
+}
+
+.status {
+  color: #666;
+}
+
+.error {
+  color: #c0392b;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.table th,
+.table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e1e5e9;
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: #666;
+  font-weight: 600;
+  background: #fafafa;
+}
+
+.textCell {
+  max-width: 320px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.actionsCell {
+  white-space: nowrap;
+}
+
+.actionLink,
+.actionButton {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font: inherit;
+  font-size: 0.8125rem;
+  cursor: pointer;
+}
+
+.actionLink {
+  display: inline-block;
+  border: 1px solid #e1e5e9;
+  background: #fff;
+  color: inherit;
+  text-decoration: none;
+  margin-right: 8px;
+}
+
+.actionLink:hover {
+  background: #f5f5f5;
+}
+
+.actionButton {
+  border: 1px solid #c0392b;
+  background: #fff;
+  color: #c0392b;
+}
+
+.actionButton:hover:not(:disabled) {
+  background: #fdf2f2;
+}
+
+.actionButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cvGroupList {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.cvGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cvGroupTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.cvGroupCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.projectWorkList {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.orderToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 4px;
+}
+
+.orderHint {
+  margin: 0;
+  color: #666;
+  font-size: 0.875rem;
+}
+
+.saveOrderButton {
+  padding: 8px 16px;
+  border: 1px solid #111;
+  border-radius: 6px;
+  background: #111;
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+}
+
+.saveOrderButton:hover:not(:disabled) {
+  background: #222;
+}
+
+.saveOrderButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.projectGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.projectRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e1e5e9;
+}
+
+.projectMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  min-width: 0;
+}
+
+.projectTitle {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.metaChip {
+  color: #666;
+  font-size: 0.8125rem;
+}
+
+.workCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #f0f0f0;
+  color: #666;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.emptyWorks {
+  margin: 0;
+  padding: 8px 0 8px 28px;
+  color: #888;
+  font-size: 0.875rem;
+}
+
+.workList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.workRow {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0 10px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.reorderControls {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reorderButton {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid #e1e5e9;
+  border-radius: 4px;
+  background: #fff;
+  color: #333;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.reorderButton:hover:not(:disabled) {
+  background: #f5f5f5;
+}
+
+.reorderButton:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.orderIndex {
+  min-width: 1.25rem;
+  color: #888;
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.workMeta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 12px;
+  min-width: 0;
+}
+
+.workTitle {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+@media (max-width: 720px) {
+  .workRow {
+    grid-template-columns: auto minmax(0, 1fr);
+    padding-left: 8px;
+  }
+
+  .workRow .actionsCell {
+    grid-column: 1 / -1;
+    padding-left: 36px;
+  }
+}

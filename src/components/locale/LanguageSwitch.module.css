@@ -1,0 +1,32 @@
+.switch {
+  display: flex;
+  gap: 8px;
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
+  font-size: 1.7rem;
+  color: #3c3c3c;
+}
+
+.button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  font-weight: 500;
+  opacity: 0.3;
+}
+
+.button:hover,
+.buttonActive {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .switch {
+    font-size: 1.53rem;
+    gap: 3px;
+    font-weight: 500;
+  }
+}

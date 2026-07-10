@@ -1,0 +1,78 @@
+.header {
+  padding: 2px 16px 0px;
+  color: #1f1f1f;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+  /* padding: 0 16px; */
+}
+
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* margin-top: 8px; */
+  gap: 1rem;
+}
+
+.navigationSection,
+.navigation > .navigationLink {
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.navigationHidden .navigationSection,
+.navigationHidden > .navigationLink {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.navigationHidden:hover .navigationSection,
+.navigationHidden:hover > .navigationLink {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.navigationSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  display: block;
+  transition: all 0.3s ease-in-out;
+}
+
+.navigationSection .workList {
+  opacity: 0;
+  /* display: none; */
+  pointer-events: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.navigationSection.workListVisible .workList,
+.navigationSection:hover .workList {
+  opacity: 1;
+  pointer-events: auto;
+  /* display: block; */
+}
+
+.navigationLink {
+  text-decoration: none;
+  font-size: 1.7rem;
+  font-family: var(--font-archivo-narrow), var(--font-gothic-a1), sans-serif;
+  position: relative;
+  font-weight: 400;
+  z-index: 1;
+  color: #3c3c3c;
+}
+
+.navigationLink:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 780px) {
+  .header {
+    padding: 2px 13px 0px;
+  }
+}

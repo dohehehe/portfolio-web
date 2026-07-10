@@ -1,0 +1,775 @@
+{
+  "syncedAt": "2026-07-09T16:47:01.127Z",
+  "supabaseUrl": "https://maewukpitcdwcippztnd.supabase.co",
+  "tables": [
+    {
+      "name": "cv",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "year",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "type_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "cv_type",
+            "column": "id"
+          }
+        },
+        {
+          "name": "exhibition_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "event",
+            "column": "id"
+          }
+        },
+        {
+          "name": "event_title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "event_title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        }
+      ]
+    },
+    {
+      "name": "cv_type",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "name_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "name_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        }
+      ]
+    },
+    {
+      "name": "event",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "date",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "space_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "space_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "gallery",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "credit_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "credit_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "file_link",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        }
+      ]
+    },
+    {
+      "name": "info",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "bio_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "bio_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        }
+      ]
+    },
+    {
+      "name": "link_cv_item",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "cv_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "cv",
+            "column": "id"
+          }
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "project",
+            "column": "id"
+          }
+        },
+        {
+          "name": "work_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "work",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "project",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "year",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "credit_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "credit_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "gallery",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "medium_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "medium_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "dimension_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "dimension_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        }
+      ]
+    },
+    {
+      "name": "text",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "year",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "writer_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "writer_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_ko",
+          "type": "unknown",
+          "format": "json",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_en",
+          "type": "unknown",
+          "format": "json",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "project",
+            "column": "id"
+          }
+        },
+        {
+          "name": "event_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "event",
+            "column": "id"
+          }
+        },
+        {
+          "name": "work_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "work",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "work",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "year",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "title_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "medium_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "medium_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "dimension_ko",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "dimension_en",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "content_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "project_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "project",
+            "column": "id"
+          }
+        },
+        {
+          "name": "credit_ko",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "credit_en",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "gallery",
+          "type": "unknown",
+          "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "order",
+          "type": "number",
+          "format": "numeric",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        }
+      ]
+    }
+  ]
+}
