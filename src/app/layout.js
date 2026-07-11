@@ -4,6 +4,7 @@ import "./globals.css";
 import { ImageLightboxProvider } from "@/components/image-lightbox";
 import HtmlLocaleSync from "@/components/locale/HtmlLocaleSync";
 import Navigation from "@/components/navigation/navigation";
+import { getEvents } from "@/lib/data/event";
 import { getNavigationWorkListData } from "@/lib/data/navigationWorkList";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { LOCALE_HEADER } from "@/lib/locale/routing";
@@ -17,6 +18,7 @@ export default async function RootLayout({ children }) {
   const headerStore = await headers();
   const locale = headerStore.get(LOCALE_HEADER) ?? DEFAULT_LOCALE;
   const { projects, works } = await getNavigationWorkListData();
+  const events = await getEvents(locale);
 
   return (
     <html
@@ -26,7 +28,11 @@ export default async function RootLayout({ children }) {
       <body>
         <HtmlLocaleSync />
         <ImageLightboxProvider>
-          <Navigation initialProjects={projects} initialWorks={works} />
+          <Navigation
+            initialProjects={projects}
+            initialWorks={works}
+            initialEvents={events}
+          />
           {children}
         </ImageLightboxProvider>
       </body>

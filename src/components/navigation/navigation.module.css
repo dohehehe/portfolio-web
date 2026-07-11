@@ -43,7 +43,8 @@
   transition: all 0.3s ease-in-out;
 }
 
-.navigationSection .workList {
+.navigationSection .workList,
+.navigationSection .eventList {
   opacity: 0;
   /* display: none; */
   pointer-events: none;
@@ -51,7 +52,7 @@
 }
 
 .navigationSection.workListVisible .workList,
-.navigationSection:hover .workList {
+.navigationSection.eventListVisible .eventList {
   opacity: 1;
   pointer-events: auto;
   /* display: block; */
@@ -67,7 +68,8 @@
   color: #3c3c3c;
 }
 
-.navigationLink:hover {
+.navigationLink:hover,
+.navigationLinkActive {
   text-decoration: underline;
 }
 

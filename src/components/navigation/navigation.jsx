@@ -9,6 +9,7 @@ import {
   stripLocaleFromPathname,
 } from "@/lib/locale/routing";
 import { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";
+import EventList from "@/components/event/EventList";
 import WorkList from "./workList";
 import styles from "./navigation.module.css";
 import LanguageSwitch from "../locale/LanguageSwitch";
@@ -18,10 +19,44 @@ function isWorkListRoute(pathname) {
   return path === "/" || path === "/work";
 }
 
-export default function Navigation({ initialProjects = [], initialWorks = [] }) {
+function isWorkRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/work" || path.startsWith("/work/");
+}
+
+function isEventListRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/event";
+}
+
+function isEventRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/event" || path.startsWith("/event/");
+}
+
+function isTextRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/text" || path.startsWith("/text/");
+}
+
+function isInfoRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/info";
+}
+
+export default function Navigation({
+  initialProjects = [],
+  initialWorks = [],
+  initialEvents = [],
+}) {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
   const workListActive = isWorkListRoute(pathname);
+  const eventListActive = isEventListRoute(pathname);
+  const workActive = isWorkRoute(pathname);
+  const eventActive = isEventRoute(pathname);
+  const textActive = isTextRoute(pathname);
+  const infoActive = isInfoRoute(pathname);
   const detailRoute = isDetailRoute(pathname);
   const { isHidden, show } = useNavigationScrollHide(detailRoute);
 
@@ -34,7 +69,10 @@ export default function Navigation({ initialProjects = [], initialWorks = [] }) 
         <div
           className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""}`}
         >
-          <Link className={styles.navigationLink} href={localizedPath("/work", locale)}>
+          <Link
+            className={`${styles.navigationLink} ${workActive ? styles.navigationLinkActive : ""}`.trim()}
+            href={localizedPath("/work", locale)}
+          >
             work
           </Link>
           <WorkList
@@ -44,16 +82,33 @@ export default function Navigation({ initialProjects = [], initialWorks = [] }) 
           />
         </div>
 
-        <Link className={styles.navigationLink} href={localizedPath("/event", locale)}>
-          installation
-        </Link>
-        <Link className={styles.navigationLink} href={localizedPath("/text", locale)}>
+        <div
+          className={`${styles.navigationSection} ${eventListActive ? styles.eventListVisible : ""}`}
+        >
+          <Link
+            className={`${styles.navigationLink} ${eventActive ? styles.navigationLinkActive : ""}`.trim()}
+            href={localizedPath("/event", locale)}
+          >
+            installation
+          </Link>
+          <EventList
+            className={styles.eventList}
+            events={initialEvents}
+          />
+        </div>
+        <Link
+          className={`${styles.navigationLink} ${textActive ? styles.navigationLinkActive : ""}`.trim()}
+          href={localizedPath("/text", locale)}
+        >
           text
         </Link>
         <a className={styles.navigationLink} href={"https://log.doheekwak.com"} target="_blank">
           log
         </a>
-        <Link className={styles.navigationLink} href={localizedPath("/info", locale)}>
+        <Link
+          className={`${styles.navigationLink} ${infoActive ? styles.navigationLinkActive : ""}`.trim()}
+          href={localizedPath("/info", locale)}
+        >
           dohee kwak
         </Link>
         <LanguageSwitch />

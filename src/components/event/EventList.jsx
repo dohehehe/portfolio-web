@@ -1,14 +1,26 @@
+"use client";
+
 import Link from "next/link";
-import { localizedPath } from "@/lib/locale/routing";
+import { usePathname } from "next/navigation";
+import {
+  getLocaleFromPathname,
+  localizedPath,
+} from "@/lib/locale/routing";
 import styles from "./EventList.module.css";
 
-export default function EventList({ events = [], locale }) {
+export default function EventList({
+  className = "",
+  events = [],
+}) {
+  const pathname = usePathname();
+  const locale = getLocaleFromPathname(pathname);
+
   if (events.length === 0) {
     return null;
   }
 
   return (
-    <ul className={styles.list}>
+    <ul className={`${styles.list} ${className}`.trim()}>
       {events.map((event) => (
         <li key={event.id} className={styles.item}>
           <Link
@@ -19,10 +31,6 @@ export default function EventList({ events = [], locale }) {
               <span className={styles.date}>{event.date}</span>
             ) : null}
             <span className={styles.title}>{event.title || "-"}</span>
-            {/* {event.space ? (
-              <span className={styles.space}>{event.space}</span>
-            ) : null} */}
-
           </Link>
         </li>
       ))}

@@ -43,15 +43,20 @@
 
 .listHome .item:hover {
   animation: none;
+  filter: blur(0.3px);
 }
 
 @keyframes blur {
   100% {
-    filter: blur(5px);
+    filter: blur(4px);
+  }
+
+  50% {
+    filter: blur(1.2px);
   }
 
   0% {
-    filter: blur(0px);
+    filter: blur(0.3px);
   }
 }
 
