@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import styles from "./navigation.module.css";
 
-const LABELS = ["installation", "exhibition", "performance", "scene", "event"];
+const LABELS = ["installation", "exhibition", "scene", "event"];
 const HOLD_MS = 5000;
 const BLUR_MS = 2000;
 

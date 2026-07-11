@@ -17,6 +17,10 @@
   gap: 1rem;
 }
 
+.workNavigation {
+  width: 350px;
+}
+
 .navigationSection,
 .navigation>.navigationLink {
   opacity: 1;
@@ -41,6 +45,7 @@
   align-items: flex-start;
   display: block;
   transition: all 0.3s ease-in-out;
+
 }
 
 .navigationSection .workList,
@@ -107,5 +112,13 @@
 @media (max-width: 780px) {
   .header {
     padding: 2px 13px 0px;
+  }
+
+  .workNavigation {
+    width: unset;
+  }
+
+  .navigationSection {
+    position: relative;
   }
 }

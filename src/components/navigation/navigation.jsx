@@ -67,9 +67,11 @@ export default function Navigation({
         className={`${styles.navigation} ${detailRoute && isHidden ? styles.navigationHidden : ""}`.trim()}
         onTouchStart={detailRoute ? show : undefined}
       >
+
         <div
-          className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""}`}
+          className={`${styles.navigationSection} ${workListActive ? styles.workListVisible : ""} ${styles.workNavigation}`}
         >
+
           <Link
             className={`${styles.navigationLink} ${workActive ? styles.navigationLinkActive : ""}`.trim()}
             href={localizedPath("/work", locale)}
@@ -113,6 +115,7 @@ export default function Navigation({
         >
           dohee kwak
         </Link>
+
         <LanguageSwitch />
       </nav>
     </header>
