@@ -11,6 +11,7 @@ import {
 import { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";
 import EventList from "@/components/event/EventList";
 import WorkList from "./workList";
+import InstallationNavLabel from "./InstallationNavLabel";
 import styles from "./navigation.module.css";
 import LanguageSwitch from "../locale/LanguageSwitch";
 
@@ -88,8 +89,9 @@ export default function Navigation({
           <Link
             className={`${styles.navigationLink} ${eventActive ? styles.navigationLinkActive : ""}`.trim()}
             href={localizedPath("/event", locale)}
+            aria-label="installation"
           >
-            installation
+            <InstallationNavLabel />
           </Link>
           <EventList
             className={styles.eventList}

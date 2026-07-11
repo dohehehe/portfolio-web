@@ -18,19 +18,19 @@
 }
 
 .navigationSection,
-.navigation > .navigationLink {
+.navigation>.navigationLink {
   opacity: 1;
   transition: opacity 0.3s ease-in-out;
 }
 
 .navigationHidden .navigationSection,
-.navigationHidden > .navigationLink {
+.navigationHidden>.navigationLink {
   opacity: 0;
   pointer-events: none;
 }
 
 .navigationHidden:hover .navigationSection,
-.navigationHidden:hover > .navigationLink {
+.navigationHidden:hover>.navigationLink {
   opacity: 1;
   pointer-events: auto;
 }
@@ -71,6 +71,37 @@
 .navigationLink:hover,
 .navigationLinkActive {
   text-decoration: underline;
+}
+
+.navigationLink:hover .cyclingLabelWrap,
+.navigationLinkActive .cyclingLabelWrap {
+  text-decoration: underline;
+}
+
+.cyclingLabelWrap {
+  display: inline-grid;
+  text-decoration: inherit;
+}
+
+.cyclingLabelSizer,
+.cyclingLabel {
+  grid-area: 1 / 1;
+}
+
+.cyclingLabelSizer {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.cyclingLabel {
+  transition: filter 2s ease-in-out, opacity 2s ease-in-out;
+  filter: blur(0);
+  opacity: 1;
+}
+
+.cyclingLabelBlurring {
+  filter: blur(6px);
+  opacity: 0;
 }
 
 @media (max-width: 780px) {
