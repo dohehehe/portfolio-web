@@ -40,6 +40,8 @@ export default function GalleryInput({
   onChange,
   disabled = false,
   onUploadingChange,
+  label = "gallery",
+  imagesOnly = false,
 }) {
   const [uploadError, setUploadError] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
@@ -161,7 +163,7 @@ export default function GalleryInput({
   return (
     <div className={styles.field}>
       <div className={styles.header}>
-        <span className={styles.label}>gallery</span>
+        <span className={styles.label}>{label}</span>
 
         <div className={styles.uploadRow}>
           <label className={styles.fileLabel}>
@@ -176,14 +178,16 @@ export default function GalleryInput({
             {uploading ? "업로드 중..." : "이미지 추가"}
           </label>
 
-          <button
-            className={styles.addButton}
-            type="button"
-            disabled={isDisabled}
-            onClick={addVideoItem}
-          >
-            비디오 추가
-          </button>
+          {!imagesOnly ? (
+            <button
+              className={styles.addButton}
+              type="button"
+              disabled={isDisabled}
+              onClick={addVideoItem}
+            >
+              비디오 추가
+            </button>
+          ) : null}
         </div>
       </div>
 

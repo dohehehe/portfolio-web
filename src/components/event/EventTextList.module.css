@@ -1,0 +1,51 @@
+.textContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 50px;
+  word-break: keep-all;
+}
+
+.textList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+}
+
+.textLink {
+  display: block;
+  color: inherit;
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+
+
+.textItemRow {
+  margin: 0;
+  color: #232323;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.textTitle {
+  margin: 0;
+}
+
+.textMeta {
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+  .textContent {
+    margin-left: 50px;
+    margin-bottom: 30px;
+  }
+
+  .textItemRow {
+    font-size: 1.2rem;
+  }
+}

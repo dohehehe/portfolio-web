@@ -5,9 +5,8 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useCreateEvent } from "@/hooks/event";
-import FileLinkInput from "./FileLinkInput";
 import GalleryInput from "./GalleryInput";
-import { saveEditorContent, serializeFileLink, serializeGallery } from "./formUtils";
+import { saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
 
 
@@ -47,7 +46,7 @@ export default function EventCreateForm() {
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
         gallery: serializeGallery(gallery),
-        file_link: serializeFileLink(fileLink),
+        file_link: serializeGallery(fileLink),
       });
 
       router.push("/admin");
@@ -146,7 +145,9 @@ export default function EventCreateForm() {
           <Editor ref={creditEnRef} holderId="editor-event-credit-en" />
         </div>
 
-        <FileLinkInput
+        <GalleryInput
+          label="file_link"
+          imagesOnly
           value={fileLink}
           onChange={setFileLink}
           onUploadingChange={setFileLinkUploading}

@@ -1,0 +1,158 @@
+.gallery {
+  position: relative;
+  width: 100%;
+}
+
+.track {
+  display: flex;
+  gap: 10px;
+  width: 100vw;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
+  /* box-shadow: inset 0 0 10px 10px pink; */
+  padding-left: calc(55vw + 40px);
+  padding-right: 40px;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+.trackCredit {
+  width: 28vw;
+  min-width: 340px;
+  flex-shrink: 0;
+  padding-right: 30px;
+  height: 100vh;
+  /* box-shadow: inset 0 0 10px 10px pink; */
+  overflow-y: auto;
+  padding-top: 185px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.trackCredit::-webkit-scrollbar {
+  display: none;
+}
+
+
+.item {
+  display: inline;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: 4px;
+  min-width: 0;
+  padding-top: 180px;
+}
+
+.image {
+  display: block;
+  height: auto;
+  width: 300px;
+  object-fit: contain;
+  -webkit-user-drag: none;
+  user-select: none;
+  cursor: zoom-in;
+  border: 0.3px solid #a9a9a9;
+}
+
+.caption {
+  margin: 0;
+  padding: 0 3px;
+  color: #666666;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.caption :is(i, em) {
+  font-style: italic;
+}
+
+.navButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #1f1f1f;
+  font-size: 2.5rem;
+  line-height: 1;
+  cursor: pointer;
+  position: absolute;
+  top: 40vh;
+  z-index: 1;
+}
+
+.navButton:hover:not(:disabled) {
+  color: #000000;
+}
+
+.navButton:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.navButtonPrev {
+  left: calc(55vw - 5px);
+}
+
+.navButtonNext {
+  right: 0;
+}
+
+@media (max-width: 780px) {
+  .track {
+    width: 100%;
+    padding-left: 0;
+    gap: 5px;
+    padding-right: 0;
+    flex-direction: column;
+    overflow: unset;
+    flex-wrap: wrap;
+    overscroll-behavior-y: contain;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    display: grid;
+    grid-template-columns: 2;
+  }
+
+  .trackCredit {
+    width: 100%;
+    height: auto;
+    padding-right: 0;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    overflow-y: unset;
+    flex-shrink: 0;
+    position: sticky;
+  }
+
+  .item {
+    width: 40%;
+    padding-top: 0;
+  }
+
+  .image {
+    height: auto;
+    width: 100%;
+  }
+
+  .caption {
+    font-size: 0.85rem;
+  }
+
+  .navButton {
+    display: none;
+  }
+}

@@ -45,3 +45,19 @@ export async function getTextsByProjectId(projectId, locale = DEFAULT_LOCALE) {
     (data ?? []).map((record) => normalizeTextRecord(record, locale)),
   );
 }
+
+export async function getTextsByEventId(eventId, locale = DEFAULT_LOCALE) {
+  const supabase = createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("text")
+    .select(TEXT_COLUMNS)
+    .eq("event_id", eventId);
+
+  if (error) {
+    return [];
+  }
+
+  return sortByYearDesc(
+    (data ?? []).map((record) => normalizeTextRecord(record, locale)),
+  );
+}

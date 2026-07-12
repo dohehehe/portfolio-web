@@ -32,7 +32,7 @@ export async function getEventById(id, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("event")
-    .select("id,title_ko,title_en,date,space_ko,space_en")
+    .select("id,title_ko,title_en,date,space_ko,space_en,credit_ko,credit_en,gallery,file_link")
     .eq("id", id)
     .single();
 
@@ -43,7 +43,12 @@ export async function getEventById(id, locale = DEFAULT_LOCALE) {
   return {
     id: data.id,
     title: pickLocalized(data, "title", locale),
+    titleKo: pickLocalized(data, "title", "ko"),
+    titleEn: pickLocalized(data, "title", "en"),
     date: data.date,
     space: pickLocalized(data, "space", locale),
+    credit: pickLocalized(data, "credit", locale),
+    gallery: data.gallery,
+    file_link: data.file_link,
   };
 }
