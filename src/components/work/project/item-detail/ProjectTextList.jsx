@@ -12,7 +12,7 @@ export default function ProjectTextList({
   }
 
   return (
-    <section className={styles.eventContent}>
+    <section className={styles.textContent}>
       <ul className={styles.eventList}>
         {items.map((item) => {
           if (!item.title && !item.writer && !item.year) {

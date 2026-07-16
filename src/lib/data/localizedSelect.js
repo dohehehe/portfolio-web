@@ -39,5 +39,36 @@ export const CV_LINK_SELECT = `
   )
 `;
 
+export const EVENT_WORK_LINK_SELECT = `
+  project_id,
+  work_id,
+  cv!inner (
+    exhibition_id
+  ),
+  project:project_id (
+    id,
+    created_at,
+    year,
+    title_ko,
+    title_en,
+    medium_ko,
+    medium_en,
+    dimension_ko,
+    dimension_en
+  ),
+  work:work_id (
+    id,
+    created_at,
+    year,
+    project_id,
+    title_ko,
+    title_en,
+    medium_ko,
+    medium_en,
+    dimension_ko,
+    dimension_en
+  )
+`;
+
 export const TEXT_COLUMNS =
   "id,created_at,year,title_ko,title_en,writer_ko,writer_en";

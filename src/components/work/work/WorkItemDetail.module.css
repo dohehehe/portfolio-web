@@ -288,7 +288,7 @@
   }
 
   :global(html[lang="en"]) .metaField {
-    font-size: 1.32rem;
+    font-size: 1.35rem;
   }
 
   .contentContainer {
@@ -310,12 +310,13 @@
   .editorContent {
     margin-right: auto;
     width: 70%;
-    min-width: 62%;
+    min-width: 55%;
     font-size: 1.28rem;
   }
 
   :global(html[lang="en"]) .editorContent {
     min-width: 53%;
+    font-size: 1.32rem;
   }
 
   .creditRow {
@@ -323,6 +324,7 @@
     gap: 40px;
     line-height: 1.45;
     padding-top: 3px;
+    max-width: 180px;
   }
 
   :global(html[lang="en"]) .creditRow {

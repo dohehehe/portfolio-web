@@ -26,13 +26,15 @@ export function normalizeGallery(rawValue) {
         return null;
       }
 
+      const imgUrl = item.img_url ?? item.file_url ?? "";
+
       return {
-        img_url: item.img_url ?? "",
+        img_url: imgUrl,
         video_url: item.video_url ?? "",
         width: item.width ?? item.img_width ?? null,
         height: item.height ?? item.img_height ?? null,
-        caption_ko: item.caption_ko ?? "",
-        caption_en: item.caption_en ?? "",
+        caption_ko: item.caption_ko ?? item.title_ko ?? "",
+        caption_en: item.caption_en ?? item.title_en ?? "",
       };
     })
     .filter((item) => item?.img_url || item?.video_url);
@@ -63,42 +65,3 @@ export function serializeGallery(items) {
   });
 }
 
-export function normalizeFileLink(rawValue) {
-  if (!Array.isArray(rawValue)) {
-    return [];
-  }
-
-  return rawValue
-    .map((item) => {
-      if (typeof item === "string") {
-        return {
-          file_url: item,
-          title_ko: "",
-          title_en: "",
-        };
-      }
-
-      if (!item || typeof item !== "object") {
-        return null;
-      }
-
-      return {
-        file_url: item.file_url ?? "",
-        title_ko: item.title_ko ?? "",
-        title_en: item.title_en ?? "",
-      };
-    })
-    .filter((item) => item?.file_url);
-}
-
-export function serializeFileLink(items) {
-  if (!items?.length) {
-    return null;
-  }
-
-  return items.map(({ file_url, title_ko, title_en }) => ({
-    file_url,
-    title_ko: title_ko?.trim() || null,
-    title_en: title_en?.trim() || null,
-  }));
-}
