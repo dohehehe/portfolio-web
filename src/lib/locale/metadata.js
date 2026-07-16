@@ -1,28 +1,56 @@
 import { getFirstGalleryImageUrl } from "@/components/admin/forms/formUtils";
 import { getEditorParagraphPlainText } from "@/lib/editorjs/getEditorParagraphPlainText";
-import { SITE_URL } from "@/lib/site/constants";
+import { ARTIST_NAME_KO, SITE_NAME, SITE_URL } from "@/lib/site/constants";
 import { localizedPath, stripLocaleFromPathname } from "./routing";
-
-const WORK_ARTIST_NAME = "곽도희";
-const SITE_NAME = "dohee kwak";
 
 export function buildListPageTitle(label) {
   return `${label} - ${SITE_NAME}`;
 }
 
-export function buildListPageMetadata(pathname, locale, label) {
+export function buildRootPageMetadata(locale, description = SITE_NAME) {
+  const title = SITE_NAME;
+  const canonical = getCanonicalUrl("/", locale);
+
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+      siteName: SITE_NAME,
+      type: "website",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+    alternates: {
+      canonical,
+      languages: buildLanguageAlternates("/"),
+    },
+  };
+}
+
+export function buildListPageMetadata(pathname, locale, label, description = SITE_NAME) {
   const title = buildListPageTitle(label);
   const canonical = getCanonicalUrl(pathname, locale);
 
   return {
     title,
+    description,
     openGraph: {
       title,
+      description,
       url: canonical,
+      siteName: SITE_NAME,
+      type: "website",
     },
     twitter: {
       card: "summary",
       title,
+      description,
     },
     alternates: {
       canonical,
@@ -99,7 +127,7 @@ function formatLocalizedTitle(title, locale, koWrapper) {
 }
 
 function formatWorkMetadataPrefix(item, locale) {
-  const prefixParts = [WORK_ARTIST_NAME];
+  const prefixParts = [ARTIST_NAME_KO];
   const formattedTitle = formatLocalizedTitle(item.title, locale, {
     open: "〈",
     close: "〉",
@@ -126,6 +154,13 @@ export function formatWorkDescription(item, locale) {
 }
 
 export function formatEventDescription(event, locale) {
+  return appendEditorParagraphs(
+    formatEventMetadataPrefix(event, locale),
+    event.credit,
+  );
+}
+
+function formatEventMetadataPrefix(event, locale) {
   const prefixParts = [];
   const formattedTitle = formatLocalizedTitle(event.title, locale, {
     open: "《",
@@ -144,12 +179,12 @@ export function formatEventDescription(event, locale) {
     prefixParts.push(event.space);
   }
 
-  return appendEditorParagraphs(prefixParts.join(", "), event.credit);
+  return prefixParts.join(", ") || "Event";
 }
 
 export function getEventMetadata(event, locale) {
   return {
-    title: event.title || "Event",
+    title: formatEventMetadataPrefix(event, locale),
     description: formatEventDescription(event, locale),
     imageUrl: getFirstGalleryImageUrl(event.gallery),
   };
@@ -165,7 +200,7 @@ export function getTextMetadata(text) {
   };
 }
 
-function getWorkMetadataSource(route) {
+export function getWorkMetadataSource(route) {
   if (route.type === "standalone") {
     return route.item;
   }

@@ -1,9 +1,11 @@
 import { notFound } from "next/navigation";
+import JsonLd from "@/components/seo/JsonLd";
 import { getTextById } from "@/lib/data/text";
 import {
   buildDetailPageMetadata,
   getTextMetadata,
 } from "@/lib/locale/metadata";
+import { buildArticleJsonLd } from "@/lib/structured-data/buildJsonLd";
 
 export async function generateMetadata({ params }) {
   const { locale, id } = await params;
@@ -24,5 +26,15 @@ export default async function TextDetailPage({ params }) {
     notFound();
   }
 
-  return <></>;
+  return (
+    <>
+      <JsonLd
+        data={buildArticleJsonLd({
+          text,
+          locale,
+          pathname: `/text/${id}`,
+        })}
+      />
+    </>
+  );
 }

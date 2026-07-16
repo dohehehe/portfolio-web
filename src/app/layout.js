@@ -16,7 +16,7 @@ import { SITE_URL } from "@/lib/site/constants";
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: "dohee kwak",
-  description: "dohee kwak's portfolio",
+  description: "dohee kwak",
 };
 
 export default async function RootLayout({ children }) {
