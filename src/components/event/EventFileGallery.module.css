@@ -26,7 +26,7 @@
   width: 28vw;
   min-width: 340px;
   flex-shrink: 0;
-  padding-right: 30px;
+  padding-right: 50px;
   height: 100vh;
   /* box-shadow: inset 0 0 10px 10px pink; */
   overflow-y: auto;
@@ -111,35 +111,36 @@
 
 @media (max-width: 780px) {
   .track {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     width: 100%;
-    padding-left: 0;
-    gap: 5px;
-    padding-right: 0;
-    flex-direction: column;
+    padding: 0;
+    gap: 8px;
     overflow: unset;
-    flex-wrap: wrap;
     overscroll-behavior-y: contain;
     scrollbar-width: none;
     -ms-overflow-style: none;
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
-    display: grid;
-    grid-template-columns: 2;
   }
 
   .trackCredit {
+    grid-column: 1 / -1;
+    order: 1;
     width: 100%;
+    min-width: 0;
     height: auto;
     padding-right: 0;
-    padding-top: 40px;
+    padding-top: 20px;
     padding-bottom: 40px;
     overflow-y: unset;
-    flex-shrink: 0;
-    position: sticky;
+    position: static;
   }
 
   .item {
-    width: 40%;
+    order: 0;
+    display: flex;
+    width: auto;
     padding-top: 0;
   }
 

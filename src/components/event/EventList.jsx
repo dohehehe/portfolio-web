@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { pickLocalized } from "@/lib/locale/pickLocalized";
 import {
   getLocaleFromPathname,
   localizedPath,
@@ -30,7 +31,9 @@ export default function EventList({
             {event.date ? (
               <span className={styles.date}>{event.date}</span>
             ) : null}
-            <span className={styles.title}>{event.title || "-"}</span>
+            <span className={styles.title}>
+              {pickLocalized(event, "title", locale) || "-"}
+            </span>
           </Link>
         </li>
       ))}

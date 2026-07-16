@@ -5,16 +5,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 const EVENT_LIST_COLUMNS =
   "id,created_at,title_ko,title_en,date,space_ko,space_en";
 
-function normalizeEventListRecord(record, locale) {
-  return {
-    id: record.id,
-    title: pickLocalized(record, "title", locale),
-    date: record.date,
-    space: pickLocalized(record, "space", locale),
-  };
-}
-
-export async function getEvents(locale = DEFAULT_LOCALE) {
+export async function getNavigationEventListData() {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase
     .from("event")
@@ -25,7 +16,18 @@ export async function getEvents(locale = DEFAULT_LOCALE) {
     return [];
   }
 
-  return (data ?? []).map((record) => normalizeEventListRecord(record, locale));
+  return data ?? [];
+}
+
+export async function getEvents(locale = DEFAULT_LOCALE) {
+  const records = await getNavigationEventListData();
+
+  return records.map((record) => ({
+    id: record.id,
+    title: pickLocalized(record, "title", locale),
+    date: record.date,
+    space: pickLocalized(record, "space", locale),
+  }));
 }
 
 export async function getEventById(id, locale = DEFAULT_LOCALE) {

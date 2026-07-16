@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { barlow } from "@/app/fonts";
 import EventFileGallery from "@/components/event/EventFileGallery";
 import EventGallery from "@/components/event/EventGallery";
+import { getProjectsAndWorksByEventId } from "@/lib/data/cv";
 import { getEventById } from "@/lib/data/event";
 import { getTextsByEventId } from "@/lib/data/text";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
@@ -17,7 +18,10 @@ export default async function EventDetailPage({ params }) {
 
   const galleryItems = normalizeGalleryItems(event.gallery, locale);
   const fileLinkItems = normalizeGalleryItems(event.file_link, locale);
-  const texts = await getTextsByEventId(id, locale);
+  const [texts, works] = await Promise.all([
+    getTextsByEventId(id, locale),
+    getProjectsAndWorksByEventId(id, locale),
+  ]);
   const titles = [...new Set([event.titleKo, event.titleEn].filter(Boolean))];
 
   return (
@@ -44,6 +48,7 @@ export default async function EventDetailPage({ params }) {
             items={fileLinkItems}
             credit={event.credit}
             texts={texts}
+            works={works}
             locale={locale}
           />
         </div>

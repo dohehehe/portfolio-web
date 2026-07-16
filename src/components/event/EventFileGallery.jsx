@@ -9,11 +9,12 @@ import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/gal
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
 import EventCreditEditor from "@/components/event/EventCreditEditor";
 import EventTextList from "@/components/event/EventTextList";
+import EventWorkList from "@/components/event/EventWorkList";
 import styles from "./EventFileGallery.module.css";
 
 const SCROLL_EDGE_THRESHOLD = 2;
 
-export default function EventFileGallery({ items, credit, texts = [], locale }) {
+export default function EventFileGallery({ items, credit, texts = [], works = [], locale }) {
   const trackRef = useRef(null);
   const { open: openImageLightbox } = useImageLightbox();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -85,8 +86,10 @@ export default function EventFileGallery({ items, credit, texts = [], locale }) 
 
       <div ref={trackRef} className={styles.track}>
         <div className={styles.trackCredit}>
+
           <EventTextList items={texts} locale={locale} />
           <EventCreditEditor data={credit} />
+          <EventWorkList items={works} locale={locale} />
         </div>
         {items.map((item, index) => (
           <figure key={getGalleryItemKey(item, index)} className={styles.item}>
