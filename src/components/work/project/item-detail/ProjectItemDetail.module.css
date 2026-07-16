@@ -287,19 +287,35 @@
 
 
   .creditRow {
-    width: 75%;
+    width: 100%;
     max-width: none;
     margin-right: 0;
     margin-left: auto;
     padding-right: 0;
     padding-top: 50px;
     font-size: 1.25rem;
-    gap: 30px;
+    gap: 50px;
     word-break: keep-all;
   }
 
   :global(html[lang="en"]) .creditRow {
     font-size: 1.23rem;
+  }
+
+  .eventContent {
+    width: 75%;
+    order: 2;
+  }
+
+  .textContent {
+    width: 75%;
+    order: 1;
+  }
+
+  .creditContent {
+    width: 65%;
+    margin-left: auto;
+    order: 3;
   }
 
   .eventItem {

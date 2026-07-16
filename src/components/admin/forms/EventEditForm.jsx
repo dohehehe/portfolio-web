@@ -5,13 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/event";
-import FileLinkInput from "./FileLinkInput";
 import GalleryInput from "./GalleryInput";
 import {
-  normalizeFileLink,
   normalizeGallery,
   saveEditorContent,
-  serializeFileLink,
   serializeGallery,
 } from "./formUtils";
 import styles from "../AdminForm.module.css";
@@ -50,7 +47,7 @@ export default function EventEditForm({ id }) {
     setSpaceKo(eventItem.space_ko ?? "");
     setSpaceEn(eventItem.space_en ?? "");
     setGallery(normalizeGallery(eventItem.gallery));
-    setFileLink(normalizeFileLink(eventItem.file_link));
+    setFileLink(normalizeGallery(eventItem.file_link));
   }, [eventItem]);
 
   async function handleSubmit(event) {
@@ -69,7 +66,7 @@ export default function EventEditForm({ id }) {
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
         gallery: serializeGallery(gallery),
-        file_link: serializeFileLink(fileLink),
+        file_link: serializeGallery(fileLink),
       });
 
       router.push("/admin");
@@ -217,7 +214,9 @@ export default function EventEditForm({ id }) {
           </div>
         </div>
 
-        <FileLinkInput
+        <GalleryInput
+          label="file_link"
+          imagesOnly
           value={fileLink}
           onChange={setFileLink}
           disabled={saving}

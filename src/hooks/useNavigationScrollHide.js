@@ -3,6 +3,11 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 const SCROLL_DIRECTION_THRESHOLD = 8;
+const ALWAYS_VISIBLE_VH = 0.7;
+
+function getAlwaysVisibleOffset() {
+  return window.innerHeight * ALWAYS_VISIBLE_VH;
+}
 
 export function useNavigationScrollHide(enabled) {
   const [isHidden, setIsHidden] = useState(false);
@@ -22,6 +27,13 @@ export function useNavigationScrollHide(enabled) {
 
     function handleScroll() {
       const currentScrollY = window.scrollY;
+
+      if (currentScrollY <= getAlwaysVisibleOffset()) {
+        setIsHidden(false);
+        lastScrollYRef.current = currentScrollY;
+        return;
+      }
+
       const delta = currentScrollY - lastScrollYRef.current;
 
       if (delta > SCROLL_DIRECTION_THRESHOLD) {
