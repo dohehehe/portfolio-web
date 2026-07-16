@@ -63,6 +63,8 @@ export function isDetailRoute(pathname) {
 
 export function shouldSkipLocaleRouting(pathname) {
   return (
+    pathname === "/robots.txt" ||
+    pathname === "/sitemap.xml" ||
     pathname.startsWith("/admin") ||
     pathname.startsWith("/api") ||
     pathname.startsWith("/auth") ||

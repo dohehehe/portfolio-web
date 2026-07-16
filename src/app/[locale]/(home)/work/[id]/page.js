@@ -1,11 +1,14 @@
 import { notFound } from "next/navigation";
 import ProjectWorkPage from "@/components/work/project/ProjectWorkPage";
 import WorkItemDetail from "@/components/work/work/WorkItemDetail";
+import JsonLd from "@/components/seo/JsonLd";
 import { getWorkRouteById } from "@/lib/data/workRoute";
 import {
-  buildLanguageAlternates,
+  buildDetailPageMetadata,
   getLocalizedMetadata,
+  getWorkMetadataSource,
 } from "@/lib/locale/metadata";
+import { buildVisualArtworkJsonLd } from "@/lib/structured-data/buildJsonLd";
 
 export async function generateMetadata({ params }) {
   const { locale, id } = await params;
@@ -15,15 +18,11 @@ export async function generateMetadata({ params }) {
     return { title: "Not found" };
   }
 
-  const { title, description } = getLocalizedMetadata(route, locale);
-
-  return {
-    title,
-    description,
-    alternates: {
-      languages: buildLanguageAlternates(`/work/${id}`),
-    },
-  };
+  return buildDetailPageMetadata(
+    `/work/${id}`,
+    locale,
+    getLocalizedMetadata(route, locale),
+  );
 }
 
 export default async function WorkPage({ params }) {
@@ -36,17 +35,36 @@ export default async function WorkPage({ params }) {
 
   if (route.type === "standalone") {
     return (
-      <WorkItemDetail
-        item={route.item}
-        cvs={route.cvs}
-        texts={route.texts}
-        locale={locale}
-      />
+      <>
+        <JsonLd
+          data={buildVisualArtworkJsonLd({
+            item: route.item,
+            locale,
+            pathname: `/work/${id}`,
+          })}
+        />
+        <WorkItemDetail
+          item={route.item}
+          cvs={route.cvs}
+          texts={route.texts}
+          locale={locale}
+        />
+      </>
     );
   }
 
+  const source = getWorkMetadataSource(route);
+
   return (
-    <ProjectWorkPage
+    <>
+      <JsonLd
+        data={buildVisualArtworkJsonLd({
+          item: source,
+          locale,
+          pathname: `/work/${id}`,
+        })}
+      />
+      <ProjectWorkPage
       project={route.project}
       works={route.works}
       cvs={route.cvs}
@@ -54,5 +72,6 @@ export default async function WorkPage({ params }) {
       scrollToId={route.scrollToId}
       locale={locale}
     />
+    </>
   );
 }
