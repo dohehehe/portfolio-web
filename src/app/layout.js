@@ -1,4 +1,5 @@
 import { headers } from "next/headers";
+import { Analytics } from "@vercel/analytics/next";
 import { archivoNarrow, gothicA1, inter } from "./fonts";
 import "./globals.css";
 import { ImageLightboxProvider } from "@/components/image-lightbox";
@@ -37,6 +38,7 @@ export default async function RootLayout({ children }) {
           />
           {children}
         </ImageLightboxProvider>
+        <Analytics />
       </body>
     </html>
   );
