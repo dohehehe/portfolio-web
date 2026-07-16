@@ -40,6 +40,10 @@ export function normalizeGallery(rawValue) {
     .filter((item) => item?.img_url || item?.video_url);
 }
 
+export function getFirstGalleryImageUrl(rawValue) {
+  return normalizeGallery(rawValue).find((item) => item.img_url)?.img_url;
+}
+
 export function serializeGallery(items) {
   if (!items?.length) {
     return null;

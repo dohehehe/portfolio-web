@@ -2,11 +2,32 @@ import { notFound } from "next/navigation";
 import { barlow } from "@/app/fonts";
 import EventFileGallery from "@/components/event/EventFileGallery";
 import EventGallery from "@/components/event/EventGallery";
+import JsonLd from "@/components/seo/JsonLd";
 import { getProjectsAndWorksByEventId } from "@/lib/data/cv";
 import { getEventById } from "@/lib/data/event";
 import { getTextsByEventId } from "@/lib/data/text";
+import {
+  buildDetailPageMetadata,
+  getEventMetadata,
+} from "@/lib/locale/metadata";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
+import { buildExhibitionEventJsonLd } from "@/lib/structured-data/buildJsonLd";
 import styles from "@/components/event/EventDetailPage.module.css";
+
+export async function generateMetadata({ params }) {
+  const { locale, id } = await params;
+  const event = await getEventById(id, locale);
+
+  if (!event) {
+    return { title: "Not found" };
+  }
+
+  return buildDetailPageMetadata(
+    `/event/${id}`,
+    locale,
+    getEventMetadata(event, locale),
+  );
+}
 
 export default async function EventDetailPage({ params }) {
   const { locale, id } = await params;
@@ -26,6 +47,13 @@ export default async function EventDetailPage({ params }) {
 
   return (
     <>
+      <JsonLd
+        data={buildExhibitionEventJsonLd({
+          event,
+          locale,
+          pathname: `/event/${id}`,
+        })}
+      />
       <section className={`${barlow.variable} ${styles.section}`}>
         <div className={styles.eventHeader}>
           <h1 className={styles.title}>

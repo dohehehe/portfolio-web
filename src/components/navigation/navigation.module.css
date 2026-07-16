@@ -49,7 +49,8 @@
 }
 
 .navigationSection .workList,
-.navigationSection .eventList {
+.navigationSection .eventList,
+.navigationSection .textList {
   opacity: 0;
   /* display: none; */
   pointer-events: none;
@@ -57,7 +58,8 @@
 }
 
 .navigationSection.workListVisible .workList,
-.navigationSection.eventListVisible .eventList {
+.navigationSection.eventListVisible .eventList,
+.navigationSection.textListVisible .textList {
   opacity: 1;
   pointer-events: auto;
   /* display: block; */
