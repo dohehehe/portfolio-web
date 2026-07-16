@@ -3,7 +3,7 @@ import ProjectWorkPage from "@/components/work/project/ProjectWorkPage";
 import WorkItemDetail from "@/components/work/work/WorkItemDetail";
 import { getWorkRouteById } from "@/lib/data/workRoute";
 import {
-  buildLanguageAlternates,
+  buildDetailPageMetadata,
   getLocalizedMetadata,
 } from "@/lib/locale/metadata";
 
@@ -15,15 +15,11 @@ export async function generateMetadata({ params }) {
     return { title: "Not found" };
   }
 
-  const { title, description } = getLocalizedMetadata(route, locale);
-
-  return {
-    title,
-    description,
-    alternates: {
-      languages: buildLanguageAlternates(`/work/${id}`),
-    },
-  };
+  return buildDetailPageMetadata(
+    `/work/${id}`,
+    locale,
+    getLocalizedMetadata(route, locale),
+  );
 }
 
 export default async function WorkPage({ params }) {

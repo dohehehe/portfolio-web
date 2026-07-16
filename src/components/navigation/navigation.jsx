@@ -10,6 +10,7 @@ import {
 } from "@/lib/locale/routing";
 import { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";
 import EventList from "@/components/event/EventList";
+import TextList from "@/components/text/TextList";
 import WorkList from "./workList";
 import InstallationNavLabel from "./InstallationNavLabel";
 import styles from "./navigation.module.css";
@@ -35,6 +36,11 @@ function isEventRoute(pathname) {
   return path === "/event" || path.startsWith("/event/");
 }
 
+function isTextListRoute(pathname) {
+  const path = stripLocaleFromPathname(pathname);
+  return path === "/text";
+}
+
 function isTextRoute(pathname) {
   const path = stripLocaleFromPathname(pathname);
   return path === "/text" || path.startsWith("/text/");
@@ -49,11 +55,13 @@ export default function Navigation({
   initialProjects = [],
   initialWorks = [],
   initialEvents = [],
+  initialTexts = [],
 }) {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
   const workListActive = isWorkListRoute(pathname);
   const eventListActive = isEventListRoute(pathname);
+  const textListActive = isTextListRoute(pathname);
   const workActive = isWorkRoute(pathname);
   const eventActive = isEventRoute(pathname);
   const textActive = isTextRoute(pathname);
@@ -100,12 +108,20 @@ export default function Navigation({
             events={initialEvents}
           />
         </div>
-        <Link
-          className={`${styles.navigationLink} ${textActive ? styles.navigationLinkActive : ""}`.trim()}
-          href={localizedPath("/text", locale)}
+        <div
+          className={`${styles.navigationSection} ${textListActive ? styles.textListVisible : ""}`}
         >
-          text
-        </Link>
+          <Link
+            className={`${styles.navigationLink} ${textActive ? styles.navigationLinkActive : ""}`.trim()}
+            href={localizedPath("/text", locale)}
+          >
+            text
+          </Link>
+          <TextList
+            className={styles.textList}
+            texts={initialTexts}
+          />
+        </div>
         <a className={styles.navigationLink} href={"https://log.doheekwak.com"} target="_blank">
           log
         </a>

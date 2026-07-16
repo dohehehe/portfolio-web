@@ -14,6 +14,41 @@ function normalizeTextRecord(record, locale) {
   };
 }
 
+export async function getNavigationTextListData() {
+  const supabase = createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("text")
+    .select(TEXT_COLUMNS)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    return [];
+  }
+
+  return sortByYearDesc(data ?? []);
+}
+
+export async function getTexts(locale = DEFAULT_LOCALE) {
+  const records = await getNavigationTextListData();
+
+  return records.map((record) => normalizeTextRecord(record, locale));
+}
+
+export async function getTextById(id, locale = DEFAULT_LOCALE) {
+  const supabase = createSupabaseServerClient();
+  const { data, error } = await supabase
+    .from("text")
+    .select(TEXT_COLUMNS)
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    return null;
+  }
+
+  return normalizeTextRecord(data, locale);
+}
+
 export async function getTextsByWorkId(workId, locale = DEFAULT_LOCALE) {
   const supabase = createSupabaseServerClient();
   const { data, error } = await supabase

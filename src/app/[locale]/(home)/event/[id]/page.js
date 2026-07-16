@@ -5,8 +5,27 @@ import EventGallery from "@/components/event/EventGallery";
 import { getProjectsAndWorksByEventId } from "@/lib/data/cv";
 import { getEventById } from "@/lib/data/event";
 import { getTextsByEventId } from "@/lib/data/text";
+import {
+  buildDetailPageMetadata,
+  getEventMetadata,
+} from "@/lib/locale/metadata";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import styles from "@/components/event/EventDetailPage.module.css";
+
+export async function generateMetadata({ params }) {
+  const { locale, id } = await params;
+  const event = await getEventById(id, locale);
+
+  if (!event) {
+    return { title: "Not found" };
+  }
+
+  return buildDetailPageMetadata(
+    `/event/${id}`,
+    locale,
+    getEventMetadata(event, locale),
+  );
+}
 
 export default async function EventDetailPage({ params }) {
   const { locale, id } = await params;
