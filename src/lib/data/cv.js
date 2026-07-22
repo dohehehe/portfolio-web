@@ -4,6 +4,28 @@ import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
+const CV_COLUMNS = `
+  id,
+  created_at,
+  year,
+  title_ko,
+  title_en,
+  event_title_ko,
+  event_title_en,
+  exhibition_id,
+  type_id,
+  event:exhibition_id (
+    id,
+    title_ko,
+    title_en,
+    date,
+    space_ko,
+    space_en
+  )
+`;
+
+const CV_TYPE_COLUMNS = "id,created_at,name_ko,name_en";
+
 function normalizeCvRecord(record, locale) {
   const event = record.event;
   const eventTitle =
@@ -12,12 +34,22 @@ function normalizeCvRecord(record, locale) {
 
   return {
     id: record.id,
+    typeId: record.type_id ?? null,
     eventId: record.exhibition_id ?? event?.id ?? null,
     year: record.year,
     title: pickLocalized(record, "title", locale),
     eventTitle,
     date: event?.date ?? null,
     space: event ? pickLocalized(event, "space", locale) : null,
+    created_at: record.created_at,
+  };
+}
+
+function normalizeCvTypeRecord(record, locale) {
+  return {
+    id: record.id,
+    name: pickLocalized(record, "name", locale),
+    created_at: record.created_at,
   };
 }
 
@@ -116,4 +148,58 @@ export async function getProjectsAndWorksByEventId(
   }
 
   return sortByYearDesc(items);
+}
+
+export async function getCvsGroupedByType(locale = DEFAULT_LOCALE) {
+  const supabase = createSupabaseServerClient();
+  const [typesResult, cvsResult] = await Promise.all([
+    supabase
+      .from("cv_type")
+      .select(CV_TYPE_COLUMNS)
+      .order("created_at", { ascending: true }),
+    supabase.from("cv").select(CV_COLUMNS),
+  ]);
+
+  if (typesResult.error || cvsResult.error) {
+    return [];
+  }
+
+  const types = (typesResult.data ?? []).map((type) =>
+    normalizeCvTypeRecord(type, locale),
+  );
+  const cvs = sortByYearDesc(
+    (cvsResult.data ?? []).map((cv) => normalizeCvRecord(cv, locale)),
+  );
+
+  const byTypeId = new Map();
+
+  for (const cv of cvs) {
+    const key = cv.typeId ?? "__none__";
+
+    if (!byTypeId.has(key)) {
+      byTypeId.set(key, []);
+    }
+
+    byTypeId.get(key).push(cv);
+  }
+
+  const groups = types
+    .map((type) => ({
+      id: type.id,
+      name: type.name,
+      items: byTypeId.get(type.id) ?? [],
+    }))
+    .filter((group) => group.items.length > 0);
+
+  const uncategorized = byTypeId.get("__none__") ?? [];
+
+  if (uncategorized.length > 0) {
+    groups.push({
+      id: "__none__",
+      name: locale === "en" ? "Other" : "기타",
+      items: uncategorized,
+    });
+  }
+
+  return groups;
 }

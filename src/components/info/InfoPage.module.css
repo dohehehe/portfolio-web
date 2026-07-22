@@ -1,0 +1,135 @@
+.section {
+  padding-top: 60px;
+  position: relative;
+}
+
+.bio {
+  max-width: 52vw;
+  margin-left: 20px;
+  font-size: 1.4rem;
+  line-height: 1.55;
+  word-break: keep-all;
+}
+
+.bioText {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+.email {
+  display: inline-block;
+  margin-top: 20px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.email:hover {
+  text-decoration: underline;
+}
+
+.cvSection {
+  margin-top: 80px;
+  margin-left: 20px;
+  padding-bottom: 80px;
+  max-width: 52vw;
+}
+
+.cvGroups {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.cvGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cvType {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.cvList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 1.35rem;
+}
+
+.cvItem {
+  margin: 0;
+}
+
+.cvLink {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cvLink:hover .cvTitle {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.cvItem:not(:has(.cvLink)) {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.cvYear {
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  flex-shrink: 0;
+  width: 48px;
+}
+
+:global(html[lang="en"]) .cvYear {
+  font-weight: 500;
+}
+
+.cvBody {
+  min-width: 0;
+}
+
+.cvTitleEn {
+  font-style: italic;
+}
+
+.cvMeta {
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+  .section {
+    padding: 40px 12px;
+  }
+
+  .bio,
+  .cvSection {
+    max-width: 100%;
+    margin-left: 0;
+  }
+
+  .cvSection {
+    margin-top: 48px;
+    padding-bottom: 40px;
+  }
+
+  .bio {
+    font-size: 1.3rem;
+  }
+
+  .cvList {
+    font-size: 1.3rem;
+  }
+}
