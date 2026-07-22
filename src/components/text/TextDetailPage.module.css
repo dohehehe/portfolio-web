@@ -1,0 +1,95 @@
+.section {
+  padding-top: 60px;
+  position: relative;
+}
+
+.textHeader {
+  position: fixed;
+  top: 45px;
+  left: calc(20% + 240px);
+  font-size: 1.4rem;
+  z-index: 2;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.year,
+.writer {
+  font-family: var(--font-barlow), sans-serif;
+  margin-bottom: 3px;
+}
+
+:global(html[lang="en"]) .year,
+:global(html[lang="en"]) .writer {
+  font-weight: 500;
+}
+
+.textBody {
+  width: 52vw;
+  margin-top: 120px;
+  margin-left: 20px;
+  position: relative;
+  z-index: 1;
+  padding-bottom: 80px;
+}
+
+.relatedPanel {
+  position: fixed;
+  top: 200px;
+  left: calc(20% + 240px);
+  width: min(280px, calc(100vw - 20% - 260px));
+  z-index: 2;
+}
+
+@media (max-width: 780px) {
+  .section {
+    padding-top: 0;
+    position: relative;
+    padding: 40px 12px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .textHeader {
+    order: 1;
+    top: unset;
+    z-index: 2;
+    font-size: 1.3rem;
+    font-weight: 400;
+    position: relative;
+    left: unset;
+  }
+
+  .title {
+    font-size: 1.55rem;
+    font-weight: 600;
+    padding-left: 15%;
+  }
+
+  .year,
+  .writer {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  .textBody {
+    order: 2;
+    width: 100%;
+    margin-top: 24px;
+    margin-left: 0;
+    padding-bottom: 40px;
+  }
+
+  .relatedPanel {
+    order: 3;
+    position: relative;
+    top: unset;
+    left: unset;
+    width: 100%;
+    padding-top: 10px;
+  }
+}

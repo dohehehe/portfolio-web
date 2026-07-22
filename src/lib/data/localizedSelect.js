@@ -72,3 +72,6 @@ export const EVENT_WORK_LINK_SELECT = `
 
 export const TEXT_COLUMNS =
   "id,created_at,year,title_ko,title_en,writer_ko,writer_en";
+
+export const TEXT_DETAIL_COLUMNS =
+  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,content_en,project_id,event_id,work_id";
