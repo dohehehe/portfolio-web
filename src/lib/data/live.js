@@ -5,18 +5,25 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 const LIVE_LIST_COLUMNS =
   "id,created_at,title_ko,title_en,space_ko,space_en,start_at,end_at,link_url";
 
-export async function getLives(locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("live")
-    .select(LIVE_LIST_COLUMNS)
-    .order("start_at", { ascending: false });
+function getTodayDateString() {
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Seoul",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date());
+}
 
-  if (error) {
-    return [];
+function isOngoing(startAt, endAt, today) {
+  if (!startAt || !endAt) {
+    return false;
   }
 
-  return (data ?? []).map((record) => ({
+  return startAt <= today && today <= endAt;
+}
+
+function mapLiveRecord(record, locale, today = null) {
+  return {
     id: record.id,
     createdAt: record.created_at,
     title: pickLocalized(record, "title", locale),
@@ -24,7 +31,26 @@ export async function getLives(locale = DEFAULT_LOCALE) {
     startAt: record.start_at,
     endAt: record.end_at,
     linkUrl: record.link_url,
-  }));
+    ...(today
+      ? { isOngoing: isOngoing(record.start_at, record.end_at, today) }
+      : {}),
+  };
+}
+
+export async function getLives(locale = DEFAULT_LOCALE) {
+  const supabase = createSupabaseServerClient();
+  const today = getTodayDateString();
+  const { data, error } = await supabase
+    .from("live")
+    .select(LIVE_LIST_COLUMNS)
+    .gte("end_at", today)
+    .order("start_at", { ascending: true });
+
+  if (error) {
+    return [];
+  }
+
+  return (data ?? []).map((record) => mapLiveRecord(record, locale, today));
 }
 
 export async function getLiveById(id, locale = DEFAULT_LOCALE) {
@@ -40,14 +66,8 @@ export async function getLiveById(id, locale = DEFAULT_LOCALE) {
   }
 
   return {
-    id: data.id,
-    createdAt: data.created_at,
-    title: pickLocalized(data, "title", locale),
+    ...mapLiveRecord(data, locale),
     titleKo: pickLocalized(data, "title", "ko"),
     titleEn: pickLocalized(data, "title", "en"),
-    space: pickLocalized(data, "space", locale),
-    startAt: data.start_at,
-    endAt: data.end_at,
-    linkUrl: data.link_url,
   };
 }

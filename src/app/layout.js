@@ -15,8 +15,8 @@ import { SITE_URL } from "@/lib/site/constants";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "dohee kwak",
-  description: "dohee kwak",
+  title: "dohee kwak 곽도희",
+  description: "dohee kwak 곽도희",
 };
 
 export default async function RootLayout({ children }) {
