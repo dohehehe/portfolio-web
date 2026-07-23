@@ -102,10 +102,10 @@ function normalizeCvRecord(record, locale) {
   const event = record.event;
   const type = record.cv_type
     ? {
-        id: record.cv_type.id,
-        nameKo: record.cv_type.name_ko ?? null,
-        nameEn: record.cv_type.name_en ?? null,
-      }
+      id: record.cv_type.id,
+      nameKo: record.cv_type.name_ko ?? null,
+      nameEn: record.cv_type.name_en ?? null,
+    }
     : null;
 
   return {
@@ -196,7 +196,7 @@ function buildMergedGroups(types, byTypeId, locale) {
   if (exhibitionItems.length > 0) {
     mergeSlots.set(EXHIBITION_GROUP_ID, {
       id: EXHIBITION_GROUP_ID,
-      name: locale === "en" ? "exhibition" : "전시",
+      name: locale === "en" ? "Exhibition" : "전시",
       items: sortByYearDesc(exhibitionItems),
       typeIds: new Set(exhibitionTypeIds),
     });
@@ -213,7 +213,7 @@ function buildMergedGroups(types, byTypeId, locale) {
 
     mergeSlots.set(PERFORMANCE_SCREENING_GROUP_ID, {
       id: PERFORMANCE_SCREENING_GROUP_ID,
-      name: locale === "en" ? "performance / screening" : "퍼포먼스·상영",
+      name: locale === "en" ? "Performance / Screening" : "퍼포먼스 · 상영",
       items: performance.items,
       typeIds: new Set(performance.typeIds),
     });

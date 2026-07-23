@@ -32,7 +32,7 @@ export default async function InfoPage({ params }) {
       <section className={`${barlow.variable} ${styles.section}`}>
         <InfoBio info={info} />
       </section>
-      <section className={`${barlow.variable} ${styles.cvSection}`}>
+      <section className={`${barlow.variable} ${styles.section}`}>
         <InfoCvList groups={cvGroups} locale={locale} />
       </section>
     </>

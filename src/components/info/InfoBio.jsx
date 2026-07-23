@@ -13,6 +13,7 @@ export default function InfoBio({ info }) {
           {info.email}
         </a>
       ) : null}
+      <a className={styles.email} target="_blank" href={"https://www.instagram.com/dheeeep"}>@dheeeep</a>
     </div>
   );
 }
