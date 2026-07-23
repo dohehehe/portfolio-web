@@ -1,8 +1,9 @@
 import { getFirstGalleryImageUrl } from "@/components/admin/forms/formUtils";
 import { getCanonicalUrl } from "@/lib/locale/metadata";
 import {
+  ARTIST_NAME_EN,
   ARTIST_NAME_KO,
-  SITE_NAME,
+  getLocalizedArtistName,
   SITE_URL,
 } from "@/lib/site/constants";
 
@@ -16,11 +17,11 @@ function extractFirstIsoDate(dateString) {
   return `${match[1]}-${match[2]}-${match[3]}`;
 }
 
-function buildArtistReference() {
+function buildArtistReference(locale) {
   return {
     "@type": "Person",
-    name: ARTIST_NAME_KO,
-    alternateName: SITE_NAME,
+    name: getLocalizedArtistName(locale),
+    alternateName: [ARTIST_NAME_KO, ARTIST_NAME_EN],
     url: SITE_URL,
   };
 }
@@ -29,8 +30,8 @@ export function buildPersonJsonLd(locale) {
   return {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: locale === "ko" ? ARTIST_NAME_KO : SITE_NAME,
-    alternateName: [ARTIST_NAME_KO, SITE_NAME],
+    name: getLocalizedArtistName(locale),
+    alternateName: [ARTIST_NAME_KO, ARTIST_NAME_EN],
     url: getCanonicalUrl("/info", locale),
     sameAs: [SITE_URL],
     jobTitle: locale === "ko" ? "예술가" : "Artist",
@@ -48,7 +49,7 @@ export function buildVisualArtworkJsonLd({ item, locale, pathname }) {
     "@context": "https://schema.org",
     "@type": "VisualArtwork",
     name: item.title || "Work",
-    creator: buildArtistReference(),
+    creator: buildArtistReference(locale),
     ...(item.year ? { dateCreated: item.year } : {}),
     ...(item.medium ? { artMedium: item.medium } : {}),
     ...(item.dimension ? { size: item.dimension } : {}),
@@ -77,7 +78,7 @@ export function buildExhibitionEventJsonLd({ event, locale, pathname }) {
       : {}),
     ...(imageUrl ? { image: imageUrl } : {}),
     url: getCanonicalUrl(pathname, locale),
-    organizer: buildArtistReference(),
+    organizer: buildArtistReference(locale),
   };
 }
 
