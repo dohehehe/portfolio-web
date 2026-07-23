@@ -6,6 +6,7 @@ import {
   useDeleteCv,
   useDeleteEvent,
   useDeleteInfo,
+  useDeleteLive,
   useDeleteProject,
   useDeleteText,
   useDeleteWork,
@@ -14,6 +15,7 @@ import { useCvs } from "@/hooks/cv";
 import { useCvTypes } from "@/hooks/cv_type";
 import { useEvents } from "@/hooks/event";
 import { useInfos } from "@/hooks/info";
+import { useLives } from "@/hooks/live";
 import { useProjects } from "@/hooks/project";
 import { useTexts } from "@/hooks/text";
 import { useWorks } from "@/hooks/work";
@@ -21,20 +23,26 @@ import CvGroupedTable from "./CvGroupedTable";
 import ProjectWorkGroupedTable from "./ProjectWorkGroupedTable";
 import styles from "./AdminDataTables.module.css";
 
-const ADMIN_TABLES = ["cv", "event", "project-work", "text", "info"];
+const ADMIN_TABLES = ["cv", "event", "live", "project-work", "text", "info"];
 
 const ADMIN_TABLE_CONFIG = {
   cv: {
     label: "CV",
     createHref: "/admin/cv/create",
     editHref: (id) => `/admin/cv/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "event_title_ko"],
+    listColumns: ["created_at", "year", "title_ko", "space_ko", "link_url"],
   },
   event: {
     label: "Event",
     createHref: "/admin/event/create",
     editHref: (id) => `/admin/event/edit/${id}`,
     listColumns: ["created_at", "date", "title_ko", "space_ko"],
+  },
+  live: {
+    label: "Live",
+    createHref: "/admin/live/create",
+    editHref: (id) => `/admin/live/edit/${id}`,
+    listColumns: ["created_at", "start_at", "end_at", "title_ko", "space_ko", "link_url"],
   },
   "project-work": {
     label: "Project / Work",
@@ -107,9 +115,10 @@ function useAdminTableData(table, enabled) {
   const cv = useCvs({ enabled: enabled && table === "cv" });
   const event = useEvents({ enabled: enabled && table === "event" });
   const info = useInfos({ enabled: enabled && table === "info" });
+  const live = useLives({ enabled: enabled && table === "live" });
   const text = useTexts({ enabled: enabled && table === "text" });
 
-  const states = { cv, event, info, text };
+  const states = { cv, event, info, live, text };
   return (
     states[table] ?? {
       data: [],
@@ -206,6 +215,7 @@ export default function AdminDataTables() {
   const cvDelete = useDeleteCv();
   const eventDelete = useDeleteEvent();
   const infoDelete = useDeleteInfo();
+  const liveDelete = useDeleteLive();
   const projectDelete = useDeleteProject();
   const textDelete = useDeleteText();
   const workDelete = useDeleteWork();
@@ -215,12 +225,14 @@ export default function AdminDataTables() {
       cv: cvDelete.remove,
       event: eventDelete.remove,
       info: infoDelete.remove,
+      live: liveDelete.remove,
       text: textDelete.remove,
     }),
     [
       cvDelete.remove,
       eventDelete.remove,
       infoDelete.remove,
+      liveDelete.remove,
       textDelete.remove,
     ],
   );

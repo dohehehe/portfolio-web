@@ -1,4 +1,10 @@
-import { Archivo_Narrow, Barlow, Gothic_A1, Inter } from "next/font/google";
+import {
+  Archivo_Narrow,
+  Barlow,
+  Gothic_A1,
+  Inter,
+  Kapakana,
+} from "next/font/google";
 
 export const archivoNarrow = Archivo_Narrow({
   subsets: ["latin"],
@@ -24,5 +30,12 @@ export const barlow = Barlow({
   subsets: ["latin"],
   weight: ["400", "500"],
   variable: "--font-barlow",
+  display: "swap",
+});
+
+export const kapakana = Kapakana({
+  subsets: ["latin"],
+  weight: "variable",
+  variable: "--font-kapakana",
   display: "swap",
 });
