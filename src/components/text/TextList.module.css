@@ -7,7 +7,6 @@
   padding-right: 13px;
   font-size: 1.35rem;
   color: #1c1c1c;
-  width: 100%;
   height: auto;
   padding-bottom: 10px;
   max-height: 100dvh;
@@ -15,8 +14,6 @@
   scrollbar-width: none;
   -ms-overflow-style: none;
   position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 
 .item {
@@ -45,7 +42,6 @@
 .year {
   color: #202020;
   text-align: right;
-  width: calc(20% + 270px);
   font-family: var(--font-barlow), sans-serif;
   font-size: 1.3rem;
   font-weight: 400;
@@ -54,11 +50,9 @@
 
 @media (max-width: 780px) {
   .list {
-    padding-right: 13px;
-    transform: unset;
-    left: 0;
-    width: 80vw;
+    padding-right: 10px;
     gap: 2px;
+    width: 62vw;
   }
 
   .link {

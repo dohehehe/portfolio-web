@@ -25,6 +25,11 @@ function normalizeTextRecord(record, locale) {
   };
 }
 
+function extractYear(dateString) {
+  const match = dateString?.match(/\d{4}/);
+  return match?.[0] ?? null;
+}
+
 function formatWorkMeta({ year, medium, dimension }) {
   const rest = [medium, dimension].filter(Boolean).join(" ");
 
@@ -136,7 +141,7 @@ export async function getRelatedItemsByText(text, locale = DEFAULT_LOCALE) {
       type: "event",
       id: event.id,
       title: event.title,
-      meta: [event.date, event.space].filter(Boolean).join(", "),
+      meta: [extractYear(event.date), event.space].filter(Boolean).join(", "),
       href: localizedPath(`/event/${event.id}`, locale),
     });
   }

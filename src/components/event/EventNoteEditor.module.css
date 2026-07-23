@@ -12,7 +12,6 @@
   margin: 0;
   line-height: 1.8;
   margin-bottom: 20px;
-  /* text-indent: 50px; */
 }
 
 :global(html[lang="en"]) .paragraph {

@@ -2,12 +2,12 @@
  * AUTO-GENERATED FILE — DO NOT EDIT MANUALLY
  * Run `npm run db:sync` after changing Supabase tables.
  *
- * Synced at: 2026-07-23T05:05:26.330Z
+ * Synced at: 2026-07-23T09:49:31.746Z
  * Source: https://maewukpitcdwcippztnd.supabase.co
  */
 
 export const databaseSchema = {
-  "syncedAt": "2026-07-23T05:05:26.330Z",
+  "syncedAt": "2026-07-23T09:49:31.746Z",
   "supabaseUrl": "https://maewukpitcdwcippztnd.supabase.co",
   "tables": [
     {
@@ -285,6 +285,15 @@ export const databaseSchema = {
           "name": "note_en",
           "type": "unknown",
           "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "link_url",
+          "type": "string",
+          "format": "text",
           "nullable": true,
           "default": null,
           "isPrimaryKey": false,

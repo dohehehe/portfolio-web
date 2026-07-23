@@ -1,18 +1,23 @@
-.section {
-  padding-top: 60px;
-  position: relative;
+.textHeader {
+  margin-top: 60px;
+  padding: 0 20px;
+  text-align: center;
+  font-size: 1.6rem;
+  /* flex-grow: 1; */
+  /* margin-right: auto; */
 }
 
-.textHeader {
-  position: fixed;
-  top: 45px;
-  left: calc(20% + 240px);
-  font-size: 1.4rem;
-  z-index: 2;
+.section {
+  padding: 80px 20px;
+  position: relative;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 60px;
+  justify-content: center;
 }
 
 .title {
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 500;
   margin-bottom: 20px;
 }
@@ -28,22 +33,19 @@
   font-weight: 500;
 }
 
-.textBody {
-  width: 52vw;
-  margin-top: 120px;
-  margin-left: 20px;
-  position: relative;
-  z-index: 1;
-  padding-bottom: 80px;
+.relatedPanel {
+  padding-top: 4px;
+  width: 300px;
+  font-size: 1.2rem;
 }
 
-.relatedPanel {
-  position: fixed;
-  top: 200px;
-  left: calc(20% + 240px);
-  width: min(280px, calc(100vw - 20% - 260px));
-  z-index: 2;
+
+.textBody {
+  width: 530px;
+  min-width: 470px;
+  margin-top: 0px;
 }
+
 
 @media (max-width: 780px) {
   .section {
@@ -55,19 +57,16 @@
   }
 
   .textHeader {
-    order: 1;
-    top: unset;
-    z-index: 2;
     font-size: 1.3rem;
     font-weight: 400;
     position: relative;
     left: unset;
+    margin-top: 50px;
   }
 
   .title {
     font-size: 1.55rem;
     font-weight: 600;
-    padding-left: 15%;
   }
 
   .year,
@@ -77,8 +76,8 @@
   }
 
   .textBody {
-    order: 2;
     width: 100%;
+    min-width: unset;
     margin-top: 24px;
     margin-left: 0;
     padding-bottom: 40px;

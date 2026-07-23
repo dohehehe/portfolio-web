@@ -31,7 +31,6 @@ export default async function TextDetailPage({ params }) {
   }
 
   const relatedItems = await getRelatedItemsByText(text, locale);
-  const titles = [...new Set([text.titleKo, text.titleEn].filter(Boolean))];
 
   return (
     <>
@@ -42,26 +41,22 @@ export default async function TextDetailPage({ params }) {
           pathname: `/text/${id}`,
         })}
       />
+      <div className={styles.textHeader}>
+        <h1 className={styles.title}>{text.title || "Untitled"}</h1>
+        {text.writer ? <p className={styles.writer}>{text.writer}</p> : null}
+        {text.year ? <p className={styles.year}>{text.year}</p> : null}
+
+
+
+      </div>
       <section className={`${barlow.variable} ${styles.section}`}>
-        <div className={styles.textHeader}>
-          <h1 className={styles.title}>
-            {titles.length > 0
-              ? titles.map((title) => (
-                  <span key={title} className={styles.titleLine}>
-                    {title}
-                  </span>
-                ))
-              : "Untitled"}
-          </h1>
-          {text.year ? <p className={styles.year}>{text.year}</p> : null}
-          {text.writer ? <p className={styles.writer}>{text.writer}</p> : null}
+        <div className={styles.relatedPanel}>
+          <TextRelatedList items={relatedItems} locale={locale} />
         </div>
         <div className={styles.textBody}>
           <TextEditor data={text.content} />
         </div>
-        <div className={styles.relatedPanel}>
-          <TextRelatedList items={relatedItems} locale={locale} />
-        </div>
+
       </section>
     </>
   );
