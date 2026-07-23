@@ -28,7 +28,7 @@ const ADMIN_TABLE_CONFIG = {
     label: "CV",
     createHref: "/admin/cv/create",
     editHref: (id) => `/admin/cv/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "event_title_ko"],
+    listColumns: ["created_at", "year", "title_ko", "space_ko", "link_url"],
   },
   event: {
     label: "Event",

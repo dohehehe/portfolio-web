@@ -22,11 +22,12 @@ export default function CvCreateForm() {
 
   const [titleKo, setTitleKo] = useState("");
   const [titleEn, setTitleEn] = useState("");
+  const [spaceKo, setSpaceKo] = useState("");
+  const [spaceEn, setSpaceEn] = useState("");
   const [year, setYear] = useState("");
   const [typeId, setTypeId] = useState("");
   const [exhibitionId, setExhibitionId] = useState("");
-  const [eventTitleKo, setEventTitleKo] = useState("");
-  const [eventTitleEn, setEventTitleEn] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
   const [selectedProjectIds, setSelectedProjectIds] = useState([]);
   const [selectedWorkIds, setSelectedWorkIds] = useState([]);
   const [submitError, setSubmitError] = useState(null);
@@ -46,11 +47,12 @@ export default function CvCreateForm() {
       const created = await create({
         title_ko: titleKo.trim() || null,
         title_en: titleEn.trim() || null,
+        space_ko: spaceKo.trim() || null,
+        space_en: spaceEn.trim() || null,
         year: year.trim() || null,
         type_id: typeId || null,
         exhibition_id: exhibitionId || null,
-        event_title_ko: eventTitleKo.trim() || null,
-        event_title_en: eventTitleEn.trim() || null,
+        link_url: linkUrl.trim() || null,
       });
 
       await syncLinkCvItems({
@@ -103,6 +105,26 @@ export default function CvCreateForm() {
         </label>
 
         <label className={styles.label}>
+          space_ko
+          <input
+            className={styles.input}
+            type="text"
+            value={spaceKo}
+            onChange={(event) => setSpaceKo(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
+          space_en
+          <input
+            className={styles.input}
+            type="text"
+            value={spaceEn}
+            onChange={(event) => setSpaceEn(event.target.value)}
+          />
+        </label>
+
+        <label className={styles.label}>
           year
           <input
             className={styles.input}
@@ -133,22 +155,13 @@ export default function CvCreateForm() {
         </label>
 
         <label className={styles.label}>
-          event_title_ko
+          link_url
           <input
             className={styles.input}
-            type="text"
-            value={eventTitleKo}
-            onChange={(event) => setEventTitleKo(event.target.value)}
-          />
-        </label>
-
-        <label className={styles.label}>
-          event_title_en
-          <input
-            className={styles.input}
-            type="text"
-            value={eventTitleEn}
-            onChange={(event) => setEventTitleEn(event.target.value)}
+            type="url"
+            value={linkUrl}
+            onChange={(event) => setLinkUrl(event.target.value)}
+            placeholder="https://"
           />
         </label>
 

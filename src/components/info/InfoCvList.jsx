@@ -2,29 +2,52 @@ import Link from "next/link";
 import { localizedPath } from "@/lib/locale/routing";
 import styles from "./InfoPage.module.css";
 
-function CvItem({ item, locale }) {
-  const label = item.eventTitle || item.title;
-
-  if (!label && !item.date && !item.space && !item.year) {
+function formatTitle(label, locale, emphasizeTitle) {
+  if (!label) {
     return null;
   }
 
-  const content = (
+  if (!emphasizeTitle) {
+    return label;
+  }
+
+  return locale === "en" ? label : `《${label}》`;
+}
+
+function CvItemContent({ item, locale }) {
+  const emphasizeTitle = Boolean(item.emphasizeTitle);
+  const titleClassName = [
+    styles.cvTitle,
+    emphasizeTitle && locale === "en" ? styles.cvTitleEn : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
+  return (
     <>
       {item.year ? <span className={styles.cvYear}>{item.year}</span> : null}
       <span className={styles.cvBody}>
-        {label ? (
-          <span
-            className={`${styles.cvTitle} ${locale === "en" ? styles.cvTitleEn : ""}`.trim()}
-          >
-            {locale === "en" ? `${label}` : `《${label}》`}
+        {item.title ? (
+          <span className={titleClassName}>
+            {formatTitle(item.title, locale, emphasizeTitle)}
             {item.space ? ", " : null}
           </span>
         ) : null}
         {item.space ? <span className={styles.cvMeta}>{item.space}</span> : null}
+        {item.suffix ? (
+          <span className={styles.cvSuffix}> {item.suffix}</span>
+        ) : null}
       </span>
     </>
   );
+}
+
+function CvItem({ item, locale }) {
+  if (!item.title && !item.space && !item.date && !item.year) {
+    return null;
+  }
+
+  const content = <CvItemContent item={item} locale={locale} />;
 
   if (item.eventId) {
     return (
@@ -35,6 +58,21 @@ function CvItem({ item, locale }) {
         >
           {content}
         </Link>
+      </li>
+    );
+  }
+
+  if (item.linkUrl) {
+    return (
+      <li className={styles.cvItem}>
+        <a
+          href={item.linkUrl}
+          className={styles.cvLink}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {content}
+        </a>
       </li>
     );
   }
