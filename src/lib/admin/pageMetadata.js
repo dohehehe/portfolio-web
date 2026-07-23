@@ -81,3 +81,17 @@ export function getInfoEditMetadata() {
     robots: { index: false, follow: false },
   };
 }
+
+export function getLiveCreateMetadata() {
+  return {
+    title: "Create Live | Admin",
+    robots: { index: false, follow: false },
+  };
+}
+
+export function getLiveEditMetadata() {
+  return {
+    title: "Edit Live | Admin",
+    robots: { index: false, follow: false },
+  };
+}
