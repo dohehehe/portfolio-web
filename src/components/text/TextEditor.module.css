@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
-  font-size: 1.38rem;
+  font-size: 1.42rem;
   line-height: 1.8;
   width: 100%;
   word-break: keep-all;
@@ -11,7 +11,8 @@
 .paragraph {
   margin: 0;
   line-height: 1.8;
-  margin-bottom: 7px;
+  margin-bottom: 20px;
+  /* text-indent: 50px; */
 }
 
 :global(html[lang="en"]) .paragraph {
@@ -47,7 +48,7 @@
 }
 
 .caption {
-  margin-top: 8px;
+  margin-top: 3px;
   color: #666666;
   font-size: 1.2rem;
 }
@@ -64,7 +65,7 @@
 
 @media (max-width: 780px) {
   .editorContent {
-    font-size: 1.3rem;
+    font-size: 1.35rem;
   }
 
   .paragraph {
