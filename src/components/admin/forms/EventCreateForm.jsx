@@ -16,6 +16,8 @@ export default function EventCreateForm() {
   const contentEnRef = useRef(null);
   const creditKoRef = useRef(null);
   const creditEnRef = useRef(null);
+  const noteKrRef = useRef(null);
+  const noteEnRef = useRef(null);
 
   const [titleKo, setTitleKo] = useState("");
   const [titleEn, setTitleEn] = useState("");
@@ -45,6 +47,8 @@ export default function EventCreateForm() {
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
+        note_kr: await saveEditorContent(noteKrRef, "note_kr"),
+        note_en: await saveEditorContent(noteEnRef, "note_en"),
         gallery: serializeGallery(gallery),
         file_link: serializeGallery(fileLink),
       });
@@ -143,6 +147,16 @@ export default function EventCreateForm() {
         <div className={styles.field}>
           credit_en
           <Editor ref={creditEnRef} holderId="editor-event-credit-en" />
+        </div>
+
+        <div className={styles.field}>
+          note_kr
+          <Editor ref={noteKrRef} holderId="editor-event-note-kr" />
+        </div>
+
+        <div className={styles.field}>
+          note_en
+          <Editor ref={noteEnRef} holderId="editor-event-note-en" />
         </div>
 
         <GalleryInput

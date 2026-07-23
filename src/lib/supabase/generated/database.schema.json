@@ -1,5 +1,5 @@
 {
-  "syncedAt": "2026-07-23T05:05:26.330Z",
+  "syncedAt": "2026-07-23T09:49:31.746Z",
   "supabaseUrl": "https://maewukpitcdwcippztnd.supabase.co",
   "tables": [
     {
@@ -277,6 +277,15 @@
           "name": "note_en",
           "type": "unknown",
           "format": "jsonb",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "link_url",
+          "type": "string",
+          "format": "text",
           "nullable": true,
           "default": null,
           "isPrimaryKey": false,

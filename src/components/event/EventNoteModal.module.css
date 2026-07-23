@@ -1,0 +1,93 @@
+.trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #222222;
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 1.4rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  cursor: pointer;
+  position: fixed;
+  bottom: 15px;
+  right: 20px;
+  z-index: 20;
+}
+
+.trigger:hover {
+  opacity: 0.55;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100dvw;
+  height: 100dvh;
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: rgba(237, 255, 254, 0.5);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  transition: opacity 880ms ease;
+}
+
+.overlayVisible {
+  opacity: 1;
+}
+
+.closeButton {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: rgba(36, 36, 36, 0.72);
+  font-family: var(--font-gothic-a1), sans-serif;
+  font-size: 3.2rem;
+  font-weight: 100;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  color: #111111;
+}
+
+.panel {
+  margin-top: auto;
+  margin-left: auto;
+  width: min(440px, 100%);
+  max-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 30px;
+  box-sizing: border-box;
+}
+
+@media (max-width: 780px) {
+  .trigger {
+    font-size: 1.3rem;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .panel {
+    padding: 0 10px;
+  }
+}
