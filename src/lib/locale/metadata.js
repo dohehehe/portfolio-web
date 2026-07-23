@@ -1,6 +1,10 @@
 import { getFirstGalleryImageUrl } from "@/components/admin/forms/formUtils";
 import { getEditorParagraphPlainText } from "@/lib/editorjs/getEditorParagraphPlainText";
-import { ARTIST_NAME_KO, SITE_NAME, SITE_URL } from "@/lib/site/constants";
+import {
+  getLocalizedArtistName,
+  SITE_NAME,
+  SITE_URL,
+} from "@/lib/site/constants";
 import { localizedPath, stripLocaleFromPathname } from "./routing";
 
 export function buildListPageTitle(label) {
@@ -127,7 +131,7 @@ function formatLocalizedTitle(title, locale, koWrapper) {
 }
 
 function formatWorkMetadataPrefix(item, locale) {
-  const prefixParts = [ARTIST_NAME_KO];
+  const prefixParts = [getLocalizedArtistName(locale)];
   const formattedTitle = formatLocalizedTitle(item.title, locale, {
     open: "〈",
     close: "〉",

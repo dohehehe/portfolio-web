@@ -129,9 +129,14 @@ export default function Navigation({
           className={`${styles.navigationLink} ${infoActive ? styles.navigationLinkActive : ""}`.trim()}
           href={localizedPath("/info", locale)}
         >
+          info
+        </Link>
+        <Link
+          className={`${styles.navigationLink} ${styles.HomeLink}`.trim()}
+          href={localizedPath("/", locale)}
+        >
           dohee kwak
         </Link>
-
         <LanguageSwitch />
       </nav>
     </header>

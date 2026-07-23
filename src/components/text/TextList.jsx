@@ -36,9 +36,6 @@ export default function TextList({
               className={styles.link}
               href={localizedPath(`/text/${text.id}`, locale)}
             >
-              {text.year ? (
-                <span className={styles.year}>{text.year}</span>
-              ) : null}
               <span className={styles.title}>
                 {title || "-"}
                 {writer ? `, ${writer}` : ""}

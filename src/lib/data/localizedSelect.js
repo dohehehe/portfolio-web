@@ -25,9 +25,16 @@ export const CV_LINK_SELECT = `
     year,
     title_ko,
     title_en,
-    event_title_ko,
-    event_title_en,
+    space_ko,
+    space_en,
+    link_url,
     exhibition_id,
+    type_id,
+    cv_type:type_id (
+      id,
+      name_ko,
+      name_en
+    ),
     event:exhibition_id (
       id,
       title_ko,
@@ -72,3 +79,6 @@ export const EVENT_WORK_LINK_SELECT = `
 
 export const TEXT_COLUMNS =
   "id,created_at,year,title_ko,title_en,writer_ko,writer_en";
+
+export const TEXT_DETAIL_COLUMNS =
+  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,content_en,project_id,event_id,work_id";

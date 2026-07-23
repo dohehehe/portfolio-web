@@ -1,0 +1,54 @@
+.relatedContent {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+  word-break: keep-all;
+  font-size: 1.2rem;
+}
+
+.relatedList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+}
+
+.eventItems {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+  gap: 4px;
+}
+
+.workItems {
+  font-size: 1.1rem;
+  gap: 6px;
+  margin-left: 1px;
+}
+
+.relatedLink {
+  display: block;
+  color: inherit;
+}
+
+.relatedItemRow {
+  margin: 0;
+  color: #232323;
+  line-height: 1.4;
+  text-align: left;
+}
+
+.relatedTitle {
+  margin: 0;
+}
+
+.relatedTitleEn {
+  font-style: italic;
+  font-weight: 500;
+}
+
+.relatedMeta {
+  margin: 0;
+}
+
+@media (max-width: 780px) {}

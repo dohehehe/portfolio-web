@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { barlow } from "@/app/fonts";
 import EventFileGallery from "@/components/event/EventFileGallery";
 import EventGallery from "@/components/event/EventGallery";
+import EventNoteModal from "@/components/event/EventNoteModal";
 import JsonLd from "@/components/seo/JsonLd";
 import { getProjectsAndWorksByEventId } from "@/lib/data/cv";
 import { getEventById } from "@/lib/data/event";
@@ -55,7 +56,7 @@ export default async function EventDetailPage({ params }) {
         })}
       />
       <section className={`${barlow.variable} ${styles.section}`}>
-        <div className={styles.eventHeader}>
+        <header className={styles.eventHeader}>
           <h1 className={styles.title}>
             {titles.length > 0
               ? titles.map((title) => (
@@ -67,7 +68,8 @@ export default async function EventDetailPage({ params }) {
           </h1>
           {event.date ? <p className={styles.date}>{event.date}</p> : null}
           {event.space ? <p>{event.space}</p> : null}
-        </div>
+
+        </header>
         <div className={styles.eventGallery}>
           <EventGallery items={galleryItems} />
         </div>
@@ -80,6 +82,7 @@ export default async function EventDetailPage({ params }) {
             locale={locale}
           />
         </div>
+        <EventNoteModal data={event.note} />
       </section>
 
     </>

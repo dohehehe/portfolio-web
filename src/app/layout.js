@@ -11,12 +11,12 @@ import { getNavigationWorkListData } from "@/lib/data/navigationWorkList";
 import { getNavigationTextListData } from "@/lib/data/text";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { LOCALE_HEADER } from "@/lib/locale/routing";
-import { SITE_URL } from "@/lib/site/constants";
+import { SITE_NAME, SITE_URL } from "@/lib/site/constants";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
-  title: "dohee kwak",
-  description: "dohee kwak",
+  title: SITE_NAME,
+  description: SITE_NAME,
 };
 
 export default async function RootLayout({ children }) {
