@@ -80,6 +80,10 @@
   text-decoration: underline;
 }
 
+.HomeLink {
+  margin-right: 90px;
+}
+
 .navigationLink:hover .cyclingLabelWrap,
 .navigationLinkActive .cyclingLabelWrap {
   text-decoration: underline;
@@ -123,4 +127,9 @@
   .navigationSection {
     position: relative;
   }
+
+  .HomeLink {
+    margin-right: 50px;
+  }
+
 }
