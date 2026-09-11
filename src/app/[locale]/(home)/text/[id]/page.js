@@ -8,8 +8,13 @@ import {
   buildDetailPageMetadata,
   getTextMetadata,
 } from "@/lib/locale/metadata";
+import { generateTextDetailStaticParams } from "@/lib/data/staticParams";
 import { buildArticleJsonLd } from "@/lib/structured-data/buildJsonLd";
 import styles from "@/components/text/TextDetailPage.module.css";
+
+export async function generateStaticParams() {
+  return generateTextDetailStaticParams();
+}
 
 export async function generateMetadata({ params }) {
   const { locale, id } = await params;

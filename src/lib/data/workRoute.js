@@ -1,3 +1,5 @@
+import "server-only";
+
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { normalizeRecord } from "@/lib/locale/normalizeRecord";
 import { getCvsByProjectId, getCvsByWorkId } from "@/lib/data/cv";

@@ -1,6 +1,7 @@
 import { apiError, supabaseError } from "@/lib/api/errors";
 import { requireAdmin } from "@/lib/api/requireAdmin";
 import { assertValidTable } from "@/lib/api/resources";
+import { revalidateDataCache } from "@/lib/data/revalidate";
 import { getTableColumns } from "@/lib/supabase/schema";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
@@ -71,6 +72,8 @@ export function createCollectionHandlers(table) {
           return supabaseError(error, `Failed to create ${label}.`);
         }
 
+        revalidateDataCache(table, { id: data.id, record: data });
+
         return Response.json(data, { status: 201 });
       } catch (error) {
         return apiError(error.message, 500);
@@ -140,6 +143,8 @@ export function createItemHandlers(table) {
           return supabaseError(error, `Failed to update ${label}.`);
         }
 
+        revalidateDataCache(table, { id, record: data });
+
         return Response.json(data);
       } catch (error) {
         return apiError(error.message, 500);
@@ -170,6 +175,8 @@ export function createItemHandlers(table) {
 
           return supabaseError(error, `Failed to delete ${label}.`);
         }
+
+        revalidateDataCache(table, { id, record: data });
 
         return Response.json(data);
       } catch (error) {

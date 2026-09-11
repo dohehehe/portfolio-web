@@ -1,20 +1,39 @@
+import "server-only";
+
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { SITE_NAME } from "@/lib/site/constants";
+import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const INFO_COLUMNS = "id,created_at,email,bio_ko,bio_en";
 
-export async function getInfo(locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("info")
-    .select(INFO_COLUMNS)
-    .order("created_at", { ascending: false })
-    .limit(1)
-    .maybeSingle();
+const fetchInfoRecord = createCachedQuery(
+  async () => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("info")
+      .select(INFO_COLUMNS)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-  if (error || !data) {
+    if (error || !data) {
+      return null;
+    }
+
+    return data;
+  },
+  {
+    key: ["info-latest"],
+    tags: [DATA_CACHE_TAG.info],
+  },
+);
+
+export async function getInfo(locale = DEFAULT_LOCALE) {
+  const data = await fetchInfoRecord();
+
+  if (!data) {
     return null;
   }
 

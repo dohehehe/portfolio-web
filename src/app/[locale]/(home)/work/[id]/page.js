@@ -8,7 +8,12 @@ import {
   getLocalizedMetadata,
   getWorkMetadataSource,
 } from "@/lib/locale/metadata";
+import { generateWorkDetailStaticParams } from "@/lib/data/staticParams";
 import { buildVisualArtworkJsonLd } from "@/lib/structured-data/buildJsonLd";
+
+export async function generateStaticParams() {
+  return generateWorkDetailStaticParams();
+}
 
 export async function generateMetadata({ params }) {
   const { locale, id } = await params;

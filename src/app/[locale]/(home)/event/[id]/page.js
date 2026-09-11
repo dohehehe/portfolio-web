@@ -12,8 +12,13 @@ import {
   getEventMetadata,
 } from "@/lib/locale/metadata";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
+import { generateEventDetailStaticParams } from "@/lib/data/staticParams";
 import { buildExhibitionEventJsonLd } from "@/lib/structured-data/buildJsonLd";
 import styles from "@/components/event/EventDetailPage.module.css";
+
+export async function generateStaticParams() {
+  return generateEventDetailStaticParams();
+}
 
 export async function generateMetadata({ params }) {
   const { locale, id } = await params;
