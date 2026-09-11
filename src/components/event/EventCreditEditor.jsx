@@ -1,10 +1,12 @@
-import { normalizeEditorHtml, getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
+import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
+import { createEditorHtmlApplier } from "@/lib/editorjs/footnotes";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
-import Caption from "@/components/ui/Caption";
+import DocumentFootnotes from "@/components/work/work/DocumentFootnotes";
+import footnoteStyles from "@/components/work/work/EditorFootnotes.module.css";
 import styles from "./EventCreditEditor.module.css";
 
-function ParagraphBlock({ text }) {
+function ParagraphBlock({ text, applyHtml }) {
   if (!text) {
     return null;
   }
@@ -12,12 +14,12 @@ function ParagraphBlock({ text }) {
   return (
     <p
       className={styles.paragraph}
-      dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(text) }}
+      dangerouslySetInnerHTML={{ __html: applyHtml(text) }}
     />
   );
 }
 
-function HeaderBlock({ text, level = 2 }) {
+function HeaderBlock({ text, level = 2, applyHtml }) {
   if (!text) {
     return null;
   }
@@ -28,12 +30,12 @@ function HeaderBlock({ text, level = 2 }) {
   return (
     <Tag
       className={`${styles.heading} ${styles[`heading${safeLevel}`]}`}
-      dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(text) }}
+      dangerouslySetInnerHTML={{ __html: applyHtml(text) }}
     />
   );
 }
 
-function ImageBlock({ file, caption }) {
+function ImageBlock({ file, caption, applyHtml }) {
   const url = file?.url;
 
   if (!url) {
@@ -49,33 +51,44 @@ function ImageBlock({ file, caption }) {
         width={file?.width}
         height={file?.height}
       />
-      <Caption as="figcaption" className={styles.caption} text={caption} />
+      {caption ? (
+        <figcaption
+          className={styles.caption}
+          dangerouslySetInnerHTML={{ __html: applyHtml(caption) }}
+        />
+      ) : null}
     </figure>
   );
 }
 
-function EmbedBlock({ embed, caption }) {
+function EmbedBlock({ embed, caption, applyHtml }) {
   if (!embed) {
     return null;
   }
 
   return (
     <figure className={styles.embed}>
-      <div dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(embed) }} />
-      <Caption as="figcaption" className={styles.caption} text={caption} />
+      <div dangerouslySetInnerHTML={{ __html: applyHtml(embed) }} />
+      {caption ? (
+        <figcaption
+          className={styles.caption}
+          dangerouslySetInnerHTML={{ __html: applyHtml(caption) }}
+        />
+      ) : null}
     </figure>
   );
 }
 
-function Block({ block }) {
+function Block({ block, applyHtml }) {
   switch (block.type) {
     case "paragraph":
-      return <ParagraphBlock text={block.data?.text} />;
+      return <ParagraphBlock text={block.data?.text} applyHtml={applyHtml} />;
     case "header":
       return (
         <HeaderBlock
           text={block.data?.text}
           level={block.data?.level}
+          applyHtml={applyHtml}
         />
       );
     case "image":
@@ -83,6 +96,7 @@ function Block({ block }) {
         <ImageBlock
           file={block.data?.file}
           caption={block.data?.caption}
+          applyHtml={applyHtml}
         />
       );
     case "embed":
@@ -90,6 +104,7 @@ function Block({ block }) {
         <EmbedBlock
           embed={block.data?.embed}
           caption={block.data?.caption}
+          applyHtml={applyHtml}
         />
       );
     default:
@@ -104,11 +119,16 @@ export default function EventCreditEditor({ data, className = "" }) {
     return null;
   }
 
+  const { applyHtml, entries } = createEditorHtmlApplier(blocks);
+
   return (
-    <div className={`${styles.editorCredit} ${className}`.trim()}>
+    <div
+      className={`${styles.editorCredit} ${footnoteStyles.root} ${className}`.trim()}
+    >
       {blocks.map((block, index) => (
-        <Block key={`${block.type}-${index}`} block={block} />
+        <Block key={`${block.type}-${index}`} block={block} applyHtml={applyHtml} />
       ))}
+      <DocumentFootnotes footnotes={entries} />
     </div>
   );
 }

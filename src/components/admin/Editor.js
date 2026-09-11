@@ -7,6 +7,10 @@ import {
   useRef,
 } from "react";
 import { useImageUpload } from "@/hooks/useImageUpload";
+import {
+  loadFootnotesTune,
+  scheduleGlobalFootnoteRenumber,
+} from "@/lib/editorjs/footnotesTune";
 import { normalizeEditorData } from "@/lib/editorjs/normalizeBlocks";
 import styles from "./Editor.module.css";
 
@@ -47,11 +51,13 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
           { default: Embed },
           { default: Header },
           { default: ImageTool },
+          FootnotesTune,
         ] = await Promise.all([
           import("@editorjs/editorjs"),
           import("@editorjs/embed"),
           import("@editorjs/header"),
           import("@editorjs/image"),
+          loadFootnotesTune(),
         ]);
 
         if (cancelled) {
@@ -61,7 +67,15 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
         editor = new EditorJS({
           holder: holderId,
           placeholder: "내용을 입력하세요...",
+          tunes: ["footnotes"],
           tools: {
+            footnotes: {
+              class: FootnotesTune,
+              config: {
+                placeholder: "각주 내용을 입력하세요",
+                shortcut: "CMD+SHIFT+F",
+              },
+            },
             header: {
               class: Header,
               inlineToolbar: ["link", "bold", "italic"],
@@ -121,6 +135,16 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
           },
           inlineToolbar: ["link", "bold", "italic"],
           data: normalizeEditorData(data),
+          onChange: (_api, event) => {
+            const events = Array.isArray(event) ? event : [event];
+            const shouldRenumber = events.some(({ type }) =>
+              ["block-moved", "block-added", "block-removed"].includes(type),
+            );
+
+            if (shouldRenumber) {
+              scheduleGlobalFootnoteRenumber();
+            }
+          },
         });
 
         await editor.isReady;

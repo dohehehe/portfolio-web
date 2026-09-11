@@ -1,7 +1,9 @@
-import { normalizeEditorHtml, getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
+import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
+import { createEditorHtmlApplier } from "@/lib/editorjs/footnotes";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
-import Caption from "@/components/ui/Caption";
+import DocumentFootnotes from "@/components/work/work/DocumentFootnotes";
+import footnoteStyles from "@/components/work/work/EditorFootnotes.module.css";
 import defaultStyles from "@/components/work/project/item-detail/ProjectItemDetail.module.css";
 
 const SECTION_CLASS = {
@@ -9,7 +11,7 @@ const SECTION_CLASS = {
   credit: "creditContent",
 };
 
-function ParagraphBlock({ text, styles }) {
+function ParagraphBlock({ text, applyHtml, styles }) {
   if (!text) {
     return null;
   }
@@ -17,12 +19,12 @@ function ParagraphBlock({ text, styles }) {
   return (
     <p
       className={styles.paragraph}
-      dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(text) }}
+      dangerouslySetInnerHTML={{ __html: applyHtml(text) }}
     />
   );
 }
 
-function HeaderBlock({ text, level = 2, styles }) {
+function HeaderBlock({ text, level = 2, applyHtml, styles }) {
   if (!text) {
     return null;
   }
@@ -39,12 +41,12 @@ function HeaderBlock({ text, level = 2, styles }) {
   return (
     <Tag
       className={`${styles.editorHeader} ${levelClassName ?? ""}`.trim()}
-      dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(text) }}
+      dangerouslySetInnerHTML={{ __html: applyHtml(text) }}
     />
   );
 }
 
-function ImageBlock({ file, caption, styles }) {
+function ImageBlock({ file, caption, applyHtml, styles }) {
   const url = file?.url;
 
   if (!url) {
@@ -60,33 +62,46 @@ function ImageBlock({ file, caption, styles }) {
         width={file?.width}
         height={file?.height}
       />
-      <Caption as="figcaption" className={styles.caption} text={caption} />
+      {caption ? (
+        <figcaption
+          className={styles.caption}
+          dangerouslySetInnerHTML={{ __html: applyHtml(caption) }}
+        />
+      ) : null}
     </figure>
   );
 }
 
-function EmbedBlock({ embed, caption, styles }) {
+function EmbedBlock({ embed, caption, applyHtml, styles }) {
   if (!embed) {
     return null;
   }
 
   return (
     <figure className={styles.embed}>
-      <div dangerouslySetInnerHTML={{ __html: normalizeEditorHtml(embed) }} />
-      <Caption as="figcaption" className={styles.caption} text={caption} />
+      <div dangerouslySetInnerHTML={{ __html: applyHtml(embed) }} />
+      {caption ? (
+        <figcaption
+          className={styles.caption}
+          dangerouslySetInnerHTML={{ __html: applyHtml(caption) }}
+        />
+      ) : null}
     </figure>
   );
 }
 
-function Block({ block, styles }) {
+function Block({ block, applyHtml, styles }) {
   switch (block.type) {
     case "paragraph":
-      return <ParagraphBlock text={block.data?.text} styles={styles} />;
+      return (
+        <ParagraphBlock text={block.data?.text} applyHtml={applyHtml} styles={styles} />
+      );
     case "header":
       return (
         <HeaderBlock
           text={block.data?.text}
           level={block.data?.level}
+          applyHtml={applyHtml}
           styles={styles}
         />
       );
@@ -95,6 +110,7 @@ function Block({ block, styles }) {
         <ImageBlock
           file={block.data?.file}
           caption={block.data?.caption}
+          applyHtml={applyHtml}
           styles={styles}
         />
       );
@@ -103,6 +119,7 @@ function Block({ block, styles }) {
         <EmbedBlock
           embed={block.data?.embed}
           caption={block.data?.caption}
+          applyHtml={applyHtml}
           styles={styles}
         />
       );
@@ -124,11 +141,21 @@ export default function ProjectEditorSection({
     return null;
   }
 
+  const { applyHtml, entries } = createEditorHtmlApplier(blocks);
+
   return (
-    <section className={`${styles[sectionClass]} ${className}`.trim()}>
+    <section
+      className={`${styles[sectionClass]} ${footnoteStyles.root} ${className}`.trim()}
+    >
       {blocks.map((block, index) => (
-        <Block key={`${block.type}-${index}`} block={block} styles={styles} />
+        <Block
+          key={`${block.type}-${index}`}
+          block={block}
+          applyHtml={applyHtml}
+          styles={styles}
+        />
       ))}
+      <DocumentFootnotes footnotes={entries} />
     </section>
   );
 }

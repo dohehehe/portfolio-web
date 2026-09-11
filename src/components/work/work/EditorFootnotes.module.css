@@ -1,0 +1,36 @@
+.footnotesSection {
+  padding-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  color: #666666;
+  font-size: 1.2rem;
+  line-height: 1.6;
+}
+
+.footnoteItem {
+  margin: 0;
+  display: flex;
+}
+
+.footnoteMarker {
+  width: 24px;
+  flex-shrink: 0;
+}
+
+.root :global(.footnote-ref) {
+  font-size: 0.75em;
+  line-height: 1;
+  font-weight: 600;
+  vertical-align: super;
+}
+
+.root :global(.footnote-ref a) {
+  color: inherit;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.root :global(.footnote-ref a:hover) {
+  text-decoration: underline;
+}
