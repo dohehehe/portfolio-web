@@ -1,8 +1,11 @@
+import "server-only";
+
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
 import { TEXT_COLUMNS, TEXT_DETAIL_COLUMNS } from "@/lib/data/localizedSelect";
 import { getEventById } from "@/lib/data/event";
 import { getProjectById } from "@/lib/data/project";
 import { getWorkById } from "@/lib/data/work";
+import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { normalizeRecord } from "@/lib/locale/normalizeRecord";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
@@ -40,18 +43,109 @@ function formatWorkMeta({ year, medium, dimension }) {
   return rest;
 }
 
+const fetchNavigationTextListData = createCachedQuery(
+  async () => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("text")
+      .select(TEXT_COLUMNS)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      return [];
+    }
+
+    return sortByYearDesc(data ?? []);
+  },
+  {
+    key: ["navigation-text-list"],
+    tags: [DATA_CACHE_TAG.text, DATA_CACHE_TAG.navigation],
+  },
+);
+
+const fetchTextRecordById = createCachedQuery(
+  async (id) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("text")
+      .select(TEXT_DETAIL_COLUMNS)
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      return null;
+    }
+
+    return data;
+  },
+  {
+    key: ["text-by-id"],
+    tags: [DATA_CACHE_TAG.text],
+  },
+);
+
+const fetchTextsByWorkId = createCachedQuery(
+  async (workId) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("text")
+      .select(TEXT_COLUMNS)
+      .eq("work_id", workId);
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["texts-by-work-id"],
+    tags: [DATA_CACHE_TAG.text],
+  },
+);
+
+const fetchTextsByProjectId = createCachedQuery(
+  async (projectId) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("text")
+      .select(TEXT_COLUMNS)
+      .eq("project_id", projectId);
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["texts-by-project-id"],
+    tags: [DATA_CACHE_TAG.text],
+  },
+);
+
+const fetchTextsByEventId = createCachedQuery(
+  async (eventId) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("text")
+      .select(TEXT_COLUMNS)
+      .eq("event_id", eventId);
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["texts-by-event-id"],
+    tags: [DATA_CACHE_TAG.text],
+  },
+);
+
 export async function getNavigationTextListData() {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("text")
-    .select(TEXT_COLUMNS)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    return [];
-  }
-
-  return sortByYearDesc(data ?? []);
+  return fetchNavigationTextListData();
 }
 
 export async function getTexts(locale = DEFAULT_LOCALE) {
@@ -61,14 +155,9 @@ export async function getTexts(locale = DEFAULT_LOCALE) {
 }
 
 export async function getTextById(id, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("text")
-    .select(TEXT_DETAIL_COLUMNS)
-    .eq("id", id)
-    .single();
+  const data = await fetchTextRecordById(id);
 
-  if (error) {
+  if (!data) {
     return null;
   }
 
@@ -76,50 +165,26 @@ export async function getTextById(id, locale = DEFAULT_LOCALE) {
 }
 
 export async function getTextsByWorkId(workId, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("text")
-    .select(TEXT_COLUMNS)
-    .eq("work_id", workId);
-
-  if (error) {
-    return [];
-  }
+  const records = await fetchTextsByWorkId(workId);
 
   return sortByYearDesc(
-    (data ?? []).map((record) => normalizeTextRecord(record, locale)),
+    records.map((record) => normalizeTextRecord(record, locale)),
   );
 }
 
 export async function getTextsByProjectId(projectId, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("text")
-    .select(TEXT_COLUMNS)
-    .eq("project_id", projectId);
-
-  if (error) {
-    return [];
-  }
+  const records = await fetchTextsByProjectId(projectId);
 
   return sortByYearDesc(
-    (data ?? []).map((record) => normalizeTextRecord(record, locale)),
+    records.map((record) => normalizeTextRecord(record, locale)),
   );
 }
 
 export async function getTextsByEventId(eventId, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("text")
-    .select(TEXT_COLUMNS)
-    .eq("event_id", eventId);
-
-  if (error) {
-    return [];
-  }
+  const records = await fetchTextsByEventId(eventId);
 
   return sortByYearDesc(
-    (data ?? []).map((record) => normalizeTextRecord(record, locale)),
+    records.map((record) => normalizeTextRecord(record, locale)),
   );
 }
 

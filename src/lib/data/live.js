@@ -1,5 +1,8 @@
+import "server-only";
+
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
+import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const LIVE_LIST_COLUMNS =
@@ -37,31 +40,60 @@ function mapLiveRecord(record, locale, today = null) {
   };
 }
 
+const fetchAllLiveRecords = createCachedQuery(
+  async () => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("live")
+      .select(LIVE_LIST_COLUMNS)
+      .order("start_at", { ascending: true });
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["live-all"],
+    tags: [DATA_CACHE_TAG.live],
+  },
+);
+
+const fetchLiveRecordById = createCachedQuery(
+  async (id) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("live")
+      .select(LIVE_LIST_COLUMNS)
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      return null;
+    }
+
+    return data;
+  },
+  {
+    key: ["live-by-id"],
+    tags: [DATA_CACHE_TAG.live],
+  },
+);
+
 export async function getLives(locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
+  const records = await fetchAllLiveRecords();
   const today = getTodayDateString();
-  const { data, error } = await supabase
-    .from("live")
-    .select(LIVE_LIST_COLUMNS)
-    .gte("end_at", today)
-    .order("start_at", { ascending: true });
 
-  if (error) {
-    return [];
-  }
-
-  return (data ?? []).map((record) => mapLiveRecord(record, locale, today));
+  return records
+    .filter((record) => record.end_at >= today)
+    .map((record) => mapLiveRecord(record, locale, today));
 }
 
 export async function getLiveById(id, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("live")
-    .select(LIVE_LIST_COLUMNS)
-    .eq("id", id)
-    .single();
+  const data = await fetchLiveRecordById(id);
 
-  if (error) {
+  if (!data) {
     return null;
   }
 

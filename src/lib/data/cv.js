@@ -1,5 +1,8 @@
+import "server-only";
+
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
 import { CV_LINK_SELECT, EVENT_WORK_LINK_SELECT } from "@/lib/data/localizedSelect";
+import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
@@ -254,21 +257,97 @@ function normalizeLinkedWorkRecord(record, type, locale) {
   };
 }
 
-export async function getCvsByWorkId(workId, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("link_cv_item")
-    .select(CV_LINK_SELECT)
-    .eq("work_id", workId);
+const fetchCvLinksByWorkId = createCachedQuery(
+  async (workId) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("link_cv_item")
+      .select(CV_LINK_SELECT)
+      .eq("work_id", workId);
 
-  if (error) {
-    return [];
-  }
+    if (error) {
+      return [];
+    }
 
+    return data ?? [];
+  },
+  {
+    key: ["cv-links-by-work-id"],
+    tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
+  },
+);
+
+const fetchCvLinksByProjectId = createCachedQuery(
+  async (projectId) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("link_cv_item")
+      .select(CV_LINK_SELECT)
+      .eq("project_id", projectId);
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["cv-links-by-project-id"],
+    tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
+  },
+);
+
+const fetchEventWorkLinks = createCachedQuery(
+  async (eventId) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("link_cv_item")
+      .select(EVENT_WORK_LINK_SELECT)
+      .eq("cv.exhibition_id", eventId);
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["event-work-links-by-event-id"],
+    tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
+  },
+);
+
+const fetchCvGroupedRawData = createCachedQuery(
+  async () => {
+    const supabase = createSupabaseServerClient();
+    const [typesResult, cvsResult] = await Promise.all([
+      supabase
+        .from("cv_type")
+        .select(CV_TYPE_COLUMNS)
+        .order("created_at", { ascending: true }),
+      supabase.from("cv").select(CV_COLUMNS),
+    ]);
+
+    if (typesResult.error || cvsResult.error) {
+      return null;
+    }
+
+    return {
+      types: typesResult.data ?? [],
+      cvs: cvsResult.data ?? [],
+    };
+  },
+  {
+    key: ["cv-grouped-raw"],
+    tags: [DATA_CACHE_TAG.cv, DATA_CACHE_TAG.cv_type],
+  },
+);
+
+function collectCvsFromLinks(links, locale) {
   const seen = new Set();
   const cvs = [];
 
-  for (const link of data ?? []) {
+  for (const link of links) {
     if (!link.cv || seen.has(link.cv.id)) {
       continue;
     }
@@ -280,50 +359,25 @@ export async function getCvsByWorkId(workId, locale = DEFAULT_LOCALE) {
   return sortByYearDesc(cvs);
 }
 
+export async function getCvsByWorkId(workId, locale = DEFAULT_LOCALE) {
+  const links = await fetchCvLinksByWorkId(workId);
+  return collectCvsFromLinks(links, locale);
+}
+
 export async function getCvsByProjectId(projectId, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("link_cv_item")
-    .select(CV_LINK_SELECT)
-    .eq("project_id", projectId);
-
-  if (error) {
-    return [];
-  }
-
-  const seen = new Set();
-  const cvs = [];
-
-  for (const link of data ?? []) {
-    if (!link.cv || seen.has(link.cv.id)) {
-      continue;
-    }
-
-    seen.add(link.cv.id);
-    cvs.push(normalizeCvRecord(link.cv, locale));
-  }
-
-  return sortByYearDesc(cvs);
+  const links = await fetchCvLinksByProjectId(projectId);
+  return collectCvsFromLinks(links, locale);
 }
 
 export async function getProjectsAndWorksByEventId(
   eventId,
   locale = DEFAULT_LOCALE,
 ) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("link_cv_item")
-    .select(EVENT_WORK_LINK_SELECT)
-    .eq("cv.exhibition_id", eventId);
-
-  if (error) {
-    return [];
-  }
-
+  const links = await fetchEventWorkLinks(eventId);
   const seen = new Set();
   const items = [];
 
-  for (const link of data ?? []) {
+  for (const link of links) {
     if (link.project && !seen.has(`project:${link.project.id}`)) {
       seen.add(`project:${link.project.id}`);
       items.push(normalizeLinkedWorkRecord(link.project, "project", locale));
@@ -339,24 +393,15 @@ export async function getProjectsAndWorksByEventId(
 }
 
 export async function getCvsGroupedByType(locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const [typesResult, cvsResult] = await Promise.all([
-    supabase
-      .from("cv_type")
-      .select(CV_TYPE_COLUMNS)
-      .order("created_at", { ascending: true }),
-    supabase.from("cv").select(CV_COLUMNS),
-  ]);
+  const raw = await fetchCvGroupedRawData();
 
-  if (typesResult.error || cvsResult.error) {
+  if (!raw) {
     return [];
   }
 
-  const types = (typesResult.data ?? []).map((type) =>
-    normalizeCvTypeRecord(type, locale),
-  );
+  const types = raw.types.map((type) => normalizeCvTypeRecord(type, locale));
   const cvs = sortByYearDesc(
-    (cvsResult.data ?? []).map((cv) => normalizeCvRecord(cv, locale)),
+    raw.cvs.map((cv) => normalizeCvRecord(cv, locale)),
   );
 
   const byTypeId = new Map();

@@ -1,22 +1,59 @@
+import "server-only";
+
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
+import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const EVENT_LIST_COLUMNS =
   "id,created_at,title_ko,title_en,date,space_ko,space_en";
 
+const EVENT_DETAIL_COLUMNS =
+  "id,title_ko,title_en,date,space_ko,space_en,credit_ko,credit_en,gallery,file_link,note_kr,note_en";
+
+const fetchNavigationEventListData = createCachedQuery(
+  async () => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("event")
+      .select(EVENT_LIST_COLUMNS)
+      .order("created_at", { ascending: false });
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["navigation-event-list"],
+    tags: [DATA_CACHE_TAG.event, DATA_CACHE_TAG.navigation],
+  },
+);
+
+const fetchEventRecordById = createCachedQuery(
+  async (id) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("event")
+      .select(EVENT_DETAIL_COLUMNS)
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      return null;
+    }
+
+    return data;
+  },
+  {
+    key: ["event-by-id"],
+    tags: [DATA_CACHE_TAG.event],
+  },
+);
+
 export async function getNavigationEventListData() {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("event")
-    .select(EVENT_LIST_COLUMNS)
-    .order("created_at", { ascending: false });
-
-  if (error) {
-    return [];
-  }
-
-  return data ?? [];
+  return fetchNavigationEventListData();
 }
 
 export async function getEvents(locale = DEFAULT_LOCALE) {
@@ -31,20 +68,12 @@ export async function getEvents(locale = DEFAULT_LOCALE) {
 }
 
 export async function getEventById(id, locale = DEFAULT_LOCALE) {
-  const supabase = createSupabaseServerClient();
-  const { data, error } = await supabase
-    .from("event")
-    .select(
-      "id,title_ko,title_en,date,space_ko,space_en,credit_ko,credit_en,gallery,file_link,note_kr,note_en",
-    )
-    .eq("id", id)
-    .single();
+  const data = await fetchEventRecordById(id);
 
-  if (error) {
+  if (!data) {
     return null;
   }
 
-  // DB column is note_kr (not note_ko); alias for pickLocalized.
   const note = pickLocalized(
     { note_ko: data.note_kr, note_en: data.note_en },
     "note",

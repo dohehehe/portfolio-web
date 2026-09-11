@@ -5,6 +5,7 @@ import { useImageLightbox } from "@/components/image-lightbox";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
 import Caption from "@/components/ui/Caption";
 import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
+import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
 import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
 import EventCreditEditor from "@/components/event/EventCreditEditor";
@@ -15,6 +16,13 @@ import styles from "./EventFileGallery.module.css";
 const SCROLL_EDGE_THRESHOLD = 2;
 
 export default function EventFileGallery({ items, credit, texts = [], works = [], locale }) {
+  const fileItems = items ?? [];
+  const hasFileItems = fileItems.length > 0;
+  const hasCredit = normalizeBlocks(credit).length > 0;
+  const hasTexts = texts.length > 0;
+  const hasWorks = works.length > 0;
+  const hasSidebarContent = hasCredit || hasTexts || hasWorks;
+
   const trackRef = useRef(null);
   const { open: openImageLightbox } = useImageLightbox();
   const [canScrollPrev, setCanScrollPrev] = useState(false);
@@ -47,6 +55,10 @@ export default function EventFileGallery({ items, credit, texts = [], works = []
   }
 
   useEffect(() => {
+    if (!hasFileItems) {
+      return undefined;
+    }
+
     const node = trackRef.current;
 
     if (!node) {
@@ -66,32 +78,40 @@ export default function EventFileGallery({ items, credit, texts = [], works = []
       window.removeEventListener("resize", updateScrollState);
       observer.disconnect();
     };
-  }, [items, updateScrollState]);
+  }, [fileItems, hasFileItems, updateScrollState]);
 
-  if (!items?.length) {
+  if (!hasFileItems && !hasSidebarContent) {
     return null;
   }
 
   return (
-    <div className={styles.gallery}>
-      <button
-        type="button"
-        className={`${styles.navButton} ${styles.navButtonPrev}`}
-        aria-label="Scroll left"
-        disabled={!canScrollPrev}
-        onClick={() => scrollGallery("prev")}
+    <div
+      className={`${styles.gallery} ${!hasFileItems ? styles.gallerySidebarOnly : ""}`.trim()}
+    >
+      {hasFileItems ? (
+        <button
+          type="button"
+          className={`${styles.navButton} ${styles.navButtonPrev}`}
+          aria-label="Scroll left"
+          disabled={!canScrollPrev}
+          onClick={() => scrollGallery("prev")}
+        >
+          ‹
+        </button>
+      ) : null}
+
+      <div
+        ref={trackRef}
+        className={`${styles.track} ${!hasFileItems ? styles.trackSidebarOnly : ""}`.trim()}
       >
-        ‹
-      </button>
-
-      <div ref={trackRef} className={styles.track}>
-        <div className={styles.trackCredit}>
-
-          <EventTextList items={texts} locale={locale} />
-          <EventCreditEditor data={credit} />
-          <EventWorkList items={works} locale={locale} />
-        </div>
-        {items.map((item, index) => (
+        {hasSidebarContent ? (
+          <div className={styles.trackCredit}>
+            <EventTextList items={texts} locale={locale} />
+            <EventCreditEditor data={credit} />
+            <EventWorkList items={works} locale={locale} />
+          </div>
+        ) : null}
+        {fileItems.map((item, index) => (
           <figure key={getGalleryItemKey(item, index)} className={styles.item}>
             {isGalleryVideo(item) ? (
               <GalleryMuxVideo
@@ -116,15 +136,17 @@ export default function EventFileGallery({ items, credit, texts = [], works = []
         ))}
       </div>
 
-      <button
-        type="button"
-        className={`${styles.navButton} ${styles.navButtonNext}`}
-        aria-label="Scroll right"
-        disabled={!canScrollNext}
-        onClick={() => scrollGallery("next")}
-      >
-        ›
-      </button>
+      {hasFileItems ? (
+        <button
+          type="button"
+          className={`${styles.navButton} ${styles.navButtonNext}`}
+          aria-label="Scroll right"
+          disabled={!canScrollNext}
+          onClick={() => scrollGallery("next")}
+        >
+          ›
+        </button>
+      ) : null}
     </div>
   );
 }
