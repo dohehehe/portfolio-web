@@ -3,6 +3,14 @@ export function normalizeBlocks(contents) {
     return [];
   }
 
+  if (typeof contents === "string") {
+    try {
+      return normalizeBlocks(JSON.parse(contents));
+    } catch {
+      return [];
+    }
+  }
+
   if (Array.isArray(contents)) {
     return contents;
   }
