@@ -80,8 +80,15 @@ export const EVENT_WORK_LINK_SELECT = `
 export const TEXT_COLUMNS =
   "id,created_at,year,title_ko,title_en,writer_ko,writer_en";
 
-export const TEXT_DETAIL_COLUMNS =
-  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,content_en,project_id,event_id,work_id";
+export const TEXT_DETAIL_KO_COLUMNS =
+  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,project_id,event_id,work_id";
+
+export const TEXT_DETAIL_EN_COLUMNS =
+  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_en,project_id,event_id,work_id";
+
+export function getTextDetailColumns(locale) {
+  return locale === "en" ? TEXT_DETAIL_EN_COLUMNS : TEXT_DETAIL_KO_COLUMNS;
+}
 
 export const EVENT_RELATED_COLUMNS =
   "id,title_ko,title_en,date,space_ko,space_en";

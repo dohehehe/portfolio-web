@@ -2,9 +2,9 @@ import "server-only";
 
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
 import {
+  getTextDetailColumns,
   serializeWorkIds,
   TEXT_COLUMNS,
-  TEXT_DETAIL_COLUMNS,
 } from "@/lib/data/localizedSelect";
 import { getEventRelatedById } from "@/lib/data/event";
 import { getProjectRelatedById } from "@/lib/data/project";
@@ -68,11 +68,11 @@ const fetchNavigationTextListData = createCachedQuery(
 );
 
 const fetchTextRecordById = createCachedQuery(
-  async (id) => {
+  async (id, locale) => {
     const supabase = createSupabaseServerClient();
     const { data, error } = await supabase
       .from("text")
-      .select(TEXT_DETAIL_COLUMNS)
+      .select(getTextDetailColumns(locale))
       .eq("id", id)
       .single();
 
@@ -187,7 +187,7 @@ export async function getTexts(locale = DEFAULT_LOCALE) {
 }
 
 export async function getTextById(id, locale = DEFAULT_LOCALE) {
-  const data = await fetchTextRecordById(id);
+  const data = await fetchTextRecordById(id, locale);
 
   if (!data) {
     return null;
