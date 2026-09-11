@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
-import { useCreateEvent } from "@/hooks/event";
+import { useCreateResource } from "@/hooks/useResource";
 import GalleryInput from "./GalleryInput";
 import { saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
@@ -30,7 +30,7 @@ export default function EventCreateForm() {
   const [fileLinkUploading, setFileLinkUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { create, loading } = useCreateEvent();
+  const { create, loading } = useCreateResource("event");
 
   async function handleSubmit(event) {
     event.preventDefault();

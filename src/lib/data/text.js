@@ -1,10 +1,14 @@
 import "server-only";
 
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
-import { TEXT_COLUMNS, TEXT_DETAIL_COLUMNS } from "@/lib/data/localizedSelect";
-import { getEventById } from "@/lib/data/event";
-import { getProjectById } from "@/lib/data/project";
-import { getWorkById } from "@/lib/data/work";
+import {
+  serializeWorkIds,
+  TEXT_COLUMNS,
+  TEXT_DETAIL_COLUMNS,
+} from "@/lib/data/localizedSelect";
+import { getEventRelatedById } from "@/lib/data/event";
+import { getProjectRelatedById } from "@/lib/data/project";
+import { getWorkRelatedById } from "@/lib/data/work";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { normalizeRecord } from "@/lib/locale/normalizeRecord";
@@ -144,6 +148,34 @@ const fetchTextsByEventId = createCachedQuery(
   },
 );
 
+const fetchTextsByProjectAndWorkIds = createCachedQuery(
+  async (projectId, workIdsKey) => {
+    const supabase = createSupabaseServerClient();
+    const workIds = workIdsKey ? workIdsKey.split(",") : [];
+    let query = supabase.from("text").select(TEXT_COLUMNS);
+
+    if (workIds.length > 0) {
+      query = query.or(
+        `project_id.eq.${projectId},work_id.in.(${workIds.join(",")})`,
+      );
+    } else {
+      query = query.eq("project_id", projectId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["texts-by-project-and-work-ids"],
+    tags: [DATA_CACHE_TAG.text],
+  },
+);
+
 export async function getNavigationTextListData() {
   return fetchNavigationTextListData();
 }
@@ -188,15 +220,56 @@ export async function getTextsByEventId(eventId, locale = DEFAULT_LOCALE) {
   );
 }
 
+function groupTextsByProjectAndWorks(records, projectId, workIds, locale) {
+  const workIdSet = new Set(workIds);
+  const projectTexts = [];
+  const byWorkId = new Map(workIds.map((workId) => [workId, []]));
+
+  for (const record of records) {
+    const normalized = normalizeTextRecord(record, locale);
+
+    if (record.project_id === projectId) {
+      projectTexts.push(normalized);
+    }
+
+    if (record.work_id && workIdSet.has(record.work_id)) {
+      byWorkId.get(record.work_id).push(normalized);
+    }
+  }
+
+  return {
+    projectTexts: sortByYearDesc(projectTexts),
+    byWorkId: new Map(
+      [...byWorkId.entries()].map(([workId, texts]) => [
+        workId,
+        sortByYearDesc(texts),
+      ]),
+    ),
+  };
+}
+
+export async function getTextsGroupedByProjectAndWorks(
+  projectId,
+  workIds,
+  locale = DEFAULT_LOCALE,
+) {
+  const records = await fetchTextsByProjectAndWorkIds(
+    projectId,
+    serializeWorkIds(workIds),
+  );
+
+  return groupTextsByProjectAndWorks(records, projectId, workIds, locale);
+}
+
 export async function getRelatedItemsByText(text, locale = DEFAULT_LOCALE) {
   if (!text) {
     return [];
   }
 
   const [event, projectRecord, workRecord] = await Promise.all([
-    text.event_id ? getEventById(text.event_id, locale) : null,
-    text.project_id ? getProjectById(text.project_id, locale) : null,
-    text.work_id ? getWorkById(text.work_id, locale) : null,
+    text.event_id ? getEventRelatedById(text.event_id, locale) : null,
+    text.project_id ? getProjectRelatedById(text.project_id, locale) : null,
+    text.work_id ? getWorkRelatedById(text.work_id, locale) : null,
   ]);
 
   const related = [];

@@ -82,3 +82,32 @@ export const TEXT_COLUMNS =
 
 export const TEXT_DETAIL_COLUMNS =
   "id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,content_en,project_id,event_id,work_id";
+
+export const EVENT_RELATED_COLUMNS =
+  "id,title_ko,title_en,date,space_ko,space_en";
+
+export const EVENT_DETAIL_KO_COLUMNS =
+  "id,title_ko,title_en,date,space_ko,space_en,credit_ko,gallery,file_link,note_kr";
+
+export const EVENT_DETAIL_EN_COLUMNS =
+  "id,title_ko,title_en,date,space_ko,space_en,credit_en,gallery,file_link,note_en";
+
+export function getEventDetailColumns(locale) {
+  return locale === "en" ? EVENT_DETAIL_EN_COLUMNS : EVENT_DETAIL_KO_COLUMNS;
+}
+
+export function getProjectRelatedColumns(locale) {
+  return locale === "en"
+    ? "id,year,title_ko,title_en,medium_en,dimension_en"
+    : "id,year,title_ko,title_en,medium_ko,dimension_ko";
+}
+
+export function getWorkRelatedColumns(locale) {
+  return locale === "en"
+    ? "id,year,project_id,title_ko,title_en,medium_en,dimension_en"
+    : "id,year,project_id,title_ko,title_en,medium_ko,dimension_ko";
+}
+
+export function serializeWorkIds(workIds) {
+  return [...workIds].sort().join(",");
+}

@@ -13,8 +13,8 @@ function sortCvs(items) {
       return yearRight.localeCompare(yearLeft, undefined, { numeric: true });
     }
 
-    return (
-      new Date(right.created_at).getTime() - new Date(left.created_at).getTime()
+    return (right.title_ko ?? right.title_en ?? "").localeCompare(
+      left.title_ko ?? left.title_en ?? "",
     );
   });
 }
@@ -57,20 +57,6 @@ export function groupCvsByType(cvs, cvTypes) {
   }
 
   return groups;
-}
-
-function formatCreatedAt(value) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 }
 
 function formatCellValue(value) {
@@ -125,9 +111,7 @@ export default function CvGroupedTable({
                   <tr key={item.id}>
                     {columns.map((column) => (
                       <td key={column} className={styles.textCell}>
-                        {column === "created_at"
-                          ? formatCreatedAt(item[column])
-                          : formatCellValue(item[column])}
+                        {formatCellValue(item[column])}
                       </td>
                     ))}
                     <td className={styles.actionsCell}>

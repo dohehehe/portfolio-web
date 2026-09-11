@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
-import { useCreateWork } from "@/hooks/work";
+import { useCreateResource } from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import GalleryInput from "./GalleryInput";
 import { saveEditorContent, serializeGallery } from "./formUtils";
@@ -30,7 +30,7 @@ export default function WorkCreateForm() {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { create, loading } = useCreateWork();
+  const { create, loading } = useCreateResource("work");
 
   async function handleSubmit(event) {
     event.preventDefault();

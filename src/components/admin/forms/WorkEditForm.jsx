@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
-import { useDeleteWork, useUpdateWork, useWork } from "@/hooks/work";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import GalleryInput from "./GalleryInput";
 import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
@@ -30,9 +34,9 @@ export default function WorkEditForm({ id }) {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: work, loading, error } = useWork(id);
-  const { update, loading: updating } = useUpdateWork();
-  const { remove, loading: deleting } = useDeleteWork();
+  const { data: work, loading, error } = useResourceItem("work", id);
+  const { update, loading: updating } = useUpdateResource("work");
+  const { remove, loading: deleting } = useDeleteResource("work");
 
   useEffect(() => {
     if (!work) {

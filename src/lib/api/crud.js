@@ -1,4 +1,5 @@
 import { apiError, supabaseError } from "@/lib/api/errors";
+import { getSelectColumns, parseQueryScope } from "@/lib/api/queryScopes";
 import { requireAdmin } from "@/lib/api/requireAdmin";
 import { assertValidTable } from "@/lib/api/resources";
 import { revalidateDataCache } from "@/lib/data/revalidate";
@@ -28,13 +29,32 @@ export function createCollectionHandlers(table) {
   const label = getResourceLabel(table);
 
   return {
-    async GET() {
+    async GET(request) {
       try {
+        const { response: unauthorized } = await requireAdmin();
+
+        if (unauthorized) {
+          return unauthorized;
+        }
+
+        const { searchParams } = new URL(request.url);
+        const scope = parseQueryScope(searchParams.get("scope"));
+        const columns = getSelectColumns(table, scope);
         const supabase = createSupabaseServerClient();
-        const { data, error } = await supabase
+        let query = supabase
           .from(table)
-          .select("*")
+          .select(columns)
           .order("created_at", { ascending: false });
+
+        if (table === "link_cv_item") {
+          const cvId = searchParams.get("cv_id");
+
+          if (cvId) {
+            query = query.eq("cv_id", cvId);
+          }
+        }
+
+        const { data, error } = await query;
 
         if (error) {
           return supabaseError(error, `Failed to fetch ${label}.`);
@@ -89,6 +109,12 @@ export function createItemHandlers(table) {
   return {
     async GET(_request, { params }) {
       try {
+        const { response: unauthorized } = await requireAdmin();
+
+        if (unauthorized) {
+          return unauthorized;
+        }
+
         const { id } = await params;
         const supabase = createSupabaseServerClient();
         const { data, error } = await supabase
@@ -165,7 +191,7 @@ export function createItemHandlers(table) {
           .from(table)
           .delete()
           .eq("id", id)
-          .select()
+          .select("id")
           .single();
 
         if (error) {

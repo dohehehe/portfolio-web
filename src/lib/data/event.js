@@ -1,15 +1,13 @@
 import "server-only";
 
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
+import { getEventDetailColumns } from "@/lib/data/localizedSelect";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const EVENT_LIST_COLUMNS =
   "id,created_at,title_ko,title_en,date,space_ko,space_en";
-
-const EVENT_DETAIL_COLUMNS =
-  "id,title_ko,title_en,date,space_ko,space_en,credit_ko,credit_en,gallery,file_link,note_kr,note_en";
 
 const fetchNavigationEventListData = createCachedQuery(
   async () => {
@@ -32,11 +30,11 @@ const fetchNavigationEventListData = createCachedQuery(
 );
 
 const fetchEventRecordById = createCachedQuery(
-  async (id) => {
+  async (id, locale) => {
     const supabase = createSupabaseServerClient();
     const { data, error } = await supabase
       .from("event")
-      .select(EVENT_DETAIL_COLUMNS)
+      .select(getEventDetailColumns(locale))
       .eq("id", id)
       .single();
 
@@ -48,6 +46,27 @@ const fetchEventRecordById = createCachedQuery(
   },
   {
     key: ["event-by-id"],
+    tags: [DATA_CACHE_TAG.event],
+  },
+);
+
+const fetchEventRelatedById = createCachedQuery(
+  async (id) => {
+    const supabase = createSupabaseServerClient();
+    const { data, error } = await supabase
+      .from("event")
+      .select(EVENT_LIST_COLUMNS)
+      .eq("id", id)
+      .single();
+
+    if (error) {
+      return null;
+    }
+
+    return data;
+  },
+  {
+    key: ["event-related-by-id"],
     tags: [DATA_CACHE_TAG.event],
   },
 );
@@ -67,8 +86,23 @@ export async function getEvents(locale = DEFAULT_LOCALE) {
   }));
 }
 
+export async function getEventRelatedById(id, locale = DEFAULT_LOCALE) {
+  const data = await fetchEventRelatedById(id);
+
+  if (!data) {
+    return null;
+  }
+
+  return {
+    id: data.id,
+    title: pickLocalized(data, "title", locale),
+    date: data.date,
+    space: pickLocalized(data, "space", locale),
+  };
+}
+
 export async function getEventById(id, locale = DEFAULT_LOCALE) {
-  const data = await fetchEventRecordById(id);
+  const data = await fetchEventRecordById(id, locale);
 
   if (!data) {
     return null;

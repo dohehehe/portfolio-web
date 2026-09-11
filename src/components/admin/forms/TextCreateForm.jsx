@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
-import { useCreateText } from "@/hooks/text";
+import { useCreateResource } from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import { saveEditorContent } from "./formUtils";
 import styles from "../AdminForm.module.css";
@@ -25,7 +25,7 @@ export default function TextCreateForm() {
   const [workId, setWorkId] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { create, loading } = useCreateText();
+  const { create, loading } = useCreateResource("text");
 
   async function handleSubmit(event) {
     event.preventDefault();

@@ -1,7 +1,11 @@
 import "server-only";
 
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
-import { CV_LINK_SELECT, EVENT_WORK_LINK_SELECT } from "@/lib/data/localizedSelect";
+import {
+  CV_LINK_SELECT,
+  EVENT_WORK_LINK_SELECT,
+  serializeWorkIds,
+} from "@/lib/data/localizedSelect";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
@@ -297,6 +301,34 @@ const fetchCvLinksByProjectId = createCachedQuery(
   },
 );
 
+const fetchCvLinksByProjectAndWorkIds = createCachedQuery(
+  async (projectId, workIdsKey) => {
+    const supabase = createSupabaseServerClient();
+    const workIds = workIdsKey ? workIdsKey.split(",") : [];
+    let query = supabase.from("link_cv_item").select(CV_LINK_SELECT);
+
+    if (workIds.length > 0) {
+      query = query.or(
+        `project_id.eq.${projectId},work_id.in.(${workIds.join(",")})`,
+      );
+    } else {
+      query = query.eq("project_id", projectId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["cv-links-by-project-and-work-ids"],
+    tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
+  },
+);
+
 const fetchEventWorkLinks = createCachedQuery(
   async (eventId) => {
     const supabase = createSupabaseServerClient();
@@ -359,6 +391,32 @@ function collectCvsFromLinks(links, locale) {
   return sortByYearDesc(cvs);
 }
 
+function groupCvsByProjectAndWorks(links, projectId, workIds, locale) {
+  const workIdSet = new Set(workIds);
+  const projectLinks = [];
+  const byWorkId = new Map(workIds.map((workId) => [workId, []]));
+
+  for (const link of links) {
+    if (link.project_id === projectId) {
+      projectLinks.push(link);
+    }
+
+    if (link.work_id && workIdSet.has(link.work_id)) {
+      byWorkId.get(link.work_id).push(link);
+    }
+  }
+
+  return {
+    projectCvs: collectCvsFromLinks(projectLinks, locale),
+    byWorkId: new Map(
+      [...byWorkId.entries()].map(([workId, workLinks]) => [
+        workId,
+        collectCvsFromLinks(workLinks, locale),
+      ]),
+    ),
+  };
+}
+
 export async function getCvsByWorkId(workId, locale = DEFAULT_LOCALE) {
   const links = await fetchCvLinksByWorkId(workId);
   return collectCvsFromLinks(links, locale);
@@ -367,6 +425,19 @@ export async function getCvsByWorkId(workId, locale = DEFAULT_LOCALE) {
 export async function getCvsByProjectId(projectId, locale = DEFAULT_LOCALE) {
   const links = await fetchCvLinksByProjectId(projectId);
   return collectCvsFromLinks(links, locale);
+}
+
+export async function getCvsGroupedByProjectAndWorks(
+  projectId,
+  workIds,
+  locale = DEFAULT_LOCALE,
+) {
+  const links = await fetchCvLinksByProjectAndWorkIds(
+    projectId,
+    serializeWorkIds(workIds),
+  );
+
+  return groupCvsByProjectAndWorks(links, projectId, workIds, locale);
 }
 
 export async function getProjectsAndWorksByEventId(

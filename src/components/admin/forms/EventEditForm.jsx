@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
-import { useDeleteEvent, useEvent, useUpdateEvent } from "@/hooks/event";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import GalleryInput from "./GalleryInput";
 import {
   normalizeGallery,
@@ -34,9 +38,9 @@ export default function EventEditForm({ id }) {
   const [fileLinkUploading, setFileLinkUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: eventItem, loading, error } = useEvent(id);
-  const { update, loading: updating } = useUpdateEvent();
-  const { remove, loading: deleting } = useDeleteEvent();
+  const { data: eventItem, loading, error } = useResourceItem("event", id);
+  const { update, loading: updating } = useUpdateResource("event");
+  const { remove, loading: deleting } = useDeleteResource("event");
 
   useEffect(() => {
     if (!eventItem) {

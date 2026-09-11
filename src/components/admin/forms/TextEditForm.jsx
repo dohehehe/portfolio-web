@@ -4,7 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
-import { useDeleteText, useText, useUpdateText } from "@/hooks/text";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import { saveEditorContent } from "./formUtils";
 import styles from "../AdminForm.module.css";
@@ -25,9 +29,9 @@ export default function TextEditForm({ id }) {
   const [workId, setWorkId] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: textItem, loading, error } = useText(id);
-  const { update, loading: updating } = useUpdateText();
-  const { remove, loading: deleting } = useDeleteText();
+  const { data: textItem, loading, error } = useResourceItem("text", id);
+  const { update, loading: updating } = useUpdateResource("text");
+  const { remove, loading: deleting } = useDeleteResource("text");
 
   useEffect(() => {
     if (!textItem) {

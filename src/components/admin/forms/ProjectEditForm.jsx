@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import Editor from "@/components/admin/EditorClient";
 import {
-  useDeleteProject,
-  useProject,
-  useUpdateProject,
-} from "@/hooks/project";
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import GalleryInput from "./GalleryInput";
 import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
 import styles from "../AdminForm.module.css";
@@ -31,9 +31,9 @@ export default function ProjectEditForm({ id }) {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: project, loading, error } = useProject(id);
-  const { update, loading: updating } = useUpdateProject();
-  const { remove, loading: deleting } = useDeleteProject();
+  const { data: project, loading, error } = useResourceItem("project", id);
+  const { update, loading: updating } = useUpdateResource("project");
+  const { remove, loading: deleting } = useDeleteResource("project");
 
   useEffect(() => {
     if (!project) {

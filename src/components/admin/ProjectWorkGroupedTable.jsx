@@ -6,7 +6,7 @@ import {
   sortByYearDesc,
   sortWorksByOrder,
 } from "@/components/navigation/workListUtils";
-import { updateWork } from "@/hooks/work";
+import { updateResource } from "@/hooks/useResource";
 import styles from "./AdminDataTables.module.css";
 
 export function buildProjectWorkGroups(projects, works) {
@@ -54,20 +54,6 @@ function moveWork(works, index, direction) {
   const [item] = next.splice(index, 1);
   next.splice(targetIndex, 0, item);
   return next;
-}
-
-function formatCreatedAt(value) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
 }
 
 function formatCellValue(value) {
@@ -156,7 +142,7 @@ export default function ProjectWorkGroupedTable({
       for (const group of groups) {
         group.works.forEach((work, index) => {
           if (!orderMatches(work, index)) {
-            updates.push(updateWork(work.id, { order: index }));
+            updates.push(updateResource("work", work.id, { order: index }));
           }
         });
       }
@@ -205,9 +191,6 @@ export default function ProjectWorkGroupedTable({
                 </h3>
                 <span className={styles.metaChip}>
                   {formatCellValue(group.project.year)}
-                </span>
-                <span className={styles.metaChip}>
-                  {formatCreatedAt(group.project.created_at)}
                 </span>
                 <span className={styles.workCount}>
                   work {group.works.length}

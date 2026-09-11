@@ -1,28 +1,40 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+function serializeFilters(filters) {
+  return JSON.stringify(filters ?? {});
+}
 
 export function createCrudHooks(client) {
-  function useList({ enabled = true } = {}) {
+  function useList({ enabled = true, scope = "list", filters = {} } = {}) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(enabled);
     const [error, setError] = useState(null);
+    const filtersKey = useMemo(() => serializeFilters(filters), [filters]);
 
-    const refetch = useCallback(async () => {
-      setLoading(true);
-      setError(null);
+    const refetch = useCallback(
+      async ({ force = true } = {}) => {
+        setLoading(true);
+        setError(null);
 
-      try {
-        const items = await client.fetchList();
-        setData(items);
-        return items;
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    }, []);
+        try {
+          const items = await client.fetchList({
+            scope,
+            force,
+            filters,
+          });
+          setData(items);
+          return items;
+        } catch (err) {
+          setError(err);
+          throw err;
+        } finally {
+          setLoading(false);
+        }
+      },
+      [scope, filtersKey],
+    );
 
     useEffect(() => {
       if (!enabled) {
@@ -36,7 +48,11 @@ export function createCrudHooks(client) {
         setError(null);
 
         try {
-          const items = await client.fetchList();
+          const items = await client.fetchList({
+            scope,
+            force: false,
+            filters,
+          });
 
           if (!cancelled) {
             setData(items);
@@ -46,7 +62,9 @@ export function createCrudHooks(client) {
             setError(err);
           }
         } finally {
-          setLoading(false);
+          if (!cancelled) {
+            setLoading(false);
+          }
         }
       }
 
@@ -55,7 +73,7 @@ export function createCrudHooks(client) {
       return () => {
         cancelled = true;
       };
-    }, [enabled]);
+    }, [enabled, scope, filtersKey]);
 
     return { data, loading, error, refetch };
   }
@@ -65,25 +83,28 @@ export function createCrudHooks(client) {
     const [loading, setLoading] = useState(Boolean(enabled && id));
     const [error, setError] = useState(null);
 
-    const refetch = useCallback(async () => {
-      if (!id) {
-        return null;
-      }
+    const refetch = useCallback(
+      async ({ force = true } = {}) => {
+        if (!id) {
+          return null;
+        }
 
-      setLoading(true);
-      setError(null);
+        setLoading(true);
+        setError(null);
 
-      try {
-        const item = await client.fetchOne(id);
-        setData(item);
-        return item;
-      } catch (err) {
-        setError(err);
-        throw err;
-      } finally {
-        setLoading(false);
-      }
-    }, [id]);
+        try {
+          const item = await client.fetchOne(id, { force });
+          setData(item);
+          return item;
+        } catch (err) {
+          setError(err);
+          throw err;
+        } finally {
+          setLoading(false);
+        }
+      },
+      [id],
+    );
 
     useEffect(() => {
       if (!enabled || !id) {
@@ -97,7 +118,7 @@ export function createCrudHooks(client) {
         setError(null);
 
         try {
-          const item = await client.fetchOne(id);
+          const item = await client.fetchOne(id, { force: false });
 
           if (!cancelled) {
             setData(item);
@@ -107,7 +128,9 @@ export function createCrudHooks(client) {
             setError(err);
           }
         } finally {
-          setLoading(false);
+          if (!cancelled) {
+            setLoading(false);
+          }
         }
       }
 

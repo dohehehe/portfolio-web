@@ -40,12 +40,13 @@ function mapLiveRecord(record, locale, today = null) {
   };
 }
 
-const fetchAllLiveRecords = createCachedQuery(
-  async () => {
+const fetchActiveLiveRecords = createCachedQuery(
+  async (today) => {
     const supabase = createSupabaseServerClient();
     const { data, error } = await supabase
       .from("live")
       .select(LIVE_LIST_COLUMNS)
+      .gte("end_at", today)
       .order("start_at", { ascending: true });
 
     if (error) {
@@ -55,7 +56,7 @@ const fetchAllLiveRecords = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["live-all"],
+    key: ["live-active"],
     tags: [DATA_CACHE_TAG.live],
   },
 );
@@ -82,12 +83,10 @@ const fetchLiveRecordById = createCachedQuery(
 );
 
 export async function getLives(locale = DEFAULT_LOCALE) {
-  const records = await fetchAllLiveRecords();
   const today = getTodayDateString();
+  const records = await fetchActiveLiveRecords(today);
 
-  return records
-    .filter((record) => record.end_at >= today)
-    .map((record) => mapLiveRecord(record, locale, today));
+  return records.map((record) => mapLiveRecord(record, locale, today));
 }
 
 export async function getLiveById(id, locale = DEFAULT_LOCALE) {

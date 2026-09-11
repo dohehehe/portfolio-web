@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCreateLive } from "@/hooks/live";
+import { useCreateResource } from "@/hooks/useResource";
 import styles from "../AdminForm.module.css";
 
 export default function LiveCreateForm() {
@@ -18,7 +18,7 @@ export default function LiveCreateForm() {
   const [linkUrl, setLinkUrl] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { create, loading } = useCreateLive();
+  const { create, loading } = useCreateResource("live");
 
   async function handleSubmit(event) {
     event.preventDefault();

@@ -1,9 +1,18 @@
-export * from "@/hooks/cv";
-export * from "@/hooks/cv_type";
-export * from "@/hooks/event";
-export * from "@/hooks/info";
-export * from "@/hooks/link_cv_item";
-export * from "@/hooks/live";
-export * from "@/hooks/project";
-export * from "@/hooks/text";
-export * from "@/hooks/work";
+export {
+  createResource,
+  deleteResource,
+  fetchResourceItem,
+  fetchResourceList,
+  fetchResourceOptions,
+  getResourceClient,
+  updateResource,
+  useCreateResource,
+  useDeleteResource,
+  useResourceItem,
+  useResourceList,
+  useUpdateResource,
+} from "@/hooks/useResource";
+
+export { useFileUpload } from "@/hooks/useFileUpload";
+export { useImageUpload } from "@/hooks/useImageUpload";
+export { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";

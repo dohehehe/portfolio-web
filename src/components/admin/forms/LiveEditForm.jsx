@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDeleteLive, useLive, useUpdateLive } from "@/hooks/live";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import styles from "../AdminForm.module.css";
 
 export default function LiveEditForm({ id }) {
@@ -18,9 +22,9 @@ export default function LiveEditForm({ id }) {
   const [linkUrl, setLinkUrl] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: liveItem, loading, error } = useLive(id);
-  const { update, loading: updating } = useUpdateLive();
-  const { remove, loading: deleting } = useDeleteLive();
+  const { data: liveItem, loading, error } = useResourceItem("live", id);
+  const { update, loading: updating } = useUpdateResource("live");
+  const { remove, loading: deleting } = useDeleteResource("live");
 
   useEffect(() => {
     if (!liveItem) {
