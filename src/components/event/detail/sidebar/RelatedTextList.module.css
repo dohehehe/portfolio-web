@@ -1,4 +1,4 @@
-.textContent {
+.root {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -6,7 +6,7 @@
   word-break: keep-all;
 }
 
-.textList {
+.list {
   list-style: none;
   display: flex;
   flex-direction: column;
@@ -15,15 +15,14 @@
   padding: 0;
 }
 
-.textLink {
+.link {
   display: block;
   color: inherit;
   text-decoration: underline dotted;
   text-underline-offset: 4px;
 }
 
-
-.textItemRow {
+.row {
   margin: 0;
   color: #232323;
   font-size: 1.3rem;
@@ -31,21 +30,18 @@
   text-align: left;
 }
 
-.textTitle {
-  margin: 0;
-}
-
-.textMeta {
+.title,
+.meta {
   margin: 0;
 }
 
 @media (max-width: 780px) {
-  .textContent {
+  .root {
     margin-left: 50px;
     margin-bottom: 30px;
   }
 
-  .textItemRow {
+  .row {
     font-size: 1.25rem;
   }
 }

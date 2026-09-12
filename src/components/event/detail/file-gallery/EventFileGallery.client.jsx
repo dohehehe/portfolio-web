@@ -5,23 +5,16 @@ import { useImageLightbox } from "@/components/image-lightbox";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
 import Caption from "@/components/ui/Caption";
 import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
-import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
 import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
-import EventCreditEditor from "@/components/event/EventCreditEditor";
-import EventTextList from "@/components/event/EventTextList";
-import EventWorkList from "@/components/event/EventWorkList";
 import styles from "./EventFileGallery.module.css";
 
 const SCROLL_EDGE_THRESHOLD = 2;
 
-export default function EventFileGallery({ items, credit, texts = [], works = [], locale }) {
+export default function EventFileGallery({ items, sidebar = null }) {
   const fileItems = items ?? [];
   const hasFileItems = fileItems.length > 0;
-  const hasCredit = normalizeBlocks(credit).length > 0;
-  const hasTexts = texts.length > 0;
-  const hasWorks = works.length > 0;
-  const hasSidebarContent = hasCredit || hasTexts || hasWorks;
+  const hasSidebar = Boolean(sidebar);
 
   const trackRef = useRef(null);
   const { open: openImageLightbox } = useImageLightbox();
@@ -80,7 +73,7 @@ export default function EventFileGallery({ items, credit, texts = [], works = []
     };
   }, [fileItems, hasFileItems, updateScrollState]);
 
-  if (!hasFileItems && !hasSidebarContent) {
+  if (!hasFileItems && !hasSidebar) {
     return null;
   }
 
@@ -104,12 +97,8 @@ export default function EventFileGallery({ items, credit, texts = [], works = []
         ref={trackRef}
         className={`${styles.track} ${!hasFileItems ? styles.trackSidebarOnly : ""}`.trim()}
       >
-        {hasSidebarContent ? (
-          <div className={styles.trackCredit}>
-            <EventTextList items={texts} locale={locale} />
-            <EventCreditEditor data={credit} />
-            <EventWorkList items={works} locale={locale} />
-          </div>
+        {hasSidebar ? (
+          <div className={styles.trackSidebar}>{sidebar}</div>
         ) : null}
         {fileItems.map((item, index) => (
           <figure key={getGalleryItemKey(item, index)} className={styles.item}>
@@ -128,7 +117,7 @@ export default function EventFileGallery({ items, credit, texts = [], works = []
                 height={item.height}
                 draggable={false}
                 loading={index === 0 ? "eager" : "lazy"}
-                onClick={() => openImageLightbox({ items, index })}
+                onClick={() => openImageLightbox({ items: fileItems, index })}
               />
             )}
             <Caption as="figcaption" className={styles.caption} text={item.caption} />

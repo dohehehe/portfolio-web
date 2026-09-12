@@ -94,10 +94,10 @@ export const EVENT_RELATED_COLUMNS =
   "id,title_ko,title_en,date,space_ko,space_en";
 
 export const EVENT_DETAIL_KO_COLUMNS =
-  "id,title_ko,title_en,date,space_ko,space_en,credit_ko,gallery,file_link,note_kr";
+  "id,title_ko,title_en,date,space_ko,space_en,content_ko,credit_ko,gallery,file_link,note_kr";
 
 export const EVENT_DETAIL_EN_COLUMNS =
-  "id,title_ko,title_en,date,space_ko,space_en,credit_en,gallery,file_link,note_en";
+  "id,title_ko,title_en,date,space_ko,space_en,content_en,credit_en,gallery,file_link,note_en";
 
 export function getEventDetailColumns(locale) {
   return locale === "en" ? EVENT_DETAIL_EN_COLUMNS : EVENT_DETAIL_KO_COLUMNS;

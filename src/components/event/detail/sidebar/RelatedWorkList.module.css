@@ -1,4 +1,4 @@
-.workContent {
+.root {
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -7,26 +7,25 @@
   margin-top: 130px;
 }
 
-.workList {
+.list {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 13px;
   margin: 0;
   margin-left: 130px;
-  padding: 0 0px 0 13px;
-  padding-top: 20px;
+  padding: 20px 0 0 13px;
   border-top: 0.7px dotted #181818;
 }
 
-.workLink {
+.link {
   display: block;
   color: inherit;
   text-indent: -70px;
   padding-left: 70px;
 }
 
-.workItemRow {
+.row {
   margin: 0;
   color: #2f2f2f;
   font-size: 1.1rem;
@@ -34,30 +33,27 @@
   text-align: left;
 }
 
-.workTitle {
+.title {
   margin: 0;
 }
 
-.workTitleEn {
+.titleEn {
   font-style: italic;
   font-weight: 500;
 }
 
-.workMeta {
+.meta {
   margin: 0;
 }
 
 @media (max-width: 780px) {
-  .workContent {
+  .root {
     margin-bottom: 40px;
     margin-top: 40px;
   }
 
-  .workList {
+  .list {
     margin-left: 120px;
-    padding: 0 0px 0 6px;
-    padding-top: 15px;
+    padding: 15px 0 0 6px;
   }
-
-  .workItemRow {}
 }

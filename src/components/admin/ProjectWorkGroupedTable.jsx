@@ -6,6 +6,7 @@ import {
   sortByYearDesc,
   sortWorksByOrder,
 } from "@/components/navigation/workListUtils";
+import ActiveToggle from "./ActiveToggle";
 import { updateResource } from "@/hooks/useResource";
 import styles from "./AdminDataTables.module.css";
 
@@ -87,6 +88,7 @@ export default function ProjectWorkGroupedTable({
   onDeleteProject,
   onDeleteWork,
   onOrdersSaved,
+  onActiveUpdated,
 }) {
   const initialGroups = useMemo(
     () => buildProjectWorkGroups(projects, works),
@@ -196,21 +198,29 @@ export default function ProjectWorkGroupedTable({
                   work {group.works.length}
                 </span>
               </div>
-              <div className={styles.actionsCell}>
-                <Link
-                  className={styles.actionLink}
-                  href={`/admin/project/edit/${group.project.id}`}
-                >
-                  수정
-                </Link>
-                <button
-                  className={styles.actionButton}
-                  type="button"
-                  disabled={deletingId === group.project.id}
-                  onClick={() => onDeleteProject(group.project.id)}
-                >
-                  {deletingId === group.project.id ? "삭제 중..." : "삭제"}
-                </button>
+              <div className={styles.rowEndCell}>
+                <div className={styles.actionsCell}>
+                  <Link
+                    className={styles.actionLink}
+                    href={`/admin/project/edit/${group.project.id}`}
+                  >
+                    수정
+                  </Link>
+                  <button
+                    className={styles.actionButton}
+                    type="button"
+                    disabled={deletingId === group.project.id}
+                    onClick={() => onDeleteProject(group.project.id)}
+                  >
+                    {deletingId === group.project.id ? "삭제 중..." : "삭제"}
+                  </button>
+                </div>
+                <ActiveToggle
+                  table="project"
+                  id={group.project.id}
+                  isActive={group.project.is_active}
+                  onUpdated={onActiveUpdated}
+                />
               </div>
             </div>
           ) : (
@@ -257,21 +267,29 @@ export default function ProjectWorkGroupedTable({
                     </span>
                   </div>
 
-                  <div className={styles.actionsCell}>
-                    <Link
-                      className={styles.actionLink}
-                      href={`/admin/work/edit/${work.id}`}
-                    >
-                      수정
-                    </Link>
-                    <button
-                      className={styles.actionButton}
-                      type="button"
-                      disabled={deletingId === work.id}
-                      onClick={() => onDeleteWork(work.id)}
-                    >
-                      {deletingId === work.id ? "삭제 중..." : "삭제"}
-                    </button>
+                  <div className={styles.rowEndCell}>
+                    <div className={styles.actionsCell}>
+                      <Link
+                        className={styles.actionLink}
+                        href={`/admin/work/edit/${work.id}`}
+                      >
+                        수정
+                      </Link>
+                      <button
+                        className={styles.actionButton}
+                        type="button"
+                        disabled={deletingId === work.id}
+                        onClick={() => onDeleteWork(work.id)}
+                      >
+                        {deletingId === work.id ? "삭제 중..." : "삭제"}
+                      </button>
+                    </div>
+                    <ActiveToggle
+                      table="work"
+                      id={work.id}
+                      isActive={work.is_active}
+                      onUpdated={onActiveUpdated}
+                    />
                   </div>
                 </li>
               ))}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import EventNoteEditor from "@/components/event/EventNoteEditor";
+import EventEditor from "./editors/EventEditor";
 import styles from "./EventNoteModal.module.css";
 
 export default function EventNoteModal({ data }) {
@@ -126,7 +126,7 @@ export default function EventNoteModal({ data }) {
             className={styles.panel}
             onClick={(event) => event.stopPropagation()}
           >
-            <EventNoteEditor data={data} />
+            <EventEditor data={data} variant="note" />
           </div>
         </div>
       ) : null}

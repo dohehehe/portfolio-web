@@ -1,0 +1,108 @@
+.editorContent {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  padding-bottom: 50px;
+}
+
+.paragraph {
+  margin: 0;
+  color: #222222;
+  font-size: 1.45rem;
+  line-height: 1.7;
+  text-align: left;
+  word-break: keep-all;
+  font-size: 1.3rem;
+  font-weight: 400;
+  padding-left: 50px;
+
+}
+
+:global(html[lang="en"]) .paragraph {
+  font-weight: 300;
+}
+
+.paragraph:last-of-type {
+  margin-bottom: 60px;
+}
+
+.paragraph :is(i, em) {
+  font-style: italic;
+}
+
+.editorHeader {
+  margin: 0;
+  color: #212121;
+  text-align: left;
+}
+
+.editorHeader3 {
+  font-size: 1.3rem;
+  font-weight: 400;
+  padding-left: 50px;
+}
+
+:global(html[lang="en"]) .editorHeader3 {
+  font-weight: 300;
+}
+
+.editorHeader :is(i, em) {
+  font-style: italic;
+}
+
+.figure {
+  margin: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption {
+  margin: 0;
+  padding: 0 3px;
+  color: #666666;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.caption :is(i, em) {
+  font-style: italic;
+}
+
+.embed {
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+
+  .paragraph,
+  .caption {
+    font-size: 1.35rem;
+    font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+    line-height: 1.8;
+  }
+
+  .paragraph:last-of-type {
+    margin-bottom: 60px;
+  }
+
+  .editorHeader {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .editorHeader2 {
+    font-size: 1.4rem;
+  }
+
+  .editorHeader3,
+  .editorHeader4 {
+    font-size: 1.25rem;
+    padding-left: 50px;
+  }
+}

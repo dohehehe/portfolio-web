@@ -1,4 +1,4 @@
-.editorCredit {
+.editorContent {
   display: flex;
   flex-direction: column;
   gap: 17px;
@@ -21,7 +21,6 @@
   font-weight: 300;
 }
 
-
 .paragraph:last-of-type {
   margin-bottom: 60px;
 }
@@ -30,23 +29,23 @@
   font-style: italic;
 }
 
-.heading {
+.editorHeader {
   margin: 0;
   color: #212121;
   text-align: left;
 }
 
-.heading3 {
+.editorHeader3 {
   font-size: 1.3rem;
   font-weight: 400;
   padding-left: 50px;
 }
 
-:global(html[lang="en"]) .heading3 {
+:global(html[lang="en"]) .editorHeader3 {
   font-weight: 300;
 }
 
-.heading :is(i, em) {
+.editorHeader :is(i, em) {
   font-style: italic;
 }
 
@@ -91,24 +90,18 @@
     margin-bottom: 60px;
   }
 
-  .heading {
-    margin-left: 0px;
+  .editorHeader {
+    margin-left: 0;
     text-align: left;
   }
 
-  .heading1,
-  .heading2 {
+  .editorHeader2 {
     font-size: 1.4rem;
   }
 
-  .heading3,
-  .heading4 {
+  .editorHeader3,
+  .editorHeader4 {
     font-size: 1.25rem;
     padding-left: 50px;
-  }
-
-  .heading5,
-  .heading6 {
-    font-size: 1rem;
   }
 }

@@ -9,10 +9,7 @@ import {
 } from "@/lib/locale/routing";
 import styles from "./EventList.module.css";
 
-export default function EventList({
-  className = "",
-  events = [],
-}) {
+export default function EventList({ className = "", events = [] }) {
   const pathname = usePathname();
   const locale = getLocaleFromPathname(pathname);
 

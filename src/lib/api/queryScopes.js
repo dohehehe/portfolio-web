@@ -7,15 +7,15 @@ export const QUERY_SCOPE = {
 };
 
 const ADMIN_LIST_COLUMNS = {
-  cv: "id,year,title_ko,space_ko,link_url,type_id",
+  cv: "id,year,title_ko,space_ko,link_url,type_id,is_active",
   cv_type: "id,name_ko,name_en",
-  event: "id,date,title_ko,space_ko",
+  event: "id,date,title_ko,space_ko,is_active",
   info: "id,email,bio_ko",
   link_cv_item: "id,cv_id,project_id,work_id",
-  live: "id,start_at,end_at,title_ko,space_ko,link_url",
-  project: "id,year,title_ko,title_en,medium_ko",
-  text: "id,year,title_ko,writer_ko",
-  work: 'id,year,project_id,title_ko,title_en,medium_ko,"order"',
+  live: "id,start_at,end_at,title_ko,space_ko,link_url,is_active",
+  project: "id,year,title_ko,title_en,medium_ko,is_active",
+  text: "id,year,title_ko,writer_ko,is_active",
+  work: 'id,year,project_id,title_ko,title_en,medium_ko,"order",is_active',
 };
 
 const ADMIN_OPTIONS_COLUMNS = {

@@ -6,6 +6,8 @@ import {
   useDeleteResource,
   useResourceList,
 } from "@/hooks/useResource";
+import ActiveToggle, { TABLES_WITH_IS_ACTIVE } from "./ActiveToggle";
+import { getAdminColumnClass } from "./adminTableColumns";
 import CvGroupedTable from "./CvGroupedTable";
 import ProjectWorkGroupedTable from "./ProjectWorkGroupedTable";
 import styles from "./AdminDataTables.module.css";
@@ -77,17 +79,10 @@ function formatCellValue(value) {
   return `${text.slice(0, 80)}...`;
 }
 
-function useAdminTableData(table, enabled) {
-  const isResourceTable = table !== "project-work";
-
-  return useResourceList(table, {
-    enabled: enabled && isResourceTable,
-  });
-}
-
-function ResourceTable({ table, items, deletingId, onDelete }) {
+function ResourceTable({ table, items, deletingId, onDelete, onActiveUpdated }) {
   const config = ADMIN_TABLE_CONFIG[table];
   const columns = config.listColumns;
+  const hasActiveToggle = TABLES_WITH_IS_ACTIVE.has(table);
 
   if (items.length === 0) {
     return <p className={styles.status}>{table} 데이터가 없습니다.</p>;
@@ -99,20 +94,28 @@ function ResourceTable({ table, items, deletingId, onDelete }) {
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column}>{column}</th>
+              <th key={column} className={getAdminColumnClass(column)}>
+                {column}
+              </th>
             ))}
-            <th>작업</th>
+            <th className={styles.colActions}>작업</th>
+            {hasActiveToggle && (
+              <th className={styles.colActive}>active</th>
+            )}
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
             <tr key={item.id}>
               {columns.map((column) => (
-                <td key={column} className={styles.textCell}>
+                <td
+                  key={column}
+                  className={`${styles.textCell} ${getAdminColumnClass(column)}`}
+                >
                   {formatCellValue(item[column])}
                 </td>
               ))}
-              <td className={styles.actionsCell}>
+              <td className={`${styles.actionsCell} ${styles.colActions}`}>
                 <Link
                   className={styles.actionLink}
                   href={config.editHref(item.id)}
@@ -128,6 +131,16 @@ function ResourceTable({ table, items, deletingId, onDelete }) {
                   {deletingId === item.id ? "삭제 중..." : "삭제"}
                 </button>
               </td>
+              {hasActiveToggle && (
+                <td className={`${styles.activeCell} ${styles.colActive}`}>
+                  <ActiveToggle
+                    table={table}
+                    id={item.id}
+                    isActive={item.is_active}
+                    onUpdated={onActiveUpdated}
+                  />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -141,10 +154,14 @@ export default function AdminDataTables() {
   const [deletingId, setDeletingId] = useState(null);
 
   const isProjectWork = activeTable === "project-work";
-  const { data, loading, error, refetch } = useAdminTableData(
-    activeTable,
-    !isProjectWork,
-  );
+
+  const cvQuery = useResourceList("cv", { enabled: activeTable === "cv" });
+  const eventQuery = useResourceList("event", {
+    enabled: activeTable === "event",
+  });
+  const liveQuery = useResourceList("live", { enabled: activeTable === "live" });
+  const textQuery = useResourceList("text", { enabled: activeTable === "text" });
+  const infoQuery = useResourceList("info", { enabled: activeTable === "info" });
   const {
     data: projects = [],
     loading: projectsLoading,
@@ -161,6 +178,21 @@ export default function AdminDataTables() {
     "cv_type",
     { enabled: activeTable === "cv" },
   );
+
+  const tableQueries = {
+    cv: cvQuery,
+    event: eventQuery,
+    live: liveQuery,
+    text: textQuery,
+    info: infoQuery,
+  };
+
+  const { data, loading, error, refetch } = tableQueries[activeTable] ?? {
+    data: [],
+    loading: false,
+    error: null,
+    refetch: async () => [],
+  };
 
   const isLoading = isProjectWork
     ? projectsLoading || worksLoading
@@ -305,6 +337,7 @@ export default function AdminDataTables() {
           editHref={config.editHref}
           deletingId={deletingId}
           onDelete={handleDelete}
+          onActiveUpdated={() => refetch({ force: true })}
         />
       )}
 
@@ -316,6 +349,12 @@ export default function AdminDataTables() {
           onDeleteProject={handleDeleteProject}
           onDeleteWork={handleDeleteWork}
           onOrdersSaved={handleOrdersSaved}
+          onActiveUpdated={async () => {
+            await Promise.all([
+              refetchProjects({ force: true }),
+              refetchWorks({ force: true }),
+            ]);
+          }}
         />
       )}
 
@@ -328,6 +367,7 @@ export default function AdminDataTables() {
             items={data}
             deletingId={deletingId}
             onDelete={handleDelete}
+            onActiveUpdated={() => refetch({ force: true })}
           />
         )}
     </section>

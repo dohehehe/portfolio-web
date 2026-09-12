@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { localizedPath } from "@/lib/locale/routing";
-import styles from "./EventWorkList.module.css";
+import styles from "./RelatedWorkList.module.css";
 
 function formatMetaParts({ year, medium, dimension }) {
   const rest = [medium, dimension].filter(Boolean).join(" ");
@@ -20,21 +20,23 @@ function getItemHref(item, locale) {
   return localizedPath(`/work/${item.id}`, locale);
 }
 
-export default function EventWorkList({ items = [], locale }) {
+export default function RelatedWorkList({ items = [], locale }) {
   if (!items.length) {
     return null;
   }
 
   return (
-    <section className={styles.workContent}>
-      <ul className={styles.workList}>
+    <section className={styles.root}>
+      <ul className={styles.list}>
         {items.map((item) => {
           if (!item.title && !item.year && !item.medium && !item.dimension) {
             return null;
           }
 
           const meta = formatMetaParts(item);
-          const titleClassName = `${styles.workTitle} ${locale === "en" ? styles.workTitleEn : ""}`.trim();
+          const titleClassName = `${styles.title} ${
+            locale === "en" ? styles.titleEn : ""
+          }`.trim();
           const titleLabel =
             item.title && locale === "en"
               ? item.title
@@ -44,14 +46,14 @@ export default function EventWorkList({ items = [], locale }) {
 
           return (
             <li key={`${item.type}-${item.id}`}>
-              <Link href={getItemHref(item, locale)} className={styles.workLink}>
-                <div className={styles.workItemRow}>
+              <Link href={getItemHref(item, locale)} className={styles.link}>
+                <div className={styles.row}>
                   {titleLabel ? (
                     <span className={titleClassName}>
                       {meta ? `${titleLabel}, ` : titleLabel}
                     </span>
                   ) : null}
-                  {meta ? <span className={styles.workMeta}>{meta}</span> : null}
+                  {meta ? <span className={styles.meta}>{meta}</span> : null}
                 </div>
               </Link>
             </li>

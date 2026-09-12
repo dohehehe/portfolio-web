@@ -121,6 +121,7 @@ export async function getEventById(id, locale = DEFAULT_LOCALE) {
     titleEn: pickLocalized(data, "title", "en"),
     date: data.date,
     space: pickLocalized(data, "space", locale),
+    content: pickLocalized(data, "content", locale),
     credit: pickLocalized(data, "credit", locale),
     note,
     gallery: data.gallery,
