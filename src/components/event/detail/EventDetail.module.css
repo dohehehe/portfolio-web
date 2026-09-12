@@ -17,6 +17,10 @@
   margin-bottom: 20px;
 }
 
+.title span {
+  padding-right: 3px;
+}
+
 .date {
   font-family: var(--font-barlow), sans-serif;
   margin-bottom: 3px;
@@ -27,7 +31,7 @@
 }
 
 .eventGallery {
-  width: 52vw;
+  width: 49vw;
   margin-top: 120px;
   margin-left: 20px;
   position: relative;
@@ -45,7 +49,8 @@
 @media (max-width: 780px) {
   .section {
     padding: 34px 12px;
-    padding-top: 0;
+    /* padding-top: 0; */
+    padding-top: 44px;
     position: relative;
     display: flex;
     flex-direction: column-reverse;
@@ -63,7 +68,6 @@
 
   .title {
     font-size: 1.55rem;
-    font-weight: 600;
     padding-left: 12%;
   }
 

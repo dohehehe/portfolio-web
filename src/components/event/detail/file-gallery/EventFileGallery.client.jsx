@@ -120,7 +120,7 @@ export default function EventFileGallery({ items, sidebar = null }) {
                 onClick={() => openImageLightbox({ items: fileItems, index })}
               />
             )}
-            <Caption as="figcaption" className={styles.caption} text={item.caption} />
+            {/* <Caption as="figcaption" className={styles.caption} text={item.caption} /> */}
           </figure>
         ))}
       </div>

@@ -1,7 +1,7 @@
 .editorContent {
   display: flex;
   flex-direction: column;
-  gap: 17px;
+  gap: 23px;
   padding-bottom: 50px;
 }
 
@@ -9,41 +9,66 @@
   margin: 0;
   color: #222222;
   font-size: 1.45rem;
-  line-height: 1.7;
+  line-height: 1.74;
   text-align: left;
   word-break: keep-all;
   font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
   text-indent: 50px;
-  margin-bottom: 5px;
+}
+
+.paragraph:first-of-type {
+  text-indent: 0;
 }
 
 :global(html[lang="en"]) .paragraph {
   font-weight: 300;
 }
 
-.paragraph:last-of-type {
+/* .paragraph:last-of-type {
   margin-bottom: 60px;
-}
+} */
 
 .paragraph :is(i, em) {
   font-style: italic;
 }
 
-.editorHeader {
-  margin: 0;
-  color: #212121;
+.editorHeader2 {
+  padding-left: 50px;
+  font-weight: 500;
+  color: #4f4f4f;
+  font-size: 1.36rem;
+  line-height: 1.7;
   text-align: left;
+  word-break: keep-all;
+  margin-bottom: 5px;
 }
 
 .editorHeader3 {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 400;
+  margin-bottom: -20px;
+  margin-top: 10px;
   padding-left: 50px;
+}
+
+/* header 바로 다음 paragraph만 들여쓰기 제거 */
+.editorHeader+.paragraph {
+  text-indent: 0;
 }
 
 :global(html[lang="en"]) .editorHeader3 {
   font-weight: 300;
 }
+
+.editorHeader4 {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-bottom: -20px;
+  margin-top: 10px;
+  padding-right: 20px;
+  text-align: right;
+}
+
 
 .editorHeader :is(i, em) {
   font-style: italic;

@@ -133,6 +133,74 @@ function getFootnoteElements(wrapper) {
   return Array.from(wrapper.querySelectorAll(FOOTNOTE_SELECTOR));
 }
 
+function getFootnoteTextarea(wrapper) {
+  return wrapper?.querySelector('[data-inline-toolbar="true"]') ?? null;
+}
+
+function applyFootnoteInlineCommand(command, textarea) {
+  textarea?.focus();
+  document.execCommand(command);
+}
+
+function updateFootnoteFormatToolbarState(toolbar, textarea) {
+  if (!toolbar || !textarea) {
+    return;
+  }
+
+  toolbar.querySelectorAll("[data-command]").forEach((button) => {
+    const isActive = document.queryCommandState(button.dataset.command);
+
+    button.classList.toggle("fn-format-toolbar__button--active", isActive);
+    button.setAttribute("aria-pressed", isActive ? "true" : "false");
+  });
+}
+
+function injectFootnoteFormatToolbar(tuneInstance) {
+  const textarea = getFootnoteTextarea(tuneInstance.wrapper);
+  const popover = textarea?.parentElement;
+
+  if (
+    !popover ||
+    !textarea ||
+    tuneInstance.api.readOnly.isEnabled ||
+    popover.querySelector("[data-fn-format-toolbar]")
+  ) {
+    return null;
+  }
+
+  const toolbar = document.createElement("div");
+  toolbar.className = "fn-format-toolbar";
+  toolbar.dataset.fnFormatToolbar = "true";
+
+  [
+    { command: "bold", label: "B", title: "굵게 (⌘B)" },
+    { command: "italic", label: "I", title: "기울기 (⌘I)" },
+  ].forEach(({ command, label, title }) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "fn-format-toolbar__button";
+    button.title = title;
+    button.textContent = label;
+    button.dataset.command = command;
+    button.setAttribute("aria-pressed", "false");
+
+    button.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+    });
+
+    button.addEventListener("click", () => {
+      applyFootnoteInlineCommand(command, textarea);
+      updateFootnoteFormatToolbarState(toolbar, textarea);
+    });
+
+    toolbar.appendChild(button);
+  });
+
+  popover.insertBefore(toolbar, textarea);
+
+  return toolbar;
+}
+
 function detachNotesFromStaticPool(BaseFootnotesTune, wrapper) {
   if (!Array.isArray(BaseFootnotesTune.notes)) {
     BaseFootnotesTune.notes = [];
@@ -165,6 +233,9 @@ export async function loadFootnotesTune() {
       this.lastInsertRange = null;
       this.menuInsertRange = null;
       this.handleSelectionCapture = null;
+      this.handleFootnoteInlineToolbar = null;
+      this.handleFootnoteShortcut = null;
+      this.footnoteFormatToolbar = null;
     }
 
     rememberSelectionRange() {
@@ -198,6 +269,70 @@ export async function loadFootnotesTune() {
       this.handleSelectionCapture = null;
     }
 
+    bindFootnoteInlineToolbar() {
+      const textarea = getFootnoteTextarea(this.wrapper);
+
+      if (!textarea || this.handleFootnoteInlineToolbar) {
+        return;
+      }
+
+      this.footnoteFormatToolbar = injectFootnoteFormatToolbar(this);
+
+      this.handleFootnoteInlineToolbar = () => {
+        if (this.api.readOnly.isEnabled) {
+          return;
+        }
+
+        updateFootnoteFormatToolbarState(this.footnoteFormatToolbar, textarea);
+      };
+
+      this.handleFootnoteShortcut = (event) => {
+        if (!textarea.contains(event.target)) {
+          return;
+        }
+
+        if (!(event.metaKey || event.ctrlKey) || event.altKey || event.shiftKey) {
+          return;
+        }
+
+        const key = event.key.toLowerCase();
+
+        if (key === "b") {
+          event.preventDefault();
+          applyFootnoteInlineCommand("bold", textarea);
+          this.handleFootnoteInlineToolbar();
+          return;
+        }
+
+        if (key === "i") {
+          event.preventDefault();
+          applyFootnoteInlineCommand("italic", textarea);
+          this.handleFootnoteInlineToolbar();
+        }
+      };
+
+      textarea.addEventListener("mouseup", this.handleFootnoteInlineToolbar);
+      textarea.addEventListener("keyup", this.handleFootnoteInlineToolbar);
+      textarea.addEventListener("touchend", this.handleFootnoteInlineToolbar);
+      document.addEventListener("keydown", this.handleFootnoteShortcut, true);
+    }
+
+    unbindFootnoteInlineToolbar() {
+      const textarea = getFootnoteTextarea(this.wrapper);
+
+      if (!textarea || !this.handleFootnoteInlineToolbar) {
+        return;
+      }
+
+      textarea.removeEventListener("mouseup", this.handleFootnoteInlineToolbar);
+      textarea.removeEventListener("keyup", this.handleFootnoteInlineToolbar);
+      textarea.removeEventListener("touchend", this.handleFootnoteInlineToolbar);
+      document.removeEventListener("keydown", this.handleFootnoteShortcut, true);
+      this.handleFootnoteInlineToolbar = null;
+      this.handleFootnoteShortcut = null;
+      this.footnoteFormatToolbar = null;
+    }
+
     resolveInsertRange() {
       this.api.selection.restore();
 
@@ -218,6 +353,7 @@ export async function loadFootnotesTune() {
       this.notes = detachNotesFromStaticPool(BaseFootnotesTune, this.wrapper);
       this.syncNotesFromDom();
       this.bindSelectionCapture();
+      this.bindFootnoteInlineToolbar();
       registerFootnotesTune(this);
       return wrapped;
     }
@@ -278,6 +414,7 @@ export async function loadFootnotesTune() {
       super.destroy?.();
       this.observer?.disconnect();
       this.unbindSelectionCapture();
+      this.unbindFootnoteInlineToolbar();
       unregisterFootnotesTune(this);
 
       if (Array.isArray(BaseFootnotesTune.notes)) {
