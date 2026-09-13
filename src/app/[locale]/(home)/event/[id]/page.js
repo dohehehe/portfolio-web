@@ -4,8 +4,9 @@ import { barlow } from "@/app/fonts";
 import EventHeader from "@/components/event/detail/EventHeader";
 import EventGallery from "@/components/event/detail/EventGallery";
 import EventNoteModal from "@/components/event/detail/EventNoteModal";
-import EventFileGallerySection from "@/components/event/detail/file-gallery/EventFileGallerySection";
-import EventFileGallerySkeleton from "@/components/event/detail/file-gallery/EventFileGallerySkeleton";
+import EventFileGallerySection, {
+  EventFileGallerySkeleton,
+} from "@/components/event/detail/EventFileGallerySection";
 import JsonLd from "@/components/seo/JsonLd";
 import { getEventById } from "@/lib/data/event";
 import {

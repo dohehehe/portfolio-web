@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import EventEditor from "./editors/EventEditor";
+import EventEditor from "./EventEditor";
 import styles from "./EventNoteModal.module.css";
 
 export default function EventNoteModal({ data }) {

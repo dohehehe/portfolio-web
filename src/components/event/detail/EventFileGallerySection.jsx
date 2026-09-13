@@ -3,8 +3,9 @@ import { getEventById } from "@/lib/data/event";
 import { getTextsByEventId } from "@/lib/data/text";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
-import EventSidebar from "../sidebar/EventSidebar";
-import EventFileGallery from "./EventFileGallery.client";
+import EventSidebar from "./EventSidebar";
+import EventFileGallery from "./EventFileGallery";
+import styles from "./EventFileGallery.module.css";
 
 function hasFileGalleryData({ items, content, credit, texts, works }) {
   return (
@@ -14,6 +15,10 @@ function hasFileGalleryData({ items, content, credit, texts, works }) {
     texts.length > 0 ||
     works.length > 0
   );
+}
+
+export function EventFileGallerySkeleton() {
+  return <div className={styles.skeleton} aria-hidden="true" />;
 }
 
 export default async function EventFileGallerySection({ id, locale }) {

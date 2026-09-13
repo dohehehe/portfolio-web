@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useImageLightbox } from "@/components/image-lightbox";
 import AspectRatioImage from "@/components/ui/AspectRatioImage";
-import Caption from "@/components/ui/Caption";
 import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
 import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
@@ -123,7 +122,6 @@ export default function EventFileGallery({ items, sidebar = null }) {
                 onClick={() => openImageLightbox({ items: fileItems, index })}
               />
             )}
-            {/* <Caption as="figcaption" className={styles.caption} text={item.caption} /> */}
           </figure>
         ))}
       </div>
