@@ -98,7 +98,10 @@ export default function EventFileGallery({ items, sidebar = null }) {
         className={`${styles.track} ${!hasFileItems ? styles.trackSidebarOnly : ""}`.trim()}
       >
         {hasSidebar ? (
-          <div className={styles.trackSidebar}>{sidebar}</div>
+          <>
+            <div className={styles.trackSidebar}>{sidebar}</div>
+            <div className={styles.trackSidebar}>{sidebar}</div>
+          </>
         ) : null}
         {fileItems.map((item, index) => (
           <figure key={getGalleryItemKey(item, index)} className={styles.item}>

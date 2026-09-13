@@ -63,7 +63,6 @@
 .editorHeader4 {
   font-size: 1.2rem;
   font-weight: 400;
-  margin-bottom: -20px;
   margin-top: 10px;
   padding-right: 20px;
   text-align: right;
@@ -111,9 +110,6 @@
     line-height: 1.8;
   }
 
-  .paragraph:last-of-type {
-    margin-bottom: 60px;
-  }
 
   .editorHeader {
     margin-left: 0;
@@ -121,12 +117,18 @@
   }
 
   .editorHeader2 {
-    font-size: 1.4rem;
+    font-size: 1.25rem;
   }
 
-  .editorHeader3,
-  .editorHeader4 {
+  .editorHeader3 {
     font-size: 1.25rem;
     padding-left: 50px;
+  }
+
+  .editorHeader4 {
+    font-size: 1.2rem;
+    /* margin-top: 10px; */
+    padding-right: 20px;
+    text-align: right;
   }
 }

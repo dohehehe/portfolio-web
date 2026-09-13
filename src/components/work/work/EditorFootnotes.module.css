@@ -8,7 +8,7 @@
   font-size: 1.15rem;
   line-height: 1.6;
   font-family: var(--font-gothic-a1), sans-serif;
-  border-top: 1px solid #e0e0e0;
+  border-top: 0.4px solid #b8b8b8;
 }
 
 .footnoteItem {
