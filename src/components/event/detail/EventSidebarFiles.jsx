@@ -5,9 +5,9 @@ import AspectRatioImage from "@/components/ui/AspectRatioImage";
 import { getCaptionPlainText } from "@/lib/editorjs/normalizeEditorHtml";
 import { getGalleryItemKey, isGalleryVideo } from "@/components/work/gallery/galleryUtils";
 import GalleryMuxVideo from "@/components/work/gallery/GalleryMuxVideo";
-import styles from "@/components/event/detail/EventDetail.module.css";
+import styles from "./EventSidebar.module.css";
 
-export default function EventGallery({ items }) {
+export default function EventSidebarFiles({ items }) {
   const { open: openImageLightbox } = useImageLightbox();
 
   if (!items?.length) {
@@ -15,9 +15,9 @@ export default function EventGallery({ items }) {
   }
 
   return (
-    <section className={styles.eventGallery}>
+    <div className={styles.fileList}>
       {items.map((item, index) => (
-        <figure key={getGalleryItemKey(item, index)} className={styles.item}>
+        <figure key={getGalleryItemKey(item, index)} className={styles.fileItem}>
           {isGalleryVideo(item) ? (
             <GalleryMuxVideo
               videoUrl={item.video_url}
@@ -26,7 +26,7 @@ export default function EventGallery({ items }) {
             />
           ) : (
             <AspectRatioImage
-              className={styles.image}
+              className={styles.fileImage}
               src={item.img_url}
               alt={getCaptionPlainText(item.caption)}
               width={item.width}
@@ -38,6 +38,6 @@ export default function EventGallery({ items }) {
           )}
         </figure>
       ))}
-    </section>
+    </div>
   );
 }

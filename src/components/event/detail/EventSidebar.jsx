@@ -1,45 +1,13 @@
 import Link from "next/link";
+import { getProjectsAndWorksByEventId } from "@/lib/data/cv";
+import { getTextsByEventId } from "@/lib/data/text";
 import { normalizeBlocks } from "@/lib/editorjs/normalizeBlocks";
+import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import { localizedPath } from "@/lib/locale/routing";
-import EventEditor from "./EventEditor";
-import styles from "./EventSidebar.module.css";
-
-function RelatedTextList({ items = [], locale }) {
-  if (!items.length) {
-    return null;
-  }
-
-  return (
-    <section className={styles.textSection}>
-      <ul className={styles.textList}>
-        {items.map((item) => {
-          if (!item.title && !item.writer && !item.year) {
-            return null;
-          }
-
-          return (
-            <li key={item.id}>
-              <Link
-                href={localizedPath(`/text/${item.id}`, locale)}
-                className={styles.textLink}
-              >
-                <div className={styles.textRow}>
-                  -{" "}
-                  {item.title ? (
-                    <span className={styles.textTitle}>{item.title}, </span>
-                  ) : null}
-                  {item.writer ? (
-                    <span className={styles.textMeta}>{item.writer}</span>
-                  ) : null}
-                </div>
-              </Link>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
-}
+import EventEditor from "@/components/event/detail/editor/EventEditor";
+import EventSidebarFiles from "@/components/event/detail/EventSidebarFiles";
+import EventSidebarShell from "@/components/event/detail/EventSidebarShell";
+import styles from "@/components/event/detail/EventSidebar.module.css";
 
 function formatWorkMetaParts({ year, medium, dimension }) {
   const rest = [medium, dimension].filter(Boolean).join(" ");
@@ -59,13 +27,50 @@ function getWorkItemHref(item, locale) {
   return localizedPath(`/work/${item.id}`, locale);
 }
 
-function RelatedWorkList({ items = [], locale }) {
+function RelatedTextList({ items, locale }) {
   if (!items.length) {
     return null;
   }
 
   return (
-    <section className={styles.workSection}>
+    <div className={styles.textBlock}>
+      <ul className={styles.textList}>
+        {items.map((item) => {
+          if (!item.title && !item.writer && !item.year) {
+            return null;
+          }
+
+          return (
+            <li key={item.id}>
+              <Link
+                href={localizedPath(`/text/${item.id}`, locale)}
+                className={styles.textLink}
+              >
+                <span className={styles.textRow}>
+                  -{" "}
+                  {item.title ? (
+                    <span className={styles.textTitle}>{item.title}, </span>
+                  ) : null}
+                  {item.writer ? (
+                    <span className={styles.textMeta}>{item.writer}</span>
+                  ) : null}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function RelatedWorkList({ items, locale }) {
+  if (!items.length) {
+    return null;
+  }
+
+  return (
+    <div className={styles.workBlock}>
       <ul className={styles.workList}>
         {items.map((item) => {
           if (!item.title && !item.year && !item.medium && !item.dimension) {
@@ -73,9 +78,8 @@ function RelatedWorkList({ items = [], locale }) {
           }
 
           const meta = formatWorkMetaParts(item);
-          const titleClassName = `${styles.workTitle} ${
-            locale === "en" ? styles.workTitleEn : ""
-          }`.trim();
+          const titleClassName = `${styles.workTitle} ${locale === "en" ? styles.workTitleEn : ""
+            }`.trim();
           const titleLabel =
             item.title && locale === "en"
               ? item.title
@@ -86,53 +90,77 @@ function RelatedWorkList({ items = [], locale }) {
           return (
             <li key={`${item.type}-${item.id}`}>
               <Link href={getWorkItemHref(item, locale)} className={styles.workLink}>
-                <div className={styles.workRow}>
+                <span className={styles.workRow}>
                   {titleLabel ? (
                     <span className={titleClassName}>
                       {meta ? `${titleLabel}, ` : titleLabel}
                     </span>
                   ) : null}
                   {meta ? <span className={styles.workMeta}>{meta}</span> : null}
-                </div>
+                </span>
               </Link>
             </li>
           );
         })}
       </ul>
-    </section>
+    </div>
   );
 }
 
-export default function EventSidebar({
-  content,
-  credit,
-  texts = [],
-  works = [],
-  locale,
-}) {
-  const hasContent = normalizeBlocks(content).length > 0;
-  const hasCredit = normalizeBlocks(credit).length > 0;
+export default async function EventSidebar({ event, locale }) {
+  const [texts, works] = await Promise.all([
+    getTextsByEventId(event.id, locale),
+    getProjectsAndWorksByEventId(event.id, locale),
+  ]);
+
+  const fileItems = normalizeGalleryItems(event.file_link, locale);
+  const hasCredit = normalizeBlocks(event.credit).length > 0;
+  const hasContent = normalizeBlocks(event.content).length > 0;
   const hasTexts = texts.length > 0;
   const hasWorks = works.length > 0;
+  const hasFiles = fileItems.length > 0;
 
-  if (!hasContent && !hasCredit && !hasTexts && !hasWorks) {
+  if (!hasCredit && !hasContent && !hasTexts && !hasWorks && !hasFiles) {
     return null;
   }
 
   return (
-    <>
+    <EventSidebarShell>
+      {hasCredit || hasTexts || hasWorks ? (
+        <section
+          data-sidebar-section
+          className={`${styles.section} ${styles.creditSection}`}
+          aria-label="credit and related"
+        >
+          {hasCredit ? (
+            <div className={styles.creditBlock}>
+              <EventEditor data={event.credit} variant="credit" />
+            </div>
+          ) : null}
+          {hasTexts ? <RelatedTextList items={texts} locale={locale} /> : null}
+          {hasWorks ? <RelatedWorkList items={works} locale={locale} /> : null}
+        </section>
+      ) : null}
+
       {hasContent ? (
-        <section className={styles.contentSection} aria-label="content">
-          <EventEditor data={content} variant="content" />
+        <section
+          data-sidebar-section
+          className={`${styles.section} ${styles.contentSection}`}
+          aria-label="content"
+        >
+          <EventEditor data={event.content} variant="content" />
         </section>
       ) : null}
-      {hasTexts ? <RelatedTextList items={texts} locale={locale} /> : null}
-      {hasCredit ? (
-        <section className={styles.creditSection} aria-label="credit">
-          <EventEditor data={credit} variant="credit" />
+
+      {hasFiles ? (
+        <section
+          data-sidebar-section
+          className={`${styles.section} ${styles.fileSection}`}
+          aria-label="files"
+        >
+          <EventSidebarFiles items={fileItems} />
         </section>
       ) : null}
-      {hasWorks ? <RelatedWorkList items={works} locale={locale} /> : null}
-    </>
+    </EventSidebarShell>
   );
 }
