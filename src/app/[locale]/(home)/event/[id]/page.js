@@ -11,6 +11,7 @@ import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import { generateEventDetailStaticParams } from "@/lib/data/staticParams";
 import { buildExhibitionEventJsonLd } from "@/lib/structured-data/buildJsonLd";
 import styles from "@/components/event/detail/EventDetail.module.css";
+import EventDetailHeader from "@/components/event/detail/EventDetailHeader";
 import EventSidebar from "@/components/event/detail/EventSidebar";
 
 export async function generateStaticParams() {
@@ -53,15 +54,11 @@ export default async function EventDetailPage({ params }) {
         })}
       />
       <article className={`${barlow.variable} ${styles.article}`}>
-        <header className={styles.eventHeader}>
-          <h1 className={styles.title}>
-            {titles.length > 0
-              ? titles.map((title) => <span key={title}>{title}</span>)
-              : "Untitled"}
-          </h1>
-          {event.date ? <p className={styles.date}>{event.date}</p> : null}
-          {event.space ? <p>{event.space}</p> : null}
-        </header>
+        <EventDetailHeader
+          titles={titles}
+          date={event.date}
+          space={event.space}
+        />
 
         <div className={styles.eventContent}>
           <EventGallery items={galleryItems} />
