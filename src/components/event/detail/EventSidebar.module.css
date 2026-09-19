@@ -94,8 +94,9 @@
 }
 
 .textBlock {
-  margin-bottom: 40px;
+  padding-bottom: 40px;
   word-break: keep-all;
+  border-bottom: 0.7px dotted #181818;
 }
 
 .textList {
@@ -110,8 +111,8 @@
 .textLink {
   display: block;
   color: inherit;
-  text-decoration: underline dotted;
-  text-underline-offset: 4px;
+  /* text-decoration: underline dotted; */
+  /* text-underline-offset: 4px; */
 }
 
 .textRow {

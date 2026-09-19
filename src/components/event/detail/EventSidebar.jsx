@@ -47,7 +47,7 @@ function RelatedTextList({ items, locale }) {
                 className={styles.textLink}
               >
                 <span className={styles.textRow}>
-                  -{" "}
+                  ㅡ{" "}
                   {item.title ? (
                     <span className={styles.textTitle}>{item.title}, </span>
                   ) : null}
@@ -137,20 +137,20 @@ export default async function EventSidebar({ event, locale }) {
               <EventEditor data={event.credit} variant="credit" />
             </div>
           ) : null}
-          {hasTexts ? <RelatedTextList items={texts} locale={locale} /> : null}
           {hasWorks ? <RelatedWorkList items={works} locale={locale} /> : null}
         </section>
       ) : null}
 
-      {hasContent ? (
-        <section
-          data-sidebar-section
-          className={`${styles.section} ${styles.contentSection}`}
-          aria-label="content"
-        >
+      <section
+        data-sidebar-section
+        className={`${styles.section} ${styles.contentSection}`}
+        aria-label="content"
+      >
+        {hasTexts ? <RelatedTextList items={texts} locale={locale} /> : null}
+        {hasContent ? (
           <EventEditor data={event.content} variant="content" />
-        </section>
-      ) : null}
+        ) : null}
+      </section>
 
       {hasFiles ? (
         <section
