@@ -14,10 +14,6 @@
   width: 100%;
 }
 
-.singlePortrait {
-  width: calc((100% - 14px) / 2);
-}
-
 .portraitPairRow {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -68,10 +64,6 @@
 @media (max-width: 780px) {
   .gallery {
     gap: 5px;
-    width: 100%;
-  }
-
-  .singlePortrait {
     width: 100%;
   }
 
