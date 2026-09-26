@@ -38,4 +38,7 @@ export const kapakana = Kapakana({
   weight: "variable",
   variable: "--font-kapakana",
   display: "swap",
+  // Kapakana is not in Next.js precalculated fallback metrics; skip to avoid dev warnings.
+  adjustFontFallback: false,
+  fallback: ["cursive"],
 });
