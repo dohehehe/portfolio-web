@@ -1,0 +1,132 @@
+.editorContent {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.paragraph,
+.editorContent :global(.ce-paragraph) {
+  margin: 0;
+  color: #222222;
+  font-size: 1.45rem;
+  line-height: 1.7;
+  text-align: left;
+  word-break: keep-all;
+  font-size: 1.3rem;
+  font-weight: 400;
+  display: flex;
+  align-items: flex-start;
+}
+
+/* .paragraph::before {
+  content: "";
+  display: inline-block;
+  width: 40px;
+  height: 0.5px;
+  background-color: #6b6b6b;
+  margin-right: 10px;
+  margin-top: 12px;
+} */
+
+:global(html[lang="en"]) .paragraph,
+:global(html[lang="en"]) .editorContent :global(.ce-paragraph) {
+  font-weight: 300;
+}
+
+.paragraph:last-of-type {
+  margin-bottom: 60px;
+}
+
+.paragraph :is(i, em),
+.editorContent :global(.ce-paragraph) :is(i, em) {
+  font-style: italic;
+}
+
+.editorHeader,
+.editorContent :global(.ce-header) {
+  margin: 0;
+  color: #212121;
+  text-align: left;
+}
+
+.editorHeader3,
+.editorContent :global(.ce-header[data-level="3"]) {
+  font-size: 1.3rem;
+  font-weight: 400;
+  padding-left: 50px;
+}
+
+:global(html[lang="en"]) .editorHeader3,
+:global(html[lang="en"]) .editorContent :global(.ce-header[data-level="3"]) {
+  font-weight: 300;
+}
+
+.editorHeader :is(i, em),
+.editorContent :global(.ce-header) :is(i, em) {
+  font-style: italic;
+}
+
+.editorContent :global(.ce-block + .ce-block) {
+  margin-top: 10px;
+}
+
+.figure {
+  margin: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption,
+.editorContent :global(.image-tool__caption),
+.editorContent :global(.embed-tool__caption) {
+  margin: 0;
+  padding: 0 3px;
+  color: #666666;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.caption :is(i, em),
+.editorContent :global(.image-tool__caption) :is(i, em),
+.editorContent :global(.embed-tool__caption) :is(i, em) {
+  font-style: italic;
+}
+
+.embed {
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+
+  .paragraph,
+  .caption {
+    font-size: 1.35rem;
+    font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+    line-height: 1.8;
+  }
+
+  .paragraph:last-of-type {
+    margin-bottom: 60px;
+  }
+
+  .editorHeader {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .editorHeader2 {
+    font-size: 1.4rem;
+  }
+
+  .editorHeader3,
+  .editorHeader4 {
+    font-size: 1.25rem;
+    padding-left: 50px;
+  }
+}

@@ -2,15 +2,14 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { useCv, useDeleteCv, useUpdateCv } from "@/hooks/cv";
+import { useEffect, useState } from "react";
 import {
-  useCreateLinkCvItem,
-  useDeleteLinkCvItem,
-  useLinkCvItems,
-} from "@/hooks/link_cv_item";
-import { useProjects } from "@/hooks/project";
-import { useWorks } from "@/hooks/work";
+  useCreateResource,
+  useDeleteResource,
+  useResourceItem,
+  useResourceList,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import CvItemMultiSelect from "./CvItemMultiSelect";
 import ForeignSelect from "./ForeignSelect";
 import {
@@ -36,19 +35,25 @@ export default function CvEditForm({ id }) {
   const [linksInitialized, setLinksInitialized] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: cvItem, loading, error } = useCv(id);
-  const { data: allLinks = [], loading: linksLoading } = useLinkCvItems();
-  const { data: projects = [], loading: projectsLoading } = useProjects();
-  const { data: works = [], loading: worksLoading } = useWorks();
-  const { update, loading: updating } = useUpdateCv();
-  const { remove, loading: deleting } = useDeleteCv();
-  const { create: createLink } = useCreateLinkCvItem();
-  const { remove: deleteLink } = useDeleteLinkCvItem();
-
-  const cvLinks = useMemo(
-    () => allLinks.filter((link) => link.cv_id === id),
-    [allLinks, id],
+  const { data: cvItem, loading, error } = useResourceItem("cv", id);
+  const { data: cvLinks = [], loading: linksLoading } = useResourceList(
+    "link_cv_item",
+    {
+      enabled: Boolean(id),
+      filters: { cv_id: id },
+    },
   );
+  const { data: projects = [], loading: projectsLoading } = useResourceList(
+    "project",
+    { scope: "options" },
+  );
+  const { data: works = [], loading: worksLoading } = useResourceList("work", {
+    scope: "options",
+  });
+  const { update, loading: updating } = useUpdateResource("cv");
+  const { remove, loading: deleting } = useDeleteResource("cv");
+  const { create: createLink } = useCreateResource("link_cv_item");
+  const { remove: deleteLink } = useDeleteResource("link_cv_item");
 
   const itemsLoading = projectsLoading || worksLoading || linksLoading;
 
@@ -72,11 +77,11 @@ export default function CvEditForm({ id }) {
       return;
     }
 
-    const { projectIds, workIds } = getCvLinkSelections(allLinks, id);
+    const { projectIds, workIds } = getCvLinkSelections(cvLinks, id);
     setSelectedProjectIds(projectIds);
     setSelectedWorkIds(workIds);
     setLinksInitialized(true);
-  }, [allLinks, id, linksLoading]);
+  }, [cvLinks, id, linksLoading]);
 
   async function handleSubmit(event) {
     event.preventDefault();

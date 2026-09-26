@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCreateInfo } from "@/hooks/info";
+import { useCreateResource } from "@/hooks/useResource";
 import styles from "../AdminForm.module.css";
 
 export default function InfoCreateForm() {
@@ -14,7 +14,7 @@ export default function InfoCreateForm() {
   const [bioEn, setBioEn] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { create, loading } = useCreateInfo();
+  const { create, loading } = useCreateResource("info");
 
   async function handleSubmit(event) {
     event.preventDefault();

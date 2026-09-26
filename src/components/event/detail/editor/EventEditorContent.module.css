@@ -1,0 +1,186 @@
+.editorContent {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding-top: 40px;
+  padding-bottom: 50px;
+}
+
+.paragraph,
+.editorContent :global(.ce-paragraph) {
+  margin: 0;
+  color: #222222;
+  font-size: 1.45rem;
+  line-height: 1.74;
+  text-align: left;
+  word-break: keep-all;
+  font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+  text-indent: 50px;
+  font-weight: 400;
+}
+
+.paragraph:first-of-type,
+.editorContent :global(.ce-block:first-child .ce-paragraph) {
+  text-indent: 0;
+}
+
+:global(html[lang="en"]) .paragraph,
+:global(html[lang="en"]) .editorContent :global(.ce-paragraph) {
+  font-weight: 400;
+}
+
+/* .paragraph:last-of-type {
+  margin-bottom: 60px;
+} */
+
+.paragraph :is(i, em),
+.editorContent :global(.ce-paragraph) :is(i, em) {
+  font-style: italic;
+}
+
+
+.editorHeader1,
+.editorContent :global(.ce-header[data-level="1"]) {
+  font-weight: 600;
+  color: #484848;
+  font-size: 1rem;
+  line-height: 1.7;
+  text-align: left;
+  word-break: keep-all;
+  /* margin-bottom: -10px; */
+  /* padding-left: 50px; */
+  text-align: right;
+  padding-right: 10px;
+  margin-bottom: 10px;
+}
+
+.editorHeader1::before {
+  content: "";
+  display: block;
+  width: calc(100% + 10px);
+  height: 10px;
+  /* background-color: #6f6f6f; */
+  border-top: 0.5px dotted #6f6f6f;
+}
+
+
+.editorHeader2,
+.editorContent :global(.ce-header[data-level="2"]) {
+  padding-left: 50px;
+  font-weight: 400;
+  color: #303030;
+  font-size: 1.38rem;
+  line-height: 1.7;
+  text-align: left;
+  word-break: keep-all;
+  margin-bottom: -18px;
+}
+
+.editorHeader3,
+.editorContent :global(.ce-header[data-level="3"]) {
+  font-size: 1.2rem;
+  font-weight: 400;
+  /* margin-top: 10px; */
+  /* padding-right: 20px; */
+  /* text-align: right; */
+  padding-left: 50px;
+  margin-bottom: 30px;
+}
+
+.editorHeader4,
+.editorContent :global(.ce-header[data-level="4"]) {
+  font-size: 1.35rem;
+  font-weight: 400;
+  margin-bottom: -20px;
+  margin-top: 10px;
+  padding-left: 50px;
+}
+
+.editorHeader5,
+.editorContent :global(.ce-header[data-level="4"]) {
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin-top: 10px;
+  padding-right: 20px;
+  text-align: right;
+}
+
+/* header 바로 다음 paragraph만 들여쓰기 제거 */
+.editorHeader+.paragraph,
+.editorContent :global(.ce-header + .ce-block .ce-paragraph) {
+  text-indent: 0;
+}
+
+
+.editorHeader :is(i, em),
+.editorContent :global(.ce-header) :is(i, em) {
+  font-style: italic;
+}
+
+.editorContent :global(.ce-block + .ce-block) {
+  margin-top: 23px;
+}
+
+.figure {
+  margin: 0;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.caption,
+.editorContent :global(.image-tool__caption),
+.editorContent :global(.embed-tool__caption) {
+  margin: 0;
+  padding: 0 3px;
+  color: #666666;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+
+.caption :is(i, em),
+.editorContent :global(.image-tool__caption) :is(i, em),
+.editorContent :global(.embed-tool__caption) :is(i, em) {
+  font-style: italic;
+}
+
+.embed {
+  margin: 0;
+}
+
+@media (max-width: 780px) {
+
+  .paragraph,
+  .caption {
+    font-size: 1.35rem;
+    font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+    line-height: 1.8;
+  }
+
+
+  .editorHeader {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .editorHeader2 {
+    font-size: 1.25rem;
+  }
+
+  .editorHeader3 {
+    font-size: 1.25rem;
+    padding-left: 50px;
+  }
+
+  .editorHeader4 {
+    font-size: 1.2rem;
+    /* margin-top: 10px; */
+    padding-right: 20px;
+    text-align: right;
+  }
+}

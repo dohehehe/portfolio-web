@@ -3,8 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
-import { useDeleteText, useText, useUpdateText } from "@/hooks/text";
+import Editor from "@/components/editor/EditorInputClient";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import { saveEditorContent } from "./formUtils";
 import styles from "../AdminForm.module.css";
@@ -23,11 +27,12 @@ export default function TextEditForm({ id }) {
   const [projectId, setProjectId] = useState("");
   const [eventId, setEventId] = useState("");
   const [workId, setWorkId] = useState("");
+  const [typeId, setTypeId] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: textItem, loading, error } = useText(id);
-  const { update, loading: updating } = useUpdateText();
-  const { remove, loading: deleting } = useDeleteText();
+  const { data: textItem, loading, error } = useResourceItem("text", id);
+  const { update, loading: updating } = useUpdateResource("text");
+  const { remove, loading: deleting } = useDeleteResource("text");
 
   useEffect(() => {
     if (!textItem) {
@@ -42,6 +47,7 @@ export default function TextEditForm({ id }) {
     setProjectId(textItem.project_id ?? "");
     setEventId(textItem.event_id ?? "");
     setWorkId(textItem.work_id ?? "");
+    setTypeId(textItem.type_id ?? "");
   }, [textItem]);
 
   async function handleSubmit(event) {
@@ -58,6 +64,7 @@ export default function TextEditForm({ id }) {
         project_id: projectId || null,
         event_id: eventId || null,
         work_id: workId || null,
+        type_id: typeId || null,
         content_ko: await saveEditorContent(contentKoRef, "content_ko"),
         content_en: await saveEditorContent(contentEnRef, "content_en"),
       });
@@ -162,6 +169,16 @@ export default function TextEditForm({ id }) {
           />
         </label>
 
+        <label className={styles.label}>
+          type_id
+          <ForeignSelect
+            foreignTable="text_type"
+            labelKey="name"
+            value={typeId}
+            onChange={setTypeId}
+          />
+        </label>
+
         <div key={textItem.id}>
           <div className={styles.field}>
             content_ko
@@ -169,6 +186,7 @@ export default function TextEditForm({ id }) {
               ref={contentKoRef}
               holderId="editor-text-content-ko"
               data={textItem.content_ko}
+              preview="text-content"
             />
           </div>
 
@@ -178,6 +196,7 @@ export default function TextEditForm({ id }) {
               ref={contentEnRef}
               holderId="editor-text-content-en"
               data={textItem.content_en}
+              preview="text-content"
             />
           </div>
         </div>

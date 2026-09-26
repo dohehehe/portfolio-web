@@ -1,7 +1,7 @@
 import { barlow } from "@/app/fonts";
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import ProjectGallery from "@/components/work/gallery/ProjectGallery";
-import ProjectEditorSection from "@/components/work/project/item-detail/ProjectEditorSection";
+import EditorViewer from "@/components/editor/EditorViewer";
 import ProjectEventList from "@/components/work/project/item-detail/ProjectEventList";
 import ProjectTextList from "@/components/work/project/item-detail/ProjectTextList";
 import styles from "@/components/work/project/item-detail/ProjectItemDetail.module.css";
@@ -57,12 +57,24 @@ export default function ProjectItemDetail({
       <ProjectGallery items={galleryItems} />
 
       <div className={styles.contentRow}>
-        <ProjectEditorSection variant="content" data={item.content} styles={styles} />
+        <EditorViewer
+          data={item.content}
+          styles={styles}
+          rootClassName={styles.editorContent}
+          includeHeaders
+          as="section"
+        />
 
         <div className={styles.creditRow}>
           <ProjectEventList items={cvs} locale={locale} styles={styles} />
           <ProjectTextList items={texts} locale={locale} styles={styles} />
-          <ProjectEditorSection variant="credit" data={item.credit} styles={styles} />
+          <EditorViewer
+            data={item.credit}
+            styles={styles}
+            rootClassName={styles.creditContent}
+            includeHeaders={false}
+            as="section"
+          />
         </div>
       </div>
     </article>

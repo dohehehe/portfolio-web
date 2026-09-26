@@ -1,12 +1,8 @@
 import { notFound } from "next/navigation";
 import { barlow } from "@/app/fonts";
-import EventFileGallery from "@/components/event/EventFileGallery";
-import EventGallery from "@/components/event/EventGallery";
-import EventNoteModal from "@/components/event/EventNoteModal";
+import EventGallery from "@/components/event/detail/EventGallery";
 import JsonLd from "@/components/seo/JsonLd";
-import { getProjectsAndWorksByEventId } from "@/lib/data/cv";
 import { getEventById } from "@/lib/data/event";
-import { getTextsByEventId } from "@/lib/data/text";
 import {
   buildDetailPageMetadata,
   getEventMetadata,
@@ -14,7 +10,9 @@ import {
 import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import { generateEventDetailStaticParams } from "@/lib/data/staticParams";
 import { buildExhibitionEventJsonLd } from "@/lib/structured-data/buildJsonLd";
-import styles from "@/components/event/EventDetailPage.module.css";
+import styles from "@/components/event/detail/EventDetail.module.css";
+import EventDetailHeader from "@/components/event/detail/EventDetailHeader";
+import EventSidebar from "@/components/event/detail/EventSidebar";
 
 export async function generateStaticParams() {
   return generateEventDetailStaticParams();
@@ -44,11 +42,6 @@ export default async function EventDetailPage({ params }) {
   }
 
   const galleryItems = normalizeGalleryItems(event.gallery, locale);
-  const fileLinkItems = normalizeGalleryItems(event.file_link, locale);
-  const [texts, works] = await Promise.all([
-    getTextsByEventId(id, locale),
-    getProjectsAndWorksByEventId(id, locale),
-  ]);
   const titles = [...new Set([event.titleKo, event.titleEn].filter(Boolean))];
 
   return (
@@ -60,36 +53,18 @@ export default async function EventDetailPage({ params }) {
           pathname: `/event/${id}`,
         })}
       />
-      <section className={`${barlow.variable} ${styles.section}`}>
-        <header className={styles.eventHeader}>
-          <h1 className={styles.title}>
-            {titles.length > 0
-              ? titles.map((title) => (
-                <span key={title} className={styles.titleLine}>
-                  {title}
-                </span>
-              ))
-              : "Untitled"}
-          </h1>
-          {event.date ? <p className={styles.date}>{event.date}</p> : null}
-          {event.space ? <p>{event.space}</p> : null}
+      <article className={`${barlow.variable} ${styles.article}`}>
+        <EventDetailHeader
+          titles={titles}
+          date={event.date}
+          space={event.space}
+        />
 
-        </header>
-        <div className={styles.eventGallery}>
+        <div className={styles.eventContent}>
           <EventGallery items={galleryItems} />
+          <EventSidebar event={event} locale={locale} />
         </div>
-        <div className={styles.fileGallery}>
-          <EventFileGallery
-            items={fileLinkItems}
-            credit={event.credit}
-            texts={texts}
-            works={works}
-            locale={locale}
-          />
-        </div>
-        <EventNoteModal data={event.note} />
-      </section>
-
+      </article>
     </>
   );
 }

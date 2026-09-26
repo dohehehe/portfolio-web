@@ -3,10 +3,14 @@ import "server-only";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
+import {
+  applyPublicActiveFilter,
+  isPubliclyVisible,
+} from "@/lib/data/publicVisibility";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const LIVE_LIST_COLUMNS =
-  "id,created_at,title_ko,title_en,space_ko,space_en,start_at,end_at,link_url";
+  "id,created_at,title_ko,title_en,space_ko,space_en,start_at,end_at,link_url,is_active";
 
 function getTodayDateString() {
   return new Intl.DateTimeFormat("en-CA", {
@@ -40,13 +44,18 @@ function mapLiveRecord(record, locale, today = null) {
   };
 }
 
-const fetchAllLiveRecords = createCachedQuery(
-  async () => {
+const fetchActiveLiveRecords = createCachedQuery(
+  async (today) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("live")
       .select(LIVE_LIST_COLUMNS)
+      .gte("end_at", today)
       .order("start_at", { ascending: true });
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -55,7 +64,7 @@ const fetchAllLiveRecords = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["live-all"],
+    key: ["live-active"],
     tags: [DATA_CACHE_TAG.live],
   },
 );
@@ -82,18 +91,16 @@ const fetchLiveRecordById = createCachedQuery(
 );
 
 export async function getLives(locale = DEFAULT_LOCALE) {
-  const records = await fetchAllLiveRecords();
   const today = getTodayDateString();
+  const records = await fetchActiveLiveRecords(today);
 
-  return records
-    .filter((record) => record.end_at >= today)
-    .map((record) => mapLiveRecord(record, locale, today));
+  return records.map((record) => mapLiveRecord(record, locale, today));
 }
 
 export async function getLiveById(id, locale = DEFAULT_LOCALE) {
   const data = await fetchLiveRecordById(id);
 
-  if (!data) {
+  if (!data || !isPubliclyVisible(data)) {
     return null;
   }
 

@@ -70,7 +70,7 @@ function buildGalleryRows(items, imageMeta, isMobile) {
       const pair = portraitBuffer.slice(index, index + 2);
 
       rows.push({
-        type: pair.length === 2 ? "portrait-pair" : "single-portrait",
+        type: pair.length === 2 ? "portrait-pair" : "full-width",
         items: pair,
       });
     }
@@ -300,14 +300,12 @@ export default function WorkGallery({ items }) {
         }
 
         const { item, index } = row.items[0];
-        const itemClassName =
-          row.type === "single-portrait" ? styles.singlePortrait : styles.fullWidth;
         const meta = getItemMeta(index, item, imageMeta);
 
         return (
           <figure
             key={getGalleryItemKey(item, index)}
-            className={`${styles.item} ${itemClassName}`}
+            className={`${styles.item} ${styles.fullWidth}`}
           >
             {isGalleryVideo(item) ? (
               <GalleryMuxVideo

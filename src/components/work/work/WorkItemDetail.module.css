@@ -111,35 +111,52 @@
   min-width: 50%;
 
 
-  .paragraph {
+  .paragraph,
+  :global(.ce-paragraph) {
     line-height: 1.8;
+  }
+
+  :global(.ce-block + .ce-block) {
+    margin-top: 16px;
   }
 }
 
-.paragraph {
+.paragraph,
+.editorContent :global(.ce-paragraph),
+.creditRow :global(.ce-paragraph) {
   margin: 0;
   line-height: 1.4;
   margin-bottom: 7px;
 }
 
-:global(html[lang="en"]) .paragraph {
+:global(html[lang="en"]) .paragraph,
+:global(html[lang="en"]) .editorContent :global(.ce-paragraph),
+:global(html[lang="en"]) .creditRow :global(.ce-paragraph) {
   line-height: 1.45
 }
 
-.editorHeader {
+.editorHeader,
+.editorContent :global(.ce-header),
+.creditRow :global(.ce-header) {
   margin: 0;
   font-weight: 400;
 }
 
-.editorHeader2 {
+.editorHeader2,
+.editorContent :global(.ce-header[data-level="2"]),
+.creditRow :global(.ce-header[data-level="2"]) {
   font-size: 1.6rem;
 }
 
-.editorHeader3 {
+.editorHeader3,
+.editorContent :global(.ce-header[data-level="3"]),
+.creditRow :global(.ce-header[data-level="3"]) {
   font-size: 1.45rem;
 }
 
-.editorHeader4 {
+.editorHeader4,
+.editorContent :global(.ce-header[data-level="4"]),
+.creditRow :global(.ce-header[data-level="4"]) {
   font-size: 1.3rem;
 }
 
@@ -154,17 +171,27 @@
   height: auto;
 }
 
-.caption {
+.caption,
+.editorContent :global(.image-tool__caption),
+.editorContent :global(.embed-tool__caption),
+.creditRow :global(.image-tool__caption),
+.creditRow :global(.embed-tool__caption) {
   margin-top: 8px;
   color: #666666;
   font-size: 1.2rem;
 }
 
-.caption :is(i, em) {
+.caption :is(i, em),
+.editorContent :global(.image-tool__caption) :is(i, em),
+.editorContent :global(.embed-tool__caption) :is(i, em),
+.creditRow :global(.image-tool__caption) :is(i, em),
+.creditRow :global(.embed-tool__caption) :is(i, em) {
   font-style: italic;
 }
 
-.embed iframe {
+.embed iframe,
+.editorContent :global(.embed-tool__content iframe),
+.creditRow :global(.embed-tool__content iframe) {
   width: 100%;
   aspect-ratio: 16 / 9;
   border: 0;

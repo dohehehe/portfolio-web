@@ -6,4 +6,5 @@ export * from "@/hooks/link_cv_item";
 export * from "@/hooks/live";
 export * from "@/hooks/project";
 export * from "@/hooks/text";
+export * from "@/hooks/text_type";
 export * from "@/hooks/work";

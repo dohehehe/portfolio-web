@@ -1,0 +1,133 @@
+.wrapper {
+  border: 1px solid #e1e5e9;
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 4px;
+  font-size: 1rem;
+  line-height: 1.65;
+  /* font-weight: 500; */
+}
+
+.withPreview {
+  font-size: inherit;
+  line-height: inherit;
+  /* Admin form labels use 600–700; inherit made body text look falsely “bold”. */
+  /* font-weight: normal; */
+}
+
+.previewRoot {
+  max-width: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  padding-right: 0;
+}
+
+.withPreview :global(.image-tool) {
+  width: 100% !important;
+}
+
+.wrapper:not(.withPreview) :global(.image-tool) {
+  width: 40% !important;
+}
+
+.wrapper :global(.image-tool__caption) {
+  position: static !important;
+}
+
+.wrapper :global(.codex-editor b),
+.wrapper :global(.codex-editor strong) {
+  font-weight: 700;
+}
+
+/* Preview mirrors use .ce-header[data-level]; without preview, drop UA heading bold. */
+.wrapper:not(.withPreview) :global(.codex-editor .ce-header) {
+  font-weight: normal;
+}
+
+.wrapper :global(.codex-editor i),
+.wrapper :global(.codex-editor em) {
+  font-style: italic;
+  text-decoration: none;
+}
+
+.wrapper :global(.codex-editor a) {
+  color: rgb(43, 143, 249);
+  /* font-weight: 700; */
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.wrapper :global(.image-tool__caption i),
+.wrapper :global(.embed-tool__caption i) {
+  font-style: italic;
+  text-decoration: none;
+}
+
+.loading {
+  min-height: 300px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #666;
+}
+
+.holder {
+  min-height: 300px;
+  padding: 20px;
+}
+
+.wrapper :global(.ce-inline-toolbar) {
+  z-index: 10;
+}
+
+.wrapper :global(.fn-format-toolbar) {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 2px 0 10px;
+  margin-bottom: 2px;
+  border-bottom: 1px solid #eff0f1;
+}
+
+.wrapper :global(.fn-format-toolbar__button) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: #1d202b;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.wrapper :global(.fn-format-toolbar__button:hover) {
+  background-color: #f8f8f8;
+}
+
+.wrapper :global(.fn-format-toolbar__button--active) {
+  background: rgba(56, 138, 229, 0.1);
+  color: #388ae5;
+}
+
+.wrapper :global(.fn-format-toolbar__button[data-command="italic"]) {
+  font-style: italic;
+  /* font-weight: 600; */
+}
+
+.wrapper :global([data-inline-toolbar="true"] b) {
+  font-weight: bold;
+}
+
+.wrapper :global([data-inline-toolbar="true"] i) {
+  font-style: italic;
+  text-decoration: none;
+}

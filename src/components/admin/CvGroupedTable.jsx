@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useMemo } from "react";
+import ActiveToggle from "./ActiveToggle";
+import { getAdminColumnClass } from "./adminTableColumns";
 import styles from "./AdminDataTables.module.css";
 
 function sortCvs(items) {
@@ -13,8 +15,8 @@ function sortCvs(items) {
       return yearRight.localeCompare(yearLeft, undefined, { numeric: true });
     }
 
-    return (
-      new Date(right.created_at).getTime() - new Date(left.created_at).getTime()
+    return (right.title_ko ?? right.title_en ?? "").localeCompare(
+      left.title_ko ?? left.title_en ?? "",
     );
   });
 }
@@ -59,20 +61,6 @@ export function groupCvsByType(cvs, cvTypes) {
   return groups;
 }
 
-function formatCreatedAt(value) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 function formatCellValue(value) {
   if (value == null || value === "") {
     return "-";
@@ -94,6 +82,7 @@ export default function CvGroupedTable({
   editHref,
   deletingId,
   onDelete,
+  onActiveUpdated,
 }) {
   const groups = useMemo(() => groupCvsByType(items, cvTypes), [items, cvTypes]);
 
@@ -115,22 +104,26 @@ export default function CvGroupedTable({
               <thead>
                 <tr>
                   {columns.map((column) => (
-                    <th key={column}>{column}</th>
+                    <th key={column} className={getAdminColumnClass(column)}>
+                      {column}
+                    </th>
                   ))}
-                  <th>작업</th>
+                  <th className={styles.colActions}>작업</th>
+                  <th className={styles.colActive}>active</th>
                 </tr>
               </thead>
               <tbody>
                 {group.items.map((item) => (
                   <tr key={item.id}>
                     {columns.map((column) => (
-                      <td key={column} className={styles.textCell}>
-                        {column === "created_at"
-                          ? formatCreatedAt(item[column])
-                          : formatCellValue(item[column])}
+                      <td
+                        key={column}
+                        className={`${styles.textCell} ${getAdminColumnClass(column)}`}
+                      >
+                        {formatCellValue(item[column])}
                       </td>
                     ))}
-                    <td className={styles.actionsCell}>
+                    <td className={`${styles.actionsCell} ${styles.colActions}`}>
                       <Link
                         className={styles.actionLink}
                         href={editHref(item.id)}
@@ -145,6 +138,14 @@ export default function CvGroupedTable({
                       >
                         {deletingId === item.id ? "삭제 중..." : "삭제"}
                       </button>
+                    </td>
+                    <td className={`${styles.activeCell} ${styles.colActive}`}>
+                      <ActiveToggle
+                        table="cv"
+                        id={item.id}
+                        isActive={item.is_active}
+                        onUpdated={onActiveUpdated}
+                      />
                     </td>
                   </tr>
                 ))}

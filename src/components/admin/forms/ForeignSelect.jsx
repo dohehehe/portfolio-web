@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getResource } from "@/lib/hooks/resources";
+import { fetchResourceOptions } from "@/hooks/useResource";
 import styles from "../AdminForm.module.css";
 
 export default function ForeignSelect({
@@ -20,13 +20,7 @@ export default function ForeignSelect({
       setLoading(true);
 
       try {
-        const client = getResource(foreignTable)?.client;
-
-        if (!client) {
-          return;
-        }
-
-        const items = await client.fetchList();
+        const items = await fetchResourceOptions(foreignTable);
 
         if (!cancelled) {
           setOptions(items);

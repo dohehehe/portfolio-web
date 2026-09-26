@@ -3,8 +3,12 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
-import { useDeleteWork, useUpdateWork, useWork } from "@/hooks/work";
+import Editor from "@/components/editor/EditorInputClient";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import GalleryInput from "./GalleryInput";
 import { normalizeGallery, saveEditorContent, serializeGallery } from "./formUtils";
@@ -30,9 +34,9 @@ export default function WorkEditForm({ id }) {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: work, loading, error } = useWork(id);
-  const { update, loading: updating } = useUpdateWork();
-  const { remove, loading: deleting } = useDeleteWork();
+  const { data: work, loading, error } = useResourceItem("work", id);
+  const { update, loading: updating } = useUpdateResource("work");
+  const { remove, loading: deleting } = useDeleteResource("work");
 
   useEffect(() => {
     if (!work) {
@@ -198,6 +202,7 @@ export default function WorkEditForm({ id }) {
               ref={contentKoRef}
               holderId="editor-work-content-ko"
               data={work.content_ko}
+              preview="work-content"
             />
           </div>
 
@@ -207,6 +212,7 @@ export default function WorkEditForm({ id }) {
               ref={contentEnRef}
               holderId="editor-work-content-en"
               data={work.content_en}
+              preview="work-content"
             />
           </div>
 
@@ -216,6 +222,7 @@ export default function WorkEditForm({ id }) {
               ref={creditKoRef}
               holderId="editor-work-credit-ko"
               data={work.credit_ko}
+              preview="work-credit"
             />
           </div>
 
@@ -225,6 +232,7 @@ export default function WorkEditForm({ id }) {
               ref={creditEnRef}
               holderId="editor-work-credit-en"
               data={work.credit_en}
+              preview="work-credit"
             />
           </div>
         </div>

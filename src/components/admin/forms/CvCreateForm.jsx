@@ -3,12 +3,10 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { useCreateCv } from "@/hooks/cv";
 import {
-  useCreateLinkCvItem,
-} from "@/hooks/link_cv_item";
-import { useProjects } from "@/hooks/project";
-import { useWorks } from "@/hooks/work";
+  useCreateResource,
+  useResourceList,
+} from "@/hooks/useResource";
 import CvItemMultiSelect from "./CvItemMultiSelect";
 import ForeignSelect from "./ForeignSelect";
 import {
@@ -32,10 +30,15 @@ export default function CvCreateForm() {
   const [selectedWorkIds, setSelectedWorkIds] = useState([]);
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: projects = [], loading: projectsLoading } = useProjects();
-  const { data: works = [], loading: worksLoading } = useWorks();
-  const { create, loading } = useCreateCv();
-  const { create: createLink } = useCreateLinkCvItem();
+  const { data: projects = [], loading: projectsLoading } = useResourceList(
+    "project",
+    { scope: "options" },
+  );
+  const { data: works = [], loading: worksLoading } = useResourceList("work", {
+    scope: "options",
+  });
+  const { create, loading } = useCreateResource("cv");
+  const { create: createLink } = useCreateResource("link_cv_item");
 
   const itemsLoading = projectsLoading || worksLoading;
 

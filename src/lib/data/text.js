@@ -1,16 +1,38 @@
 import "server-only";
 
 import { sortByYearDesc } from "@/components/navigation/workListUtils";
-import { TEXT_COLUMNS, TEXT_DETAIL_COLUMNS } from "@/lib/data/localizedSelect";
-import { getEventById } from "@/lib/data/event";
-import { getProjectById } from "@/lib/data/project";
-import { getWorkById } from "@/lib/data/work";
+import {
+  getTextDetailColumns,
+  serializeWorkIds,
+  TEXT_COLUMNS,
+} from "@/lib/data/localizedSelect";
+import { getEventRelatedById } from "@/lib/data/event";
+import { getProjectRelatedById } from "@/lib/data/project";
+import { getWorkRelatedById } from "@/lib/data/work";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
+import {
+  applyPublicActiveFilter,
+  isPubliclyVisible,
+} from "@/lib/data/publicVisibility";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { normalizeRecord } from "@/lib/locale/normalizeRecord";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { localizedPath } from "@/lib/locale/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+function normalizeTextType(record) {
+  const row = record?.text_type;
+
+  if (!row) {
+    return null;
+  }
+
+  return {
+    id: row.id,
+    name: row.name ?? null,
+    slug: row.slug ?? null,
+  };
+}
 
 function normalizeTextRecord(record, locale) {
   return {
@@ -25,6 +47,8 @@ function normalizeTextRecord(record, locale) {
     project_id: record.project_id ?? null,
     event_id: record.event_id ?? null,
     work_id: record.work_id ?? null,
+    type_id: record.type_id ?? null,
+    type: normalizeTextType(record),
   };
 }
 
@@ -46,10 +70,14 @@ function formatWorkMeta({ year, medium, dimension }) {
 const fetchNavigationTextListData = createCachedQuery(
   async () => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("text")
       .select(TEXT_COLUMNS)
       .order("created_at", { ascending: false });
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -64,11 +92,11 @@ const fetchNavigationTextListData = createCachedQuery(
 );
 
 const fetchTextRecordById = createCachedQuery(
-  async (id) => {
+  async (id, locale) => {
     const supabase = createSupabaseServerClient();
     const { data, error } = await supabase
       .from("text")
-      .select(TEXT_DETAIL_COLUMNS)
+      .select(getTextDetailColumns(locale))
       .eq("id", id)
       .single();
 
@@ -87,10 +115,11 @@ const fetchTextRecordById = createCachedQuery(
 const fetchTextsByWorkId = createCachedQuery(
   async (workId) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
-      .from("text")
-      .select(TEXT_COLUMNS)
-      .eq("work_id", workId);
+    let query = supabase.from("text").select(TEXT_COLUMNS).eq("work_id", workId);
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -107,10 +136,14 @@ const fetchTextsByWorkId = createCachedQuery(
 const fetchTextsByProjectId = createCachedQuery(
   async (projectId) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("text")
       .select(TEXT_COLUMNS)
       .eq("project_id", projectId);
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -127,10 +160,14 @@ const fetchTextsByProjectId = createCachedQuery(
 const fetchTextsByEventId = createCachedQuery(
   async (eventId) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("text")
       .select(TEXT_COLUMNS)
       .eq("event_id", eventId);
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -140,6 +177,36 @@ const fetchTextsByEventId = createCachedQuery(
   },
   {
     key: ["texts-by-event-id"],
+    tags: [DATA_CACHE_TAG.text],
+  },
+);
+
+const fetchTextsByProjectAndWorkIds = createCachedQuery(
+  async (projectId, workIdsKey) => {
+    const supabase = createSupabaseServerClient();
+    const workIds = workIdsKey ? workIdsKey.split(",") : [];
+    let query = supabase.from("text").select(TEXT_COLUMNS);
+
+    if (workIds.length > 0) {
+      query = query.or(
+        `project_id.eq.${projectId},work_id.in.(${workIds.join(",")})`,
+      );
+    } else {
+      query = query.eq("project_id", projectId);
+    }
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
+
+    if (error) {
+      return [];
+    }
+
+    return data ?? [];
+  },
+  {
+    key: ["texts-by-project-and-work-ids"],
     tags: [DATA_CACHE_TAG.text],
   },
 );
@@ -155,9 +222,9 @@ export async function getTexts(locale = DEFAULT_LOCALE) {
 }
 
 export async function getTextById(id, locale = DEFAULT_LOCALE) {
-  const data = await fetchTextRecordById(id);
+  const data = await fetchTextRecordById(id, locale);
 
-  if (!data) {
+  if (!data || !isPubliclyVisible(data)) {
     return null;
   }
 
@@ -188,15 +255,56 @@ export async function getTextsByEventId(eventId, locale = DEFAULT_LOCALE) {
   );
 }
 
+function groupTextsByProjectAndWorks(records, projectId, workIds, locale) {
+  const workIdSet = new Set(workIds);
+  const projectTexts = [];
+  const byWorkId = new Map(workIds.map((workId) => [workId, []]));
+
+  for (const record of records) {
+    const normalized = normalizeTextRecord(record, locale);
+
+    if (record.project_id === projectId) {
+      projectTexts.push(normalized);
+    }
+
+    if (record.work_id && workIdSet.has(record.work_id)) {
+      byWorkId.get(record.work_id).push(normalized);
+    }
+  }
+
+  return {
+    projectTexts: sortByYearDesc(projectTexts),
+    byWorkId: new Map(
+      [...byWorkId.entries()].map(([workId, texts]) => [
+        workId,
+        sortByYearDesc(texts),
+      ]),
+    ),
+  };
+}
+
+export async function getTextsGroupedByProjectAndWorks(
+  projectId,
+  workIds,
+  locale = DEFAULT_LOCALE,
+) {
+  const records = await fetchTextsByProjectAndWorkIds(
+    projectId,
+    serializeWorkIds(workIds),
+  );
+
+  return groupTextsByProjectAndWorks(records, projectId, workIds, locale);
+}
+
 export async function getRelatedItemsByText(text, locale = DEFAULT_LOCALE) {
   if (!text) {
     return [];
   }
 
   const [event, projectRecord, workRecord] = await Promise.all([
-    text.event_id ? getEventById(text.event_id, locale) : null,
-    text.project_id ? getProjectById(text.project_id, locale) : null,
-    text.work_id ? getWorkById(text.work_id, locale) : null,
+    text.event_id ? getEventRelatedById(text.event_id, locale) : null,
+    text.project_id ? getProjectRelatedById(text.project_id, locale) : null,
+    text.work_id ? getWorkRelatedById(text.work_id, locale) : null,
   ]);
 
   const related = [];

@@ -1,0 +1,151 @@
+.article {
+  --event-header-height: 80px;
+  padding-top: 40px;
+  position: relative;
+}
+
+.eventHeader {
+  position: sticky;
+  top: 40px;
+  margin-left: calc(20% + 230px);
+  font-size: 1.4rem;
+  z-index: 2;
+  font-family: var(--Gothic-A1), sans-serif;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  margin-bottom: 15px;
+}
+
+.title span {
+  padding-right: 3px;
+}
+
+.date {
+  font-family: var(--font-barlow), sans-serif;
+  font-size: 1.5rem;
+  margin-bottom: 5px;
+}
+
+:global(html[lang="en"]) .date {
+  font-weight: 500;
+}
+
+.contentWrapper {
+  display: flex;
+  gap: 18px;
+  position: sticky;
+  top: 0;
+}
+
+.eventGallery {
+  width: 49vw;
+  flex-shrink: 0;
+  margin-top: 30px;
+  margin-left: 20px;
+  position: relative;
+  /* z-index: 1; */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  /* width: 100%; */
+}
+
+
+.item {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+  user-select: none;
+  cursor: zoom-in;
+}
+
+
+
+@media (max-width: 780px) {
+  .article {
+    padding: 34px 12px;
+    /* padding-top: 0; */
+    padding-top: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* flex-direction: column-reverse; */
+  }
+
+  .eventHeader {
+    /* order: 1; */
+    /* top: -10px; */
+    z-index: 2;
+    font-size: 1.3rem;
+    font-weight: 400;
+    /* position: relative; */
+    position: sticky;
+    top: 40px;
+    margin-left: 0;
+    margin-bottom: 10px;
+  }
+
+  .eventContent {
+    display: flex;
+    overflow-x: auto;
+    width: 100vw;
+    gap: 30px;
+    margin-left: -12px;
+    padding-left: 12px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .title {
+    font-size: 1.55rem;
+    padding-left: 12%;
+    margin-bottom: 15px;
+  }
+
+  .date {
+    font-size: 1.4rem;
+    font-weight: 500;
+  }
+
+  .eventGallery {
+    /* width: calc(100% + 12px);
+    margin-top: 0;
+    margin-left: 0;
+    flex-direction: row;
+    overflow-x: auto;
+    z-index: 1;
+    position: relative;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    gap: 10px;
+
+    &::-webkit-scrollbar {
+      display: none;
+    } */
+
+    width: calc(100vw - 50px);
+    margin-left: 0;
+  }
+
+  .item {
+    /* width: calc(100% - 20px);
+    flex-shrink: 0; */
+  }
+
+}

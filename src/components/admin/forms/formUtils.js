@@ -4,7 +4,14 @@ export async function saveEditorContent(editorRef, label) {
   }
 
   const data = await editorRef.current.save();
-  return data.blocks?.length ? data : null;
+  const blocks = data?.blocks ?? [];
+
+  if (blocks.length === 0) {
+    console.warn(`${label}: Editor.js returned no blocks (check invalid block warnings).`);
+    return null;
+  }
+
+  return data;
 }
 
 export function normalizeGallery(rawValue) {

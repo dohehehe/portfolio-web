@@ -6,7 +6,8 @@ import {
   sortByYearDesc,
   sortWorksByOrder,
 } from "@/components/navigation/workListUtils";
-import { updateWork } from "@/hooks/work";
+import ActiveToggle from "./ActiveToggle";
+import { updateResource } from "@/hooks/useResource";
 import styles from "./AdminDataTables.module.css";
 
 export function buildProjectWorkGroups(projects, works) {
@@ -56,20 +57,6 @@ function moveWork(works, index, direction) {
   return next;
 }
 
-function formatCreatedAt(value) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 function formatCellValue(value) {
   if (value == null || value === "") {
     return "-";
@@ -101,6 +88,7 @@ export default function ProjectWorkGroupedTable({
   onDeleteProject,
   onDeleteWork,
   onOrdersSaved,
+  onActiveUpdated,
 }) {
   const initialGroups = useMemo(
     () => buildProjectWorkGroups(projects, works),
@@ -156,7 +144,7 @@ export default function ProjectWorkGroupedTable({
       for (const group of groups) {
         group.works.forEach((work, index) => {
           if (!orderMatches(work, index)) {
-            updates.push(updateWork(work.id, { order: index }));
+            updates.push(updateResource("work", work.id, { order: index }));
           }
         });
       }
@@ -206,28 +194,33 @@ export default function ProjectWorkGroupedTable({
                 <span className={styles.metaChip}>
                   {formatCellValue(group.project.year)}
                 </span>
-                <span className={styles.metaChip}>
-                  {formatCreatedAt(group.project.created_at)}
-                </span>
                 <span className={styles.workCount}>
                   work {group.works.length}
                 </span>
               </div>
-              <div className={styles.actionsCell}>
-                <Link
-                  className={styles.actionLink}
-                  href={`/admin/project/edit/${group.project.id}`}
-                >
-                  수정
-                </Link>
-                <button
-                  className={styles.actionButton}
-                  type="button"
-                  disabled={deletingId === group.project.id}
-                  onClick={() => onDeleteProject(group.project.id)}
-                >
-                  {deletingId === group.project.id ? "삭제 중..." : "삭제"}
-                </button>
+              <div className={styles.rowEndCell}>
+                <div className={styles.actionsCell}>
+                  <Link
+                    className={styles.actionLink}
+                    href={`/admin/project/edit/${group.project.id}`}
+                  >
+                    수정
+                  </Link>
+                  <button
+                    className={styles.actionButton}
+                    type="button"
+                    disabled={deletingId === group.project.id}
+                    onClick={() => onDeleteProject(group.project.id)}
+                  >
+                    {deletingId === group.project.id ? "삭제 중..." : "삭제"}
+                  </button>
+                </div>
+                <ActiveToggle
+                  table="project"
+                  id={group.project.id}
+                  isActive={group.project.is_active}
+                  onUpdated={onActiveUpdated}
+                />
               </div>
             </div>
           ) : (
@@ -274,21 +267,29 @@ export default function ProjectWorkGroupedTable({
                     </span>
                   </div>
 
-                  <div className={styles.actionsCell}>
-                    <Link
-                      className={styles.actionLink}
-                      href={`/admin/work/edit/${work.id}`}
-                    >
-                      수정
-                    </Link>
-                    <button
-                      className={styles.actionButton}
-                      type="button"
-                      disabled={deletingId === work.id}
-                      onClick={() => onDeleteWork(work.id)}
-                    >
-                      {deletingId === work.id ? "삭제 중..." : "삭제"}
-                    </button>
+                  <div className={styles.rowEndCell}>
+                    <div className={styles.actionsCell}>
+                      <Link
+                        className={styles.actionLink}
+                        href={`/admin/work/edit/${work.id}`}
+                      >
+                        수정
+                      </Link>
+                      <button
+                        className={styles.actionButton}
+                        type="button"
+                        disabled={deletingId === work.id}
+                        onClick={() => onDeleteWork(work.id)}
+                      >
+                        {deletingId === work.id ? "삭제 중..." : "삭제"}
+                      </button>
+                    </div>
+                    <ActiveToggle
+                      table="work"
+                      id={work.id}
+                      isActive={work.is_active}
+                      onUpdated={onActiveUpdated}
+                    />
                   </div>
                 </li>
               ))}

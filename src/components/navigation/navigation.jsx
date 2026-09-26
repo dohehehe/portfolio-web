@@ -9,7 +9,7 @@ import {
   stripLocaleFromPathname,
 } from "@/lib/locale/routing";
 import { useNavigationScrollHide } from "@/hooks/useNavigationScrollHide";
-import EventList from "@/components/event/EventList";
+import EventList from "@/components/event/list/EventList";
 import TextList from "@/components/text/TextList";
 import WorkList from "./workList";
 import InstallationNavLabel from "./InstallationNavLabel";
