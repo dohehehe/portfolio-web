@@ -15,6 +15,7 @@ export const DATA_CACHE_TAG = {
   info: "data:info",
   cv: "data:cv",
   cv_type: "data:cv_type",
+  text_type: "data:text_type",
   link_cv_item: "data:link_cv_item",
   navigation: "data:navigation",
 };

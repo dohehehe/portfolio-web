@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
+import Editor from "@/components/editor/EditorInputClient";
 import {
   useDeleteResource,
   useResourceItem,
@@ -197,6 +197,7 @@ export default function ProjectEditForm({ id }) {
               ref={contentKoRef}
               holderId="editor-project-content-ko"
               data={project.content_ko}
+              preview="project-content"
             />
           </div>
 
@@ -206,6 +207,7 @@ export default function ProjectEditForm({ id }) {
               ref={contentEnRef}
               holderId="editor-project-content-en"
               data={project.content_en}
+              preview="project-content"
             />
           </div>
 
@@ -215,6 +217,7 @@ export default function ProjectEditForm({ id }) {
               ref={creditKoRef}
               holderId="editor-project-credit-ko"
               data={project.credit_ko}
+              preview="project-credit"
             />
           </div>
 
@@ -224,6 +227,7 @@ export default function ProjectEditForm({ id }) {
               ref={creditEnRef}
               holderId="editor-project-credit-en"
               data={project.credit_en}
+              preview="project-credit"
             />
           </div>
         </div>

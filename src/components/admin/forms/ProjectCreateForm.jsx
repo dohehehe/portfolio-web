@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
+import Editor from "@/components/editor/EditorInputClient";
 import { useCreateResource } from "@/hooks/useResource";
 import GalleryInput from "./GalleryInput";
 import { saveEditorContent, serializeGallery } from "./formUtils";
@@ -141,22 +141,38 @@ export default function ProjectCreateForm() {
 
         <div className={styles.field}>
           content_ko
-          <Editor ref={contentKoRef} holderId="editor-project-content-ko" />
+          <Editor
+            ref={contentKoRef}
+            holderId="editor-project-content-ko"
+            preview="project-content"
+          />
         </div>
 
         <div className={styles.field}>
           content_en
-          <Editor ref={contentEnRef} holderId="editor-project-content-en" />
+          <Editor
+            ref={contentEnRef}
+            holderId="editor-project-content-en"
+            preview="project-content"
+          />
         </div>
 
         <div className={styles.field}>
           credit_ko
-          <Editor ref={creditKoRef} holderId="editor-project-credit-ko" />
+          <Editor
+            ref={creditKoRef}
+            holderId="editor-project-credit-ko"
+            preview="project-credit"
+          />
         </div>
 
         <div className={styles.field}>
           credit_en
-          <Editor ref={creditEnRef} holderId="editor-project-credit-en" />
+          <Editor
+            ref={creditEnRef}
+            holderId="editor-project-credit-en"
+            preview="project-credit"
+          />
         </div>
 
         <GalleryInput

@@ -12,19 +12,33 @@ import {
   scheduleGlobalFootnoteRenumber,
 } from "@/lib/editorjs/footnotesTune";
 import { normalizeEditorData } from "@/lib/editorjs/normalizeBlocks";
-import styles from "./Editor.module.css";
+import { getEditorInputPreviewRootClass } from "./inputPreviewThemes";
+import styles from "./EditorInput.module.css";
 
-const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) {
+const EditorInput = forwardRef(function EditorInput(
+  { data, holderId = "editorjs", preview },
+  ref,
+) {
+  const previewRootClass = getEditorInputPreviewRootClass(preview);
   const editorInstanceRef = useRef(null);
+  const initialDataRef = useRef(data);
+  const boundHolderIdRef = useRef(holderId);
   const { uploadImageToServer } = useImageUpload();
+
+  if (boundHolderIdRef.current !== holderId) {
+    boundHolderIdRef.current = holderId;
+    initialDataRef.current = data;
+  } else if (initialDataRef.current === undefined && data !== undefined) {
+    initialDataRef.current = data;
+  }
 
   useImperativeHandle(ref, () => ({
     save: async () => {
-      if (editorInstanceRef.current) {
-        return editorInstanceRef.current.save();
+      if (!editorInstanceRef.current) {
+        throw new Error("Editor is not ready");
       }
 
-      throw new Error("Editor is not ready");
+      return editorInstanceRef.current.save();
     },
     isReady: () => editorInstanceRef.current !== null,
   }));
@@ -46,17 +60,21 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
           return;
         }
 
+        holder.innerHTML = "";
+
         const [
           { default: EditorJS },
-          { default: Embed },
-          { default: Header },
-          { default: ImageTool },
+          { default: EmbedWithInlineCaption },
+          { default: HeaderWithInlineFormat },
+          { default: ImageWithInlineCaption },
+          { default: ParagraphWithInlineFormat },
           FootnotesTune,
         ] = await Promise.all([
           import("@editorjs/editorjs"),
-          import("@editorjs/embed"),
-          import("@editorjs/header"),
-          import("@editorjs/image"),
+          import("@/components/editor/tools/embedTool"),
+          import("@/components/editor/tools/headerTool"),
+          import("@/components/editor/tools/imageTool"),
+          import("@/components/editor/tools/paragraphTool"),
           loadFootnotesTune(),
         ]);
 
@@ -69,6 +87,10 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
           placeholder: "내용을 입력하세요...",
           tunes: ["footnotes"],
           tools: {
+            paragraph: {
+              class: ParagraphWithInlineFormat,
+              inlineToolbar: ["link", "bold", "italic"],
+            },
             footnotes: {
               class: FootnotesTune,
               config: {
@@ -77,16 +99,16 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
               },
             },
             header: {
-              class: Header,
+              class: HeaderWithInlineFormat,
               inlineToolbar: ["link", "bold", "italic"],
               config: {
                 placeholder: "제목을 입력하세요",
-                levels: [2, 3, 4],
+                levels: [1, 2, 3, 4, 5],
                 defaultLevel: 2,
               },
             },
             embed: {
-              class: Embed,
+              class: EmbedWithInlineCaption,
               inlineToolbar: ["link", "bold", "italic"],
               config: {
                 services: {
@@ -95,7 +117,7 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
               },
             },
             image: {
-              class: ImageTool,
+              class: ImageWithInlineCaption,
               inlineToolbar: ["link", "bold", "italic"],
               config: {
                 captionPlaceholder: "이미지 설명을 입력하세요",
@@ -135,7 +157,7 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
             },
           },
           inlineToolbar: ["link", "bold", "italic"],
-          data: normalizeEditorData(data),
+          data: normalizeEditorData(initialDataRef.current),
           onChange: (_api, event) => {
             const events = Array.isArray(event) ? event : [event];
             const shouldRenumber = events.some(({ type }) =>
@@ -180,19 +202,26 @@ const Editor = forwardRef(function Editor({ data, holderId = "editorjs" }, ref) 
         editorInstanceRef.current = null;
       }
     };
-  }, [data, holderId]);
+  }, [holderId]);
+
+  const wrapperClassName = [styles.wrapper, previewRootClass && styles.withPreview]
+    .filter(Boolean)
+    .join(" ");
+  const holderClassName = [styles.holder, styles.previewRoot, previewRootClass]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <div className={styles.wrapper}>
+    <div className={wrapperClassName}>
       <div
         id={holderId}
-        className={styles.holder}
+        className={holderClassName}
         suppressHydrationWarning
       />
     </div>
   );
 });
 
-Editor.displayName = "Editor";
+EditorInput.displayName = "EditorInput";
 
-export default Editor;
+export default EditorInput;

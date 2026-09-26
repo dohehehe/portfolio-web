@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
+import Editor from "@/components/editor/EditorInputClient";
 import {
   useDeleteResource,
   useResourceItem,
@@ -24,14 +24,12 @@ export default function EventEditForm({ id }) {
   const contentEnRef = useRef(null);
   const creditKoRef = useRef(null);
   const creditEnRef = useRef(null);
-  const noteKrRef = useRef(null);
-  const noteEnRef = useRef(null);
-
   const [titleKo, setTitleKo] = useState("");
   const [titleEn, setTitleEn] = useState("");
   const [date, setDate] = useState("");
   const [spaceKo, setSpaceKo] = useState("");
   const [spaceEn, setSpaceEn] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
   const [gallery, setGallery] = useState([]);
   const [fileLink, setFileLink] = useState([]);
   const [galleryUploading, setGalleryUploading] = useState(false);
@@ -52,6 +50,7 @@ export default function EventEditForm({ id }) {
     setDate(eventItem.date ?? "");
     setSpaceKo(eventItem.space_ko ?? "");
     setSpaceEn(eventItem.space_en ?? "");
+    setLinkUrl(eventItem.link_url ?? "");
     setGallery(normalizeGallery(eventItem.gallery));
     setFileLink(normalizeGallery(eventItem.file_link));
   }, [eventItem]);
@@ -71,8 +70,7 @@ export default function EventEditForm({ id }) {
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        note_kr: await saveEditorContent(noteKrRef, "note_kr"),
-        note_en: await saveEditorContent(noteEnRef, "note_en"),
+        link_url: linkUrl.trim() || null,
         gallery: serializeGallery(gallery),
         file_link: serializeGallery(fileLink),
       });
@@ -191,6 +189,7 @@ export default function EventEditForm({ id }) {
               ref={contentKoRef}
               holderId="editor-event-content-ko"
               data={eventItem.content_ko}
+              preview="event-content"
             />
           </div>
 
@@ -200,6 +199,7 @@ export default function EventEditForm({ id }) {
               ref={contentEnRef}
               holderId="editor-event-content-en"
               data={eventItem.content_en}
+              preview="event-content"
             />
           </div>
 
@@ -209,6 +209,7 @@ export default function EventEditForm({ id }) {
               ref={creditKoRef}
               holderId="editor-event-credit-ko"
               data={eventItem.credit_ko}
+              preview="event-credit"
             />
           </div>
 
@@ -218,27 +219,21 @@ export default function EventEditForm({ id }) {
               ref={creditEnRef}
               holderId="editor-event-credit-en"
               data={eventItem.credit_en}
+              preview="event-credit"
             />
           </div>
 
-          <div className={styles.field}>
-            note_kr
-            <Editor
-              ref={noteKrRef}
-              holderId="editor-event-note-kr"
-              data={eventItem.note_kr}
-            />
-          </div>
-
-          <div className={styles.field}>
-            note_en
-            <Editor
-              ref={noteEnRef}
-              holderId="editor-event-note-en"
-              data={eventItem.note_en}
-            />
-          </div>
         </div>
+
+        <label className={styles.label}>
+          link_url
+          <input
+            className={styles.input}
+            type="url"
+            value={linkUrl}
+            onChange={(event) => setLinkUrl(event.target.value)}
+          />
+        </label>
 
         <GalleryInput
           label="file_link"

@@ -6,6 +6,7 @@ import {
   getProjectRelatedColumns,
 } from "@/lib/data/localizedSelect";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
+import { isPubliclyVisible } from "@/lib/data/publicVisibility";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const fetchProjectRecordById = createCachedQuery(
@@ -51,7 +52,13 @@ const fetchProjectRelatedById = createCachedQuery(
 );
 
 export async function getProjectById(id, locale = DEFAULT_LOCALE) {
-  return fetchProjectRecordById(id, locale);
+  const data = await fetchProjectRecordById(id, locale);
+
+  if (!data || !isPubliclyVisible(data)) {
+    return null;
+  }
+
+  return data;
 }
 
 export async function getProjectRelatedById(id, locale = DEFAULT_LOCALE) {

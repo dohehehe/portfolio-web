@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
+import Editor from "@/components/editor/EditorInputClient";
 import { useCreateResource } from "@/hooks/useResource";
 import GalleryInput from "./GalleryInput";
 import { saveEditorContent, serializeGallery } from "./formUtils";
@@ -16,14 +16,12 @@ export default function EventCreateForm() {
   const contentEnRef = useRef(null);
   const creditKoRef = useRef(null);
   const creditEnRef = useRef(null);
-  const noteKrRef = useRef(null);
-  const noteEnRef = useRef(null);
-
   const [titleKo, setTitleKo] = useState("");
   const [titleEn, setTitleEn] = useState("");
   const [date, setDate] = useState("");
   const [spaceKo, setSpaceKo] = useState("");
   const [spaceEn, setSpaceEn] = useState("");
+  const [linkUrl, setLinkUrl] = useState("");
   const [gallery, setGallery] = useState([]);
   const [fileLink, setFileLink] = useState([]);
   const [galleryUploading, setGalleryUploading] = useState(false);
@@ -47,8 +45,7 @@ export default function EventCreateForm() {
         content_en: await saveEditorContent(contentEnRef, "content_en"),
         credit_ko: await saveEditorContent(creditKoRef, "credit_ko"),
         credit_en: await saveEditorContent(creditEnRef, "credit_en"),
-        note_kr: await saveEditorContent(noteKrRef, "note_kr"),
-        note_en: await saveEditorContent(noteEnRef, "note_en"),
+        link_url: linkUrl.trim() || null,
         gallery: serializeGallery(gallery),
         file_link: serializeGallery(fileLink),
       });
@@ -131,33 +128,49 @@ export default function EventCreateForm() {
 
         <div className={styles.field}>
           content_ko
-          <Editor ref={contentKoRef} holderId="editor-event-content-ko" />
+          <Editor
+            ref={contentKoRef}
+            holderId="editor-event-content-ko"
+            preview="event-content"
+          />
         </div>
 
         <div className={styles.field}>
           content_en
-          <Editor ref={contentEnRef} holderId="editor-event-content-en" />
+          <Editor
+            ref={contentEnRef}
+            holderId="editor-event-content-en"
+            preview="event-content"
+          />
         </div>
 
         <div className={styles.field}>
           credit_ko
-          <Editor ref={creditKoRef} holderId="editor-event-credit-ko" />
+          <Editor
+            ref={creditKoRef}
+            holderId="editor-event-credit-ko"
+            preview="event-credit"
+          />
         </div>
 
         <div className={styles.field}>
           credit_en
-          <Editor ref={creditEnRef} holderId="editor-event-credit-en" />
+          <Editor
+            ref={creditEnRef}
+            holderId="editor-event-credit-en"
+            preview="event-credit"
+          />
         </div>
 
-        <div className={styles.field}>
-          note_kr
-          <Editor ref={noteKrRef} holderId="editor-event-note-kr" />
-        </div>
-
-        <div className={styles.field}>
-          note_en
-          <Editor ref={noteEnRef} holderId="editor-event-note-en" />
-        </div>
+        <label className={styles.label}>
+          link_url
+          <input
+            className={styles.input}
+            type="url"
+            value={linkUrl}
+            onChange={(event) => setLinkUrl(event.target.value)}
+          />
+        </label>
 
         <GalleryInput
           label="file_link"

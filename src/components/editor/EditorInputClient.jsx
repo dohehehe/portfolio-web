@@ -1,10 +1,10 @@
 "use client";
 
 import { forwardRef, useEffect, useState } from "react";
-import EditorImpl from "./Editor";
-import styles from "./Editor.module.css";
+import EditorInput from "./EditorInput";
+import styles from "./EditorInput.module.css";
 
-const EditorClient = forwardRef(function EditorClient(props, ref) {
+const EditorInputClient = forwardRef(function EditorInputClient(props, ref) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -19,9 +19,9 @@ const EditorClient = forwardRef(function EditorClient(props, ref) {
     );
   }
 
-  return <EditorImpl ref={ref} {...props} />;
+  return <EditorInput ref={ref} {...props} />;
 });
 
-EditorClient.displayName = "EditorClient";
+EditorInputClient.displayName = "EditorInputClient";
 
-export default EditorClient;
+export default EditorInputClient;

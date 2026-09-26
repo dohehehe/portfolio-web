@@ -4,7 +4,8 @@
   gap: 10px;
 }
 
-.paragraph {
+.paragraph,
+.editorContent :global(.ce-paragraph) {
   margin: 0;
   color: #222222;
   font-size: 1.45rem;
@@ -27,7 +28,8 @@
   margin-top: 12px;
 } */
 
-:global(html[lang="en"]) .paragraph {
+:global(html[lang="en"]) .paragraph,
+:global(html[lang="en"]) .editorContent :global(.ce-paragraph) {
   font-weight: 300;
 }
 
@@ -35,28 +37,37 @@
   margin-bottom: 60px;
 }
 
-.paragraph :is(i, em) {
+.paragraph :is(i, em),
+.editorContent :global(.ce-paragraph) :is(i, em) {
   font-style: italic;
 }
 
-.editorHeader {
+.editorHeader,
+.editorContent :global(.ce-header) {
   margin: 0;
   color: #212121;
   text-align: left;
 }
 
-.editorHeader3 {
+.editorHeader3,
+.editorContent :global(.ce-header[data-level="3"]) {
   font-size: 1.3rem;
   font-weight: 400;
   padding-left: 50px;
 }
 
-:global(html[lang="en"]) .editorHeader3 {
+:global(html[lang="en"]) .editorHeader3,
+:global(html[lang="en"]) .editorContent :global(.ce-header[data-level="3"]) {
   font-weight: 300;
 }
 
-.editorHeader :is(i, em) {
+.editorHeader :is(i, em),
+.editorContent :global(.ce-header) :is(i, em) {
   font-style: italic;
+}
+
+.editorContent :global(.ce-block + .ce-block) {
+  margin-top: 10px;
 }
 
 .figure {
@@ -69,7 +80,9 @@
   height: auto;
 }
 
-.caption {
+.caption,
+.editorContent :global(.image-tool__caption),
+.editorContent :global(.embed-tool__caption) {
   margin: 0;
   padding: 0 3px;
   color: #666666;
@@ -79,7 +92,9 @@
   overflow-wrap: break-word;
 }
 
-.caption :is(i, em) {
+.caption :is(i, em),
+.editorContent :global(.image-tool__caption) :is(i, em),
+.editorContent :global(.embed-tool__caption) :is(i, em) {
   font-style: italic;
 }
 

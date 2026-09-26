@@ -5,10 +5,30 @@
   margin-bottom: 4px;
   font-size: 1rem;
   line-height: 1.65;
-  font-weight: 500;
+  /* font-weight: 500; */
 }
 
-.wrapper :global(.image-tool) {
+.withPreview {
+  font-size: inherit;
+  line-height: inherit;
+  /* Admin form labels use 600–700; inherit made body text look falsely “bold”. */
+  /* font-weight: normal; */
+}
+
+.previewRoot {
+  max-width: none;
+  width: 100%;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  padding-right: 0;
+}
+
+.withPreview :global(.image-tool) {
+  width: 100% !important;
+}
+
+.wrapper:not(.withPreview) :global(.image-tool) {
   width: 40% !important;
 }
 
@@ -16,27 +36,32 @@
   position: static !important;
 }
 
-.wrapper :global(b) {
+.wrapper :global(.codex-editor b),
+.wrapper :global(.codex-editor strong) {
   font-weight: 700;
 }
 
-.wrapper :global(i) {
-  position: relative;
-  display: inline-block;
-  text-decoration-style: dotted;
-  text-decoration-color: black;
-  text-decoration-thickness: 1.5px;
-  text-decoration-line: underline;
-  text-underline-position: under;
-  text-underline-offset: 2px;
-  line-height: 2.1;
-  font-style: normal;
+/* Preview mirrors use .ce-header[data-level]; without preview, drop UA heading bold. */
+.wrapper:not(.withPreview) :global(.codex-editor .ce-header) {
+  font-weight: normal;
 }
 
-.wrapper :global(a) {
+.wrapper :global(.codex-editor i),
+.wrapper :global(.codex-editor em) {
+  font-style: italic;
+  text-decoration: none;
+}
+
+.wrapper :global(.codex-editor a) {
   color: rgb(43, 143, 249);
-  font-weight: 700;
+  /* font-weight: 700; */
   cursor: pointer;
+  text-decoration: none;
+}
+
+.wrapper :global(.image-tool__caption i),
+.wrapper :global(.embed-tool__caption i) {
+  font-style: italic;
   text-decoration: none;
 }
 
@@ -95,11 +120,11 @@
 
 .wrapper :global(.fn-format-toolbar__button[data-command="italic"]) {
   font-style: italic;
-  font-weight: 600;
+  /* font-weight: 600; */
 }
 
 .wrapper :global([data-inline-toolbar="true"] b) {
-  font-weight: 700;
+  font-weight: bold;
 }
 
 .wrapper :global([data-inline-toolbar="true"] i) {

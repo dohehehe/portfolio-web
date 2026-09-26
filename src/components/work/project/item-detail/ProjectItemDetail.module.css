@@ -77,21 +77,29 @@
   font-family: var(--font-inter), "Eulyoo1945", var(--font-gothic-a1), sans-serif;
   /* box-shadow: inset 0 0 10px 10px aqua; */
 
-  & .paragraph {
+  & .paragraph,
+  & :global(.ce-paragraph) {
     margin-bottom: 25px;
   }
 
-  & .editorHeader2 {
+  & .editorHeader2,
+  & :global(.ce-header[data-level="2"]) {
     font-size: 2rem;
   }
 
-  & .editorHeader3 {
+  & .editorHeader3,
+  & :global(.ce-header[data-level="3"]) {
     font-size: 1.85rem;
   }
 
-  & .editorHeader4 {
+  & .editorHeader4,
+  & :global(.ce-header[data-level="4"]) {
     font-size: 1.4rem;
     font-weight: 400;
+  }
+
+  & :global(.ce-block + .ce-block) {
+    margin-top: 25px;
   }
 }
 
@@ -182,12 +190,15 @@
   /* box-shadow: inset 0 0 10px 10px blue; */
 
 
-  & .paragraph {
+  & .paragraph,
+  & :global(.ce-paragraph) {
     margin-bottom: 10px;
   }
 
   .figure,
-  .embed {
+  .embed,
+  :global(.image-tool),
+  :global(.embed-tool) {
     margin: 0;
   }
 }
@@ -203,17 +214,27 @@
   height: auto;
 }
 
-.caption {
+.caption,
+.editorContent :global(.image-tool__caption),
+.editorContent :global(.embed-tool__caption),
+.creditContent :global(.image-tool__caption),
+.creditContent :global(.embed-tool__caption) {
   margin-top: 8px;
   color: #666666;
   font-size: 1.2rem;
 }
 
-.caption :is(i, em) {
+.caption :is(i, em),
+.editorContent :global(.image-tool__caption) :is(i, em),
+.editorContent :global(.embed-tool__caption) :is(i, em),
+.creditContent :global(.image-tool__caption) :is(i, em),
+.creditContent :global(.embed-tool__caption) :is(i, em) {
   font-style: italic;
 }
 
-.embed iframe {
+.embed iframe,
+.editorContent :global(.embed-tool__content iframe),
+.creditContent :global(.embed-tool__content iframe) {
   width: 100%;
   aspect-ratio: 16 / 9;
   border: 0;

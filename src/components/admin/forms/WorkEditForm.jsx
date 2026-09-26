@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
+import Editor from "@/components/editor/EditorInputClient";
 import {
   useDeleteResource,
   useResourceItem,
@@ -202,6 +202,7 @@ export default function WorkEditForm({ id }) {
               ref={contentKoRef}
               holderId="editor-work-content-ko"
               data={work.content_ko}
+              preview="work-content"
             />
           </div>
 
@@ -211,6 +212,7 @@ export default function WorkEditForm({ id }) {
               ref={contentEnRef}
               holderId="editor-work-content-en"
               data={work.content_en}
+              preview="work-content"
             />
           </div>
 
@@ -220,6 +222,7 @@ export default function WorkEditForm({ id }) {
               ref={creditKoRef}
               holderId="editor-work-credit-ko"
               data={work.credit_ko}
+              preview="work-credit"
             />
           </div>
 
@@ -229,6 +232,7 @@ export default function WorkEditForm({ id }) {
               ref={creditEnRef}
               holderId="editor-work-credit-en"
               data={work.credit_en}
+              preview="work-credit"
             />
           </div>
         </div>

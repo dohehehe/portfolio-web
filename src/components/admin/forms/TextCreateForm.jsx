@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
+import Editor from "@/components/editor/EditorInputClient";
 import { useCreateResource } from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import { saveEditorContent } from "./formUtils";
@@ -23,6 +23,7 @@ export default function TextCreateForm() {
   const [projectId, setProjectId] = useState("");
   const [eventId, setEventId] = useState("");
   const [workId, setWorkId] = useState("");
+  const [typeId, setTypeId] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
   const { create, loading } = useCreateResource("text");
@@ -41,6 +42,7 @@ export default function TextCreateForm() {
         project_id: projectId || null,
         event_id: eventId || null,
         work_id: workId || null,
+        type_id: typeId || null,
         content_ko: await saveEditorContent(contentKoRef, "content_ko"),
         content_en: await saveEditorContent(contentEnRef, "content_en"),
       });
@@ -115,14 +117,32 @@ export default function TextCreateForm() {
           />
         </label>
 
+        <label className={styles.label}>
+          type_id
+          <ForeignSelect
+            foreignTable="text_type"
+            labelKey="name"
+            value={typeId}
+            onChange={setTypeId}
+          />
+        </label>
+
         <div className={styles.field}>
           content_ko
-          <Editor ref={contentKoRef} holderId="editor-text-content-ko" />
+          <Editor
+            ref={contentKoRef}
+            holderId="editor-text-content-ko"
+            preview="text-content"
+          />
         </div>
 
         <div className={styles.field}>
           content_en
-          <Editor ref={contentEnRef} holderId="editor-text-content-en" />
+          <Editor
+            ref={contentEnRef}
+            holderId="editor-text-content-en"
+            preview="text-content"
+          />
         </div>
 
         <label className={styles.label}>

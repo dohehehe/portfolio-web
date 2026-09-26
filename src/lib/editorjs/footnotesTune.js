@@ -217,7 +217,13 @@ function detachNotesFromStaticPool(BaseFootnotesTune, wrapper) {
   return blockNotes;
 }
 
+let cachedFootnotesTuneClass = null;
+
 export async function loadFootnotesTune() {
+  if (cachedFootnotesTuneClass) {
+    return cachedFootnotesTuneClass;
+  }
+
   const footnotesModule = await import("@editorjs/footnotes");
   const BaseFootnotesTune = footnotesModule.default ?? footnotesModule;
 
@@ -452,7 +458,7 @@ export async function loadFootnotesTune() {
 
   FootnotesTune.isTune = true;
   FootnotesTune.sanitize = BaseFootnotesTune.sanitize;
-  BaseFootnotesTune.notes = [];
 
+  cachedFootnotesTuneClass = FootnotesTune;
   return FootnotesTune;
 }

@@ -25,7 +25,7 @@ const ADMIN_TABLE_CONFIG = {
     label: "Event",
     createHref: "/admin/event/create",
     editHref: (id) => `/admin/event/edit/${id}`,
-    listColumns: ["date", "title_ko", "space_ko"],
+    listColumns: ["date", "title_ko", "space_ko", "link_url"],
   },
   live: {
     label: "Live",
@@ -45,7 +45,7 @@ const ADMIN_TABLE_CONFIG = {
     label: "Text",
     createHref: "/admin/text/create",
     editHref: (id) => `/admin/text/edit/${id}`,
-    listColumns: ["year", "title_ko", "writer_ko"],
+    listColumns: ["year", "title_ko", "writer_ko", "type_id"],
   },
   info: {
     label: "Info",
@@ -79,10 +79,26 @@ function formatCellValue(value) {
   return `${text.slice(0, 80)}...`;
 }
 
-function ResourceTable({ table, items, deletingId, onDelete, onActiveUpdated }) {
+function ResourceTable({
+  table,
+  items,
+  deletingId,
+  onDelete,
+  onActiveUpdated,
+  lookupMaps = {},
+}) {
   const config = ADMIN_TABLE_CONFIG[table];
   const columns = config.listColumns;
   const hasActiveToggle = TABLES_WITH_IS_ACTIVE.has(table);
+
+  function renderCell(column, item) {
+    if (column === "type_id" && table === "text") {
+      const typeName = lookupMaps.textTypesById?.get(item.type_id)?.name;
+      return formatCellValue(typeName ?? item.type_id);
+    }
+
+    return formatCellValue(item[column]);
+  }
 
   if (items.length === 0) {
     return <p className={styles.status}>{table} 데이터가 없습니다.</p>;
@@ -112,7 +128,7 @@ function ResourceTable({ table, items, deletingId, onDelete, onActiveUpdated }) 
                   key={column}
                   className={`${styles.textCell} ${getAdminColumnClass(column)}`}
                 >
-                  {formatCellValue(item[column])}
+                  {renderCell(column, item)}
                 </td>
               ))}
               <td className={`${styles.actionsCell} ${styles.colActions}`}>
@@ -178,6 +194,15 @@ export default function AdminDataTables() {
     "cv_type",
     { enabled: activeTable === "cv" },
   );
+  const { data: textTypes = [], loading: textTypesLoading } = useResourceList(
+    "text_type",
+    { enabled: activeTable === "text" },
+  );
+
+  const textTypesById = useMemo(
+    () => new Map(textTypes.map((row) => [row.id, row])),
+    [textTypes],
+  );
 
   const tableQueries = {
     cv: cvQuery,
@@ -196,7 +221,9 @@ export default function AdminDataTables() {
 
   const isLoading = isProjectWork
     ? projectsLoading || worksLoading
-    : loading || (activeTable === "cv" && cvTypesLoading);
+    : loading ||
+      (activeTable === "cv" && cvTypesLoading) ||
+      (activeTable === "text" && textTypesLoading);
   const tableError = isProjectWork ? projectsError || worksError : error;
 
   const deleteCv = useDeleteResource("cv");
@@ -368,6 +395,7 @@ export default function AdminDataTables() {
             deletingId={deletingId}
             onDelete={handleDelete}
             onActiveUpdated={() => refetch({ force: true })}
+            lookupMaps={{ textTypesById }}
           />
         )}
     </section>

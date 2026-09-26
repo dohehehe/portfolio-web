@@ -1,4 +1,4 @@
-import EditorContent from "@/components/work/work/EditorContent";
+import EditorViewer from "@/components/editor/EditorViewer";
 import contentStyles from "./EventEditorContent.module.css";
 import creditStyles from "./EventEditorCredit.module.css";
 
@@ -8,11 +8,15 @@ const STYLES_BY_VARIANT = {
 };
 
 export default function EventEditor({ data, variant = "credit", className = "" }) {
+  const styles = STYLES_BY_VARIANT[variant] ?? creditStyles;
+
   return (
-    <EditorContent
+    <EditorViewer
       data={data}
+      styles={styles}
+      rootClassName={styles.editorContent}
+      includeHeaders
       className={className}
-      styles={STYLES_BY_VARIANT[variant]}
     />
   );
 }

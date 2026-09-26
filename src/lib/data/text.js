@@ -10,11 +10,29 @@ import { getEventRelatedById } from "@/lib/data/event";
 import { getProjectRelatedById } from "@/lib/data/project";
 import { getWorkRelatedById } from "@/lib/data/work";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
+import {
+  applyPublicActiveFilter,
+  isPubliclyVisible,
+} from "@/lib/data/publicVisibility";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { normalizeRecord } from "@/lib/locale/normalizeRecord";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { localizedPath } from "@/lib/locale/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
+
+function normalizeTextType(record) {
+  const row = record?.text_type;
+
+  if (!row) {
+    return null;
+  }
+
+  return {
+    id: row.id,
+    name: row.name ?? null,
+    slug: row.slug ?? null,
+  };
+}
 
 function normalizeTextRecord(record, locale) {
   return {
@@ -29,6 +47,8 @@ function normalizeTextRecord(record, locale) {
     project_id: record.project_id ?? null,
     event_id: record.event_id ?? null,
     work_id: record.work_id ?? null,
+    type_id: record.type_id ?? null,
+    type: normalizeTextType(record),
   };
 }
 
@@ -50,10 +70,14 @@ function formatWorkMeta({ year, medium, dimension }) {
 const fetchNavigationTextListData = createCachedQuery(
   async () => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("text")
       .select(TEXT_COLUMNS)
       .order("created_at", { ascending: false });
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -91,10 +115,11 @@ const fetchTextRecordById = createCachedQuery(
 const fetchTextsByWorkId = createCachedQuery(
   async (workId) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
-      .from("text")
-      .select(TEXT_COLUMNS)
-      .eq("work_id", workId);
+    let query = supabase.from("text").select(TEXT_COLUMNS).eq("work_id", workId);
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -111,10 +136,14 @@ const fetchTextsByWorkId = createCachedQuery(
 const fetchTextsByProjectId = createCachedQuery(
   async (projectId) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("text")
       .select(TEXT_COLUMNS)
       .eq("project_id", projectId);
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -131,10 +160,14 @@ const fetchTextsByProjectId = createCachedQuery(
 const fetchTextsByEventId = createCachedQuery(
   async (eventId) => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("text")
       .select(TEXT_COLUMNS)
       .eq("event_id", eventId);
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -161,6 +194,8 @@ const fetchTextsByProjectAndWorkIds = createCachedQuery(
     } else {
       query = query.eq("project_id", projectId);
     }
+
+    query = applyPublicActiveFilter(query);
 
     const { data, error } = await query;
 
@@ -189,7 +224,7 @@ export async function getTexts(locale = DEFAULT_LOCALE) {
 export async function getTextById(id, locale = DEFAULT_LOCALE) {
   const data = await fetchTextRecordById(id, locale);
 
-  if (!data) {
+  if (!data || !isPubliclyVisible(data)) {
     return null;
   }
 

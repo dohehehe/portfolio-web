@@ -15,6 +15,7 @@ const RELATED_TAGS = {
     DATA_CACHE_TAG.event,
   ],
   cv: [DATA_CACHE_TAG.cv_type],
+  text_type: [DATA_CACHE_TAG.text],
 };
 
 const TABLE_DETAIL_PATH = {

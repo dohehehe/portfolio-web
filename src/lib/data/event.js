@@ -4,18 +4,26 @@ import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { getEventDetailColumns } from "@/lib/data/localizedSelect";
 import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { createCachedQuery, DATA_CACHE_TAG } from "@/lib/data/cache";
+import {
+  applyPublicActiveFilter,
+  isPubliclyVisible,
+} from "@/lib/data/publicVisibility";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
 const EVENT_LIST_COLUMNS =
-  "id,created_at,title_ko,title_en,date,space_ko,space_en";
+  "id,created_at,title_ko,title_en,date,space_ko,space_en,is_active";
 
 const fetchNavigationEventListData = createCachedQuery(
   async () => {
     const supabase = createSupabaseServerClient();
-    const { data, error } = await supabase
+    let query = supabase
       .from("event")
       .select(EVENT_LIST_COLUMNS)
       .order("created_at", { ascending: false });
+
+    query = applyPublicActiveFilter(query);
+
+    const { data, error } = await query;
 
     if (error) {
       return [];
@@ -104,15 +112,9 @@ export async function getEventRelatedById(id, locale = DEFAULT_LOCALE) {
 export async function getEventById(id, locale = DEFAULT_LOCALE) {
   const data = await fetchEventRecordById(id, locale);
 
-  if (!data) {
+  if (!data || !isPubliclyVisible(data)) {
     return null;
   }
-
-  const note = pickLocalized(
-    { note_ko: data.note_kr, note_en: data.note_en },
-    "note",
-    locale,
-  );
 
   return {
     id: data.id,
@@ -123,8 +125,9 @@ export async function getEventById(id, locale = DEFAULT_LOCALE) {
     space: pickLocalized(data, "space", locale),
     content: pickLocalized(data, "content", locale),
     credit: pickLocalized(data, "credit", locale),
-    note,
     gallery: data.gallery,
     file_link: data.file_link,
+    linkUrl: data.link_url ?? null,
+    isActive: data.is_active ?? null,
   };
 }
