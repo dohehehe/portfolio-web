@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
-import Editor from "@/components/admin/EditorClient";
-import { useCreateWork } from "@/hooks/work";
+import Editor from "@/components/editor/EditorInputClient";
+import { useCreateResource } from "@/hooks/useResource";
 import ForeignSelect from "./ForeignSelect";
 import GalleryInput from "./GalleryInput";
 import { saveEditorContent, serializeGallery } from "./formUtils";
@@ -30,7 +30,7 @@ export default function WorkCreateForm() {
   const [galleryUploading, setGalleryUploading] = useState(false);
   const [submitError, setSubmitError] = useState(null);
 
-  const { create, loading } = useCreateWork();
+  const { create, loading } = useCreateResource("work");
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -145,22 +145,38 @@ export default function WorkCreateForm() {
 
         <div className={styles.field}>
           content_ko
-          <Editor ref={contentKoRef} holderId="editor-work-content-ko" />
+          <Editor
+            ref={contentKoRef}
+            holderId="editor-work-content-ko"
+            preview="work-content"
+          />
         </div>
 
         <div className={styles.field}>
           content_en
-          <Editor ref={contentEnRef} holderId="editor-work-content-en" />
+          <Editor
+            ref={contentEnRef}
+            holderId="editor-work-content-en"
+            preview="work-content"
+          />
         </div>
 
         <div className={styles.field}>
           credit_ko
-          <Editor ref={creditKoRef} holderId="editor-work-credit-ko" />
+          <Editor
+            ref={creditKoRef}
+            holderId="editor-work-credit-ko"
+            preview="work-credit"
+          />
         </div>
 
         <div className={styles.field}>
           credit_en
-          <Editor ref={creditEnRef} holderId="editor-work-credit-en" />
+          <Editor
+            ref={creditEnRef}
+            holderId="editor-work-credit-en"
+            preview="work-credit"
+          />
         </div>
 
         <label className={styles.label}>

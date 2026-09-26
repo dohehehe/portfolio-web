@@ -13,6 +13,9 @@ import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { LOCALE_HEADER } from "@/lib/locale/routing";
 import { SITE_NAME, SITE_URL } from "@/lib/site/constants";
 
+/** Keep in sync with DATA_REVALIDATE_SECONDS in @/lib/data/cache */
+export const revalidate = 3600;
+
 export const metadata = {
   metadataBase: new URL(SITE_URL),
   title: SITE_NAME,

@@ -3,8 +3,7 @@ import { normalizeGalleryItems } from "@/lib/locale/normalizeRecord";
 import WorkGallery from "@/components/work/gallery/WorkGallery";
 import ProjectEventList from "@/components/work/project/item-detail/ProjectEventList";
 import ProjectTextList from "@/components/work/project/item-detail/ProjectTextList";
-import EditorContent from "./EditorContent";
-import EditorCredit from "./EditorCredit";
+import EditorViewer from "@/components/editor/EditorViewer";
 import styles from "./WorkItemDetail.module.css";
 
 function getBilingualTitles(item) {
@@ -29,7 +28,12 @@ function ContentSection({ title, data }) {
   }
 
   return (
-    <EditorContent data={data} styles={styles} />
+    <EditorViewer
+      data={data}
+      styles={styles}
+      rootClassName={styles.editorContent}
+      includeHeaders
+    />
   );
 }
 
@@ -42,7 +46,14 @@ function CreditSection({ data, cvs = [], texts = [], locale }) {
     <div className={styles.creditRow}>
       <ProjectEventList items={cvs} locale={locale} styles={styles} />
       <ProjectTextList items={texts} locale={locale} styles={styles} />
-      {data ? <EditorCredit data={data} styles={styles} /> : null}
+      {data ? (
+        <EditorViewer
+          data={data}
+          styles={styles}
+          rootClassName={styles.editorCredit}
+          includeHeaders={false}
+        />
+      ) : null}
     </div>
 
   );

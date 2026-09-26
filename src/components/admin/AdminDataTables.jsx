@@ -3,22 +3,11 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  useDeleteCv,
-  useDeleteEvent,
-  useDeleteInfo,
-  useDeleteLive,
-  useDeleteProject,
-  useDeleteText,
-  useDeleteWork,
-} from "@/hooks";
-import { useCvs } from "@/hooks/cv";
-import { useCvTypes } from "@/hooks/cv_type";
-import { useEvents } from "@/hooks/event";
-import { useInfos } from "@/hooks/info";
-import { useLives } from "@/hooks/live";
-import { useProjects } from "@/hooks/project";
-import { useTexts } from "@/hooks/text";
-import { useWorks } from "@/hooks/work";
+  useDeleteResource,
+  useResourceList,
+} from "@/hooks/useResource";
+import ActiveToggle, { TABLES_WITH_IS_ACTIVE } from "./ActiveToggle";
+import { getAdminColumnClass } from "./adminTableColumns";
 import CvGroupedTable from "./CvGroupedTable";
 import ProjectWorkGroupedTable from "./ProjectWorkGroupedTable";
 import styles from "./AdminDataTables.module.css";
@@ -30,19 +19,19 @@ const ADMIN_TABLE_CONFIG = {
     label: "CV",
     createHref: "/admin/cv/create",
     editHref: (id) => `/admin/cv/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "space_ko", "link_url"],
+    listColumns: ["year", "title_ko", "space_ko", "link_url"],
   },
   event: {
     label: "Event",
     createHref: "/admin/event/create",
     editHref: (id) => `/admin/event/edit/${id}`,
-    listColumns: ["created_at", "date", "title_ko", "space_ko"],
+    listColumns: ["date", "title_ko", "space_ko", "link_url"],
   },
   live: {
     label: "Live",
     createHref: "/admin/live/create",
     editHref: (id) => `/admin/live/edit/${id}`,
-    listColumns: ["created_at", "start_at", "end_at", "title_ko", "space_ko", "link_url"],
+    listColumns: ["start_at", "end_at", "title_ko", "space_ko", "link_url"],
   },
   "project-work": {
     label: "Project / Work",
@@ -56,36 +45,15 @@ const ADMIN_TABLE_CONFIG = {
     label: "Text",
     createHref: "/admin/text/create",
     editHref: (id) => `/admin/text/edit/${id}`,
-    listColumns: ["created_at", "year", "title_ko", "writer_ko"],
+    listColumns: ["year", "title_ko", "writer_ko", "type_id"],
   },
   info: {
     label: "Info",
     createHref: "/admin/info/create",
     editHref: (id) => `/admin/info/edit/${id}`,
-    listColumns: ["created_at", "email", "bio_ko"],
+    listColumns: ["email", "bio_ko"],
   },
 };
-
-function sortByCreatedAt(items) {
-  return [...items].sort(
-    (left, right) =>
-      new Date(right.created_at).getTime() - new Date(left.created_at).getTime(),
-  );
-}
-
-function formatCreatedAt(value) {
-  if (!value) {
-    return "-";
-  }
-
-  return new Date(value).toLocaleString("ko-KR", {
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 function formatCellValue(value) {
   if (value == null || value === "") {
@@ -111,27 +79,26 @@ function formatCellValue(value) {
   return `${text.slice(0, 80)}...`;
 }
 
-function useAdminTableData(table, enabled) {
-  const cv = useCvs({ enabled: enabled && table === "cv" });
-  const event = useEvents({ enabled: enabled && table === "event" });
-  const info = useInfos({ enabled: enabled && table === "info" });
-  const live = useLives({ enabled: enabled && table === "live" });
-  const text = useTexts({ enabled: enabled && table === "text" });
-
-  const states = { cv, event, info, live, text };
-  return (
-    states[table] ?? {
-      data: [],
-      loading: false,
-      error: null,
-      refetch: async () => [],
-    }
-  );
-}
-
-function ResourceTable({ table, items, deletingId, onDelete }) {
+function ResourceTable({
+  table,
+  items,
+  deletingId,
+  onDelete,
+  onActiveUpdated,
+  lookupMaps = {},
+}) {
   const config = ADMIN_TABLE_CONFIG[table];
   const columns = config.listColumns;
+  const hasActiveToggle = TABLES_WITH_IS_ACTIVE.has(table);
+
+  function renderCell(column, item) {
+    if (column === "type_id" && table === "text") {
+      const typeName = lookupMaps.textTypesById?.get(item.type_id)?.name;
+      return formatCellValue(typeName ?? item.type_id);
+    }
+
+    return formatCellValue(item[column]);
+  }
 
   if (items.length === 0) {
     return <p className={styles.status}>{table} 데이터가 없습니다.</p>;
@@ -143,22 +110,28 @@ function ResourceTable({ table, items, deletingId, onDelete }) {
         <thead>
           <tr>
             {columns.map((column) => (
-              <th key={column}>{column}</th>
+              <th key={column} className={getAdminColumnClass(column)}>
+                {column}
+              </th>
             ))}
-            <th>작업</th>
+            <th className={styles.colActions}>작업</th>
+            {hasActiveToggle && (
+              <th className={styles.colActive}>active</th>
+            )}
           </tr>
         </thead>
         <tbody>
           {items.map((item) => (
             <tr key={item.id}>
               {columns.map((column) => (
-                <td key={column} className={styles.textCell}>
-                  {column === "created_at"
-                    ? formatCreatedAt(item[column])
-                    : formatCellValue(item[column])}
+                <td
+                  key={column}
+                  className={`${styles.textCell} ${getAdminColumnClass(column)}`}
+                >
+                  {renderCell(column, item)}
                 </td>
               ))}
-              <td className={styles.actionsCell}>
+              <td className={`${styles.actionsCell} ${styles.colActions}`}>
                 <Link
                   className={styles.actionLink}
                   href={config.editHref(item.id)}
@@ -174,6 +147,16 @@ function ResourceTable({ table, items, deletingId, onDelete }) {
                   {deletingId === item.id ? "삭제 중..." : "삭제"}
                 </button>
               </td>
+              {hasActiveToggle && (
+                <td className={`${styles.activeCell} ${styles.colActive}`}>
+                  <ActiveToggle
+                    table={table}
+                    id={item.id}
+                    isActive={item.is_active}
+                    onUpdated={onActiveUpdated}
+                  />
+                </td>
+              )}
             </tr>
           ))}
         </tbody>
@@ -187,57 +170,87 @@ export default function AdminDataTables() {
   const [deletingId, setDeletingId] = useState(null);
 
   const isProjectWork = activeTable === "project-work";
-  const { data, loading, error, refetch } = useAdminTableData(
-    activeTable,
-    !isProjectWork,
-  );
+
+  const cvQuery = useResourceList("cv", { enabled: activeTable === "cv" });
+  const eventQuery = useResourceList("event", {
+    enabled: activeTable === "event",
+  });
+  const liveQuery = useResourceList("live", { enabled: activeTable === "live" });
+  const textQuery = useResourceList("text", { enabled: activeTable === "text" });
+  const infoQuery = useResourceList("info", { enabled: activeTable === "info" });
   const {
     data: projects = [],
     loading: projectsLoading,
     error: projectsError,
     refetch: refetchProjects,
-  } = useProjects({ enabled: isProjectWork });
+  } = useResourceList("project", { enabled: isProjectWork });
   const {
     data: works = [],
     loading: worksLoading,
     error: worksError,
     refetch: refetchWorks,
-  } = useWorks({ enabled: isProjectWork });
-  const { data: cvTypes = [], loading: cvTypesLoading } = useCvTypes({
-    enabled: activeTable === "cv",
-  });
+  } = useResourceList("work", { enabled: isProjectWork });
+  const { data: cvTypes = [], loading: cvTypesLoading } = useResourceList(
+    "cv_type",
+    { enabled: activeTable === "cv" },
+  );
+  const { data: textTypes = [], loading: textTypesLoading } = useResourceList(
+    "text_type",
+    { enabled: activeTable === "text" },
+  );
+
+  const textTypesById = useMemo(
+    () => new Map(textTypes.map((row) => [row.id, row])),
+    [textTypes],
+  );
+
+  const tableQueries = {
+    cv: cvQuery,
+    event: eventQuery,
+    live: liveQuery,
+    text: textQuery,
+    info: infoQuery,
+  };
+
+  const { data, loading, error, refetch } = tableQueries[activeTable] ?? {
+    data: [],
+    loading: false,
+    error: null,
+    refetch: async () => [],
+  };
 
   const isLoading = isProjectWork
     ? projectsLoading || worksLoading
-    : loading || (activeTable === "cv" && cvTypesLoading);
+    : loading ||
+      (activeTable === "cv" && cvTypesLoading) ||
+      (activeTable === "text" && textTypesLoading);
   const tableError = isProjectWork ? projectsError || worksError : error;
 
-  const cvDelete = useDeleteCv();
-  const eventDelete = useDeleteEvent();
-  const infoDelete = useDeleteInfo();
-  const liveDelete = useDeleteLive();
-  const projectDelete = useDeleteProject();
-  const textDelete = useDeleteText();
-  const workDelete = useDeleteWork();
+  const deleteCv = useDeleteResource("cv");
+  const deleteEvent = useDeleteResource("event");
+  const deleteInfo = useDeleteResource("info");
+  const deleteLive = useDeleteResource("live");
+  const deleteProject = useDeleteResource("project");
+  const deleteText = useDeleteResource("text");
+  const deleteWork = useDeleteResource("work");
 
   const deleteHandlers = useMemo(
     () => ({
-      cv: cvDelete.remove,
-      event: eventDelete.remove,
-      info: infoDelete.remove,
-      live: liveDelete.remove,
-      text: textDelete.remove,
+      cv: deleteCv.remove,
+      event: deleteEvent.remove,
+      info: deleteInfo.remove,
+      live: deleteLive.remove,
+      text: deleteText.remove,
     }),
     [
-      cvDelete.remove,
-      eventDelete.remove,
-      infoDelete.remove,
-      liveDelete.remove,
-      textDelete.remove,
+      deleteCv.remove,
+      deleteEvent.remove,
+      deleteInfo.remove,
+      deleteLive.remove,
+      deleteText.remove,
     ],
   );
 
-  const sortedItems = useMemo(() => sortByCreatedAt(data), [data]);
   const config = ADMIN_TABLE_CONFIG[activeTable];
 
   async function handleDelete(id) {
@@ -249,7 +262,7 @@ export default function AdminDataTables() {
 
     try {
       await deleteHandlers[activeTable](id);
-      await refetch();
+      await refetch({ force: true });
     } catch (err) {
       window.alert(err.message ?? "삭제에 실패했습니다.");
     } finally {
@@ -265,8 +278,11 @@ export default function AdminDataTables() {
     setDeletingId(id);
 
     try {
-      await projectDelete.remove(id);
-      await Promise.all([refetchProjects(), refetchWorks()]);
+      await deleteProject.remove(id);
+      await Promise.all([
+        refetchProjects({ force: true }),
+        refetchWorks({ force: true }),
+      ]);
     } catch (err) {
       window.alert(err.message ?? "삭제에 실패했습니다.");
     } finally {
@@ -282,8 +298,8 @@ export default function AdminDataTables() {
     setDeletingId(id);
 
     try {
-      await workDelete.remove(id);
-      await refetchWorks();
+      await deleteWork.remove(id);
+      await refetchWorks({ force: true });
     } catch (err) {
       window.alert(err.message ?? "삭제에 실패했습니다.");
     } finally {
@@ -292,7 +308,7 @@ export default function AdminDataTables() {
   }
 
   async function handleOrdersSaved() {
-    await refetchWorks();
+    await refetchWorks({ force: true });
   }
 
   return (
@@ -348,6 +364,7 @@ export default function AdminDataTables() {
           editHref={config.editHref}
           deletingId={deletingId}
           onDelete={handleDelete}
+          onActiveUpdated={() => refetch({ force: true })}
         />
       )}
 
@@ -359,6 +376,12 @@ export default function AdminDataTables() {
           onDeleteProject={handleDeleteProject}
           onDeleteWork={handleDeleteWork}
           onOrdersSaved={handleOrdersSaved}
+          onActiveUpdated={async () => {
+            await Promise.all([
+              refetchProjects({ force: true }),
+              refetchWorks({ force: true }),
+            ]);
+          }}
         />
       )}
 
@@ -368,9 +391,11 @@ export default function AdminDataTables() {
         !isProjectWork && (
           <ResourceTable
             table={activeTable}
-            items={sortedItems}
+            items={data}
             deletingId={deletingId}
             onDelete={handleDelete}
+            onActiveUpdated={() => refetch({ force: true })}
+            lookupMaps={{ textTypesById }}
           />
         )}
     </section>

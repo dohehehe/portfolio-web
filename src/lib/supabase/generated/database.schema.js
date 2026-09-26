@@ -2,12 +2,12 @@
  * AUTO-GENERATED FILE — DO NOT EDIT MANUALLY
  * Run `npm run db:sync` after changing Supabase tables.
  *
- * Synced at: 2026-07-23T09:49:31.746Z
+ * Synced at: 2026-09-20T19:39:44.953Z
  * Source: https://maewukpitcdwcippztnd.supabase.co
  */
 
 export const databaseSchema = {
-  "syncedAt": "2026-07-23T09:49:31.746Z",
+  "syncedAt": "2026-09-20T19:39:44.953Z",
   "supabaseUrl": "https://maewukpitcdwcippztnd.supabase.co",
   "tables": [
     {
@@ -104,6 +104,15 @@ export const databaseSchema = {
           "name": "link_url",
           "type": "string",
           "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "format": "boolean",
           "nullable": true,
           "default": null,
           "isPrimaryKey": false,
@@ -273,27 +282,18 @@ export const databaseSchema = {
           "foreignKey": null
         },
         {
-          "name": "note_kr",
-          "type": "unknown",
-          "format": "jsonb",
-          "nullable": true,
-          "default": null,
-          "isPrimaryKey": false,
-          "foreignKey": null
-        },
-        {
-          "name": "note_en",
-          "type": "unknown",
-          "format": "jsonb",
-          "nullable": true,
-          "default": null,
-          "isPrimaryKey": false,
-          "foreignKey": null
-        },
-        {
           "name": "link_url",
           "type": "string",
           "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "format": "boolean",
           "nullable": true,
           "default": null,
           "isPrimaryKey": false,
@@ -493,6 +493,15 @@ export const databaseSchema = {
           "default": null,
           "isPrimaryKey": false,
           "foreignKey": null
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "format": "boolean",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
         }
       ]
     },
@@ -624,6 +633,15 @@ export const databaseSchema = {
           "default": null,
           "isPrimaryKey": false,
           "foreignKey": null
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "format": "boolean",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
         }
       ]
     },
@@ -746,6 +764,68 @@ export const databaseSchema = {
             "table": "work",
             "column": "id"
           }
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "format": "boolean",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "type_id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": {
+            "table": "text_type",
+            "column": "id"
+          }
+        }
+      ]
+    },
+    {
+      "name": "text_type",
+      "columns": [
+        {
+          "name": "id",
+          "type": "string",
+          "format": "uuid",
+          "nullable": false,
+          "default": "gen_random_uuid()",
+          "isPrimaryKey": true,
+          "foreignKey": null
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "format": "timestamp with time zone",
+          "nullable": false,
+          "default": "now()",
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
+        },
+        {
+          "name": "slug",
+          "type": "string",
+          "format": "text",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
         }
       ]
     },
@@ -898,6 +978,15 @@ export const databaseSchema = {
           "default": null,
           "isPrimaryKey": false,
           "foreignKey": null
+        },
+        {
+          "name": "is_active",
+          "type": "boolean",
+          "format": "boolean",
+          "nullable": true,
+          "default": null,
+          "isPrimaryKey": false,
+          "foreignKey": null
         }
       ]
     }
@@ -913,6 +1002,7 @@ export const tableNames = [
   "live",
   "project",
   "text",
+  "text_type",
   "work"
 ];
 

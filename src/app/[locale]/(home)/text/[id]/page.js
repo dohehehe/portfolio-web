@@ -1,15 +1,21 @@
 import { notFound } from "next/navigation";
 import { barlow } from "@/app/fonts";
 import JsonLd from "@/components/seo/JsonLd";
-import TextEditor from "@/components/text/TextEditor";
+import EditorViewer from "@/components/editor/EditorViewer";
+import textEditorStyles from "@/components/text/TextEditor.module.css";
 import TextRelatedList from "@/components/text/TextRelatedList";
 import { getRelatedItemsByText, getTextById } from "@/lib/data/text";
 import {
   buildDetailPageMetadata,
   getTextMetadata,
 } from "@/lib/locale/metadata";
+import { generateTextDetailStaticParams } from "@/lib/data/staticParams";
 import { buildArticleJsonLd } from "@/lib/structured-data/buildJsonLd";
 import styles from "@/components/text/TextDetailPage.module.css";
+
+export async function generateStaticParams() {
+  return generateTextDetailStaticParams();
+}
 
 export async function generateMetadata({ params }) {
   const { locale, id } = await params;
@@ -42,19 +48,21 @@ export default async function TextDetailPage({ params }) {
         })}
       />
       <div className={styles.textHeader}>
-        <h1 className={styles.title}>{text.title || "Untitled"}</h1>
-        {text.writer ? <p className={styles.writer}>{text.writer}</p> : null}
-        {text.year ? <p className={styles.year}>{text.year}</p> : null}
-
-
-
+        {text.type?.name ? (
+          <h1 className={styles.type}>{text.type.name}</h1>
+        ) : null}
       </div>
       <section className={`${barlow.variable} ${styles.section}`}>
+        <div className={styles.textBody}>
+          <EditorViewer
+            data={text.content}
+            styles={textEditorStyles}
+            rootClassName={textEditorStyles.editorContent}
+            includeHeaders
+          />
+        </div>
         <div className={styles.relatedPanel}>
           <TextRelatedList items={relatedItems} locale={locale} />
-        </div>
-        <div className={styles.textBody}>
-          <TextEditor data={text.content} />
         </div>
 
       </section>

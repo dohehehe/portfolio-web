@@ -3,7 +3,11 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useDeleteInfo, useInfo, useUpdateInfo } from "@/hooks/info";
+import {
+  useDeleteResource,
+  useResourceItem,
+  useUpdateResource,
+} from "@/hooks/useResource";
 import styles from "../AdminForm.module.css";
 
 export default function InfoEditForm({ id }) {
@@ -14,9 +18,9 @@ export default function InfoEditForm({ id }) {
   const [bioEn, setBioEn] = useState("");
   const [submitError, setSubmitError] = useState(null);
 
-  const { data: infoItem, loading, error } = useInfo(id);
-  const { update, loading: updating } = useUpdateInfo();
-  const { remove, loading: deleting } = useDeleteInfo();
+  const { data: infoItem, loading, error } = useResourceItem("info", id);
+  const { update, loading: updating } = useUpdateResource("info");
+  const { remove, loading: deleting } = useDeleteResource("info");
 
   useEffect(() => {
     if (!infoItem) {
