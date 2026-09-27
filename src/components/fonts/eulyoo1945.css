@@ -1,0 +1,21 @@
+/*
+  The jsDelivr stylesheet lists an .eot file first, without a format hint.
+  Safari and iOS stop on that source and never load the woff2.
+*/
+@font-face {
+  font-family: "Eulyoo1945";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/sunghyunzz/eulyoo1945/Eulyoo1945-Regular.woff2")
+    format("woff2");
+}
+
+@font-face {
+  font-family: "Eulyoo1945";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("https://cdn.jsdelivr.net/gh/sunghyunzz/eulyoo1945/Eulyoo1945-SemiBold.woff2")
+    format("woff2");
+}

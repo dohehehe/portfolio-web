@@ -20,16 +20,19 @@ import { pickLocalized } from "@/lib/locale/pickLocalized";
 import { localizedPath } from "@/lib/locale/routing";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-function normalizeTextType(record) {
+function normalizeTextType(record, locale) {
   const row = record?.text_type;
 
   if (!row) {
     return null;
   }
 
+  const nameKo = row.name?.trim() || null;
+  const nameEn = row.slug?.trim() || null;
+
   return {
     id: row.id,
-    name: row.name ?? null,
+    name: locale === "en" ? nameEn || nameKo : nameKo || nameEn,
     slug: row.slug ?? null,
   };
 }
@@ -48,7 +51,7 @@ function normalizeTextRecord(record, locale) {
     event_id: record.event_id ?? null,
     work_id: record.work_id ?? null,
     type_id: record.type_id ?? null,
-    type: normalizeTextType(record),
+    type: normalizeTextType(record, locale),
   };
 }
 
@@ -107,7 +110,7 @@ const fetchTextRecordById = createCachedQuery(
     return data;
   },
   {
-    key: ["text-by-id"],
+    key: ["text-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.text],
   },
 );

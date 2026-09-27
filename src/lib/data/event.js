@@ -53,7 +53,7 @@ const fetchEventRecordById = createCachedQuery(
     return data;
   },
   {
-    key: ["event-by-id"],
+    key: ["event-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.event],
   },
 );

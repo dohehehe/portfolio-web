@@ -25,7 +25,7 @@ const fetchProjectRecordById = createCachedQuery(
     return data;
   },
   {
-    key: ["project-by-id"],
+    key: ["project-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.project],
   },
 );
@@ -46,7 +46,7 @@ const fetchProjectRelatedById = createCachedQuery(
     return data;
   },
   {
-    key: ["project-related-by-id"],
+    key: ["project-related-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.project],
   },
 );

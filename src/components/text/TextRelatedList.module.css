@@ -15,8 +15,8 @@
 }
 
 .eventItems {
-  text-decoration: underline dotted;
-  text-underline-offset: 4px;
+  /* text-decoration: underline dotted;
+  text-underline-offset: 4px; */
   gap: 4px;
 }
 
@@ -51,4 +51,9 @@
   margin: 0;
 }
 
-@media (max-width: 780px) {}
+@media (max-width: 780px) {
+  .relatedContent {
+    font-size: 1.2rem;
+  }
+
+}
