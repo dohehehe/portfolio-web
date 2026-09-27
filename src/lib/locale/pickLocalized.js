@@ -1,14 +1,47 @@
+function visibleText(value) {
+  if (typeof value !== "string") {
+    return "";
+  }
+
+  return value
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/gi, " ")
+    .trim();
+}
+
+function blockHasVisibleContent(block) {
+  const data = block?.data;
+
+  if (!data || typeof data !== "object") {
+    return false;
+  }
+
+  if (visibleText(data.text).length > 0 || visibleText(data.caption).length > 0) {
+    return true;
+  }
+
+  if (data.file?.url || visibleText(data.embed).length > 0 || visibleText(data.source).length > 0) {
+    return true;
+  }
+
+  if (block.type === "paragraph" || block.type === "header") {
+    return false;
+  }
+
+  return Object.keys(data).length > 0;
+}
+
 function hasEditorContent(value) {
   if (!value) {
     return false;
   }
 
   if (Array.isArray(value)) {
-    return value.length > 0;
+    return value.some(blockHasVisibleContent);
   }
 
   if (typeof value === "object" && Array.isArray(value.blocks)) {
-    return value.blocks.length > 0;
+    return value.blocks.some(blockHasVisibleContent);
   }
 
   return true;
@@ -36,8 +69,7 @@ export function pickLocalized(item, field, locale) {
   }
 
   const primary = item[`${field}_${locale}`];
-  const fallbackLocale = locale === "ko" ? "en" : "ko";
-  const fallback = item[`${field}_${fallbackLocale}`];
+  const fallback = item[`${field}_${locale === "ko" ? "en" : "ko"}`];
 
   if (hasLocalizedValue(primary)) {
     return primary;

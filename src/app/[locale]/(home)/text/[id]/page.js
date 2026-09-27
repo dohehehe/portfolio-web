@@ -47,12 +47,14 @@ export default async function TextDetailPage({ params }) {
           pathname: `/text/${id}`,
         })}
       />
-      <div className={styles.textHeader}>
-        {text.type?.name ? (
-          <h1 className={styles.type}>{text.type.name}</h1>
-        ) : null}
-      </div>
+
       <section className={`${barlow.variable} ${styles.section}`}>
+        <div className={styles.textHeader}>
+          {text.type?.name ? (
+            <div className={styles.type}>{text.type.name}</div>
+          ) : null}
+          <TextRelatedList items={relatedItems} locale={locale} />
+        </div>
         <div className={styles.textBody}>
           <EditorViewer
             data={text.content}
@@ -61,10 +63,6 @@ export default async function TextDetailPage({ params }) {
             includeHeaders
           />
         </div>
-        <div className={styles.relatedPanel}>
-          <TextRelatedList items={relatedItems} locale={locale} />
-        </div>
-
       </section>
     </>
   );

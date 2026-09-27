@@ -7,14 +7,14 @@ function formatTitle(item, locale) {
   }
 
   if (item.type === "event") {
-    return locale === "en" ? item.title : `《${item.title}》`;
+    return locale === "en" ? item.title : `${item.title}`;
   }
 
   if (locale === "en") {
     return item.title;
   }
 
-  return `〈${item.title}〉`;
+  return `${item.title}`;
 }
 
 function RelatedItem({ item, locale }) {
@@ -79,11 +79,11 @@ export default function TextRelatedList({ items = [], locale }) {
         locale={locale}
         className={styles.eventItems}
       />
-      <RelatedGroup
+      {/* <RelatedGroup
         items={workItems}
         locale={locale}
         className={styles.workItems}
-      />
+      /> */}
     </section>
   );
 }

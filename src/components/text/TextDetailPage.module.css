@@ -1,13 +1,22 @@
-.textHeader {
-  margin-top: 30px;
-  padding: 0 20px;
-  text-align: center;
-  font-size: 1.6rem;
-  flex-grow: 1;
-  margin-right: auto;
-  margin-left: auto;
-  width: 100%;
+.section {
+  padding: 40px 16px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  /* justify-content: space-between; */
+  align-items: center;
+  /* max-width: 600px; */
+  margin: 0 auto;
   /* box-shadow: inset 0 0 10px 10px red; */
+}
+
+.textHeader {
+  font-size: 1.2rem;
+  /* margin-left: auto; */
+  margin-right: auto;
+  /* max-width: 600px; */
+  /* box-shadow: inset 0 0 10px 10px green; */
 }
 
 .type {
@@ -18,44 +27,13 @@
   word-break: keep-all;
 }
 
-.section {
-  padding: 80px 20px;
-  position: relative;
-  display: flex;
-  flex-direction: row;
-  gap: 200px;
-  justify-content: center;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: 500;
-  margin-bottom: 20px;
-}
-
-.year,
-.writer {
-  font-family: var(--font-barlow), sans-serif;
-  margin-bottom: 3px;
-}
-
-:global(html[lang="en"]) .year,
-:global(html[lang="en"]) .writer {
-  font-weight: 500;
-}
-
-.relatedPanel {
-  padding-top: 4px;
-  width: 300px;
-  font-size: 1.2rem;
-}
-
-
 .textBody {
   width: 100%;
   max-width: 600px;
   min-width: 470px;
   margin-top: 0px;
+  /* box-shadow: inset 0 0 10px 10px blue; */
+  /* margin-left: auto; */
 }
 
 
@@ -65,42 +43,45 @@
     position: relative;
     padding: 40px 12px;
     display: flex;
+    gap: 50px;
+    padding-top: 0px;
+    max-width: unset;
     flex-direction: column;
   }
+
 
   .textHeader {
     font-size: 1.3rem;
     font-weight: 400;
     position: relative;
     left: unset;
-    margin-top: 50px;
+    margin-top: 30px;
+    text-align: left;
+    padding: 0;
+    margin-left: 0;
+    margin-right: auto;
   }
 
-  .title {
-    font-size: 1.55rem;
-    font-weight: 600;
-  }
-
-  .year,
-  .writer {
-    font-size: 1.4rem;
-    font-weight: 500;
+  .type {
+    font-size: 1.1rem;
+    color: #2d2d2d;
   }
 
   .textBody {
     width: 100%;
     min-width: unset;
-    margin-top: 24px;
+    margin-top: 104px;
     margin-left: 0;
     padding-bottom: 40px;
+    max-width: unset;
+
   }
 
   .relatedPanel {
-    order: 3;
     position: relative;
     top: unset;
     left: unset;
     width: 100%;
-    padding-top: 10px;
+    padding-top: 3px;
   }
 }

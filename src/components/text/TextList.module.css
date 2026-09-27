@@ -51,7 +51,7 @@
 @media (max-width: 780px) {
   .list {
     padding-right: 10px;
-    gap: 2px;
+    gap: 4px;
     width: 62vw;
   }
 

@@ -2,6 +2,7 @@ import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { archivoNarrow, gothicA1, inter } from "./fonts";
+import "@/components/fonts/eulyoo1945.css";
 import "./globals.css";
 import { ImageLightboxProvider } from "@/components/image-lightbox";
 import HtmlLocaleSync from "@/components/locale/HtmlLocaleSync";
