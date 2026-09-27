@@ -32,7 +32,7 @@ const fetchWorksByProjectId = createCachedQuery(
     return sortWorksByOrder(data ?? []);
   },
   {
-    key: ["works-by-project-id"],
+    key: ["works-by-project-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.work],
   },
 );
@@ -53,7 +53,7 @@ const fetchWorkRecordById = createCachedQuery(
     return data;
   },
   {
-    key: ["work-by-id"],
+    key: ["work-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.work],
   },
 );
@@ -74,7 +74,7 @@ const fetchWorkRelatedById = createCachedQuery(
     return data;
   },
   {
-    key: ["work-related-by-id"],
+    key: ["work-related-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.work],
   },
 );

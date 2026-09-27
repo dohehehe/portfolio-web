@@ -15,8 +15,8 @@
 }
 
 .eventItems {
-  text-decoration: underline dotted;
-  text-underline-offset: 4px;
+  /* text-decoration: underline dotted;
+  text-underline-offset: 4px; */
   gap: 4px;
 }
 

@@ -49,7 +49,7 @@ export default async function TextDetailPage({ params }) {
       />
       <div className={styles.textHeader}>
         {text.type?.name ? (
-          <h1 className={styles.type}>{text.type.name}</h1>
+          <div className={styles.type}>{text.type.name}</div>
         ) : null}
       </div>
       <section className={`${barlow.variable} ${styles.section}`}>

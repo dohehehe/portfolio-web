@@ -107,7 +107,7 @@ const fetchTextRecordById = createCachedQuery(
     return data;
   },
   {
-    key: ["text-by-id"],
+    key: ["text-by-id-ko-fallback"],
     tags: [DATA_CACHE_TAG.text],
   },
 );
