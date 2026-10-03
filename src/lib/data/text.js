@@ -5,6 +5,7 @@ import {
   getTextDetailColumns,
   serializeWorkIds,
   TEXT_COLUMNS,
+  TEXT_WITH_TYPE_COLUMNS,
 } from "@/lib/data/localizedSelect";
 import { getEventRelatedById } from "@/lib/data/event";
 import { getProjectRelatedById } from "@/lib/data/project";
@@ -165,7 +166,7 @@ const fetchTextsByEventId = createCachedQuery(
     const supabase = createSupabaseServerClient();
     let query = supabase
       .from("text")
-      .select(TEXT_COLUMNS)
+      .select(TEXT_WITH_TYPE_COLUMNS)
       .eq("event_id", eventId);
 
     query = applyPublicActiveFilter(query);
@@ -179,7 +180,7 @@ const fetchTextsByEventId = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["texts-by-event-id"],
+    key: ["texts-by-event-id-type"],
     tags: [DATA_CACHE_TAG.text],
   },
 );

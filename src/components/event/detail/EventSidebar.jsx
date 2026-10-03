@@ -47,13 +47,15 @@ function RelatedTextList({ items, locale }) {
                 className={styles.textLink}
               >
                 <span className={styles.textRow}>
-                  ㅡ{" "}
+                {item.type?.name ? (
+                    <span className={styles.textMeta}>
+                      {item.writer || !item.title ? " " : null}{item.type.name}
+                    </span>
+                  ) : null} 
                   {item.title ? (
-                    <span className={styles.textTitle}>{item.title}, </span>
+                    <span className={styles.textTitle}>{item.title}, {item.writer} </span>
                   ) : null}
-                  {item.writer ? (
-                    <span className={styles.textMeta}>{item.writer}</span>
-                  ) : null}
+
                 </span>
               </Link>
             </li>

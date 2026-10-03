@@ -82,6 +82,8 @@ export const TEXT_COLUMNS =
 
 const TEXT_TYPE_EMBED = "text_type:type_id (id,name,slug)";
 
+export const TEXT_WITH_TYPE_COLUMNS = `${TEXT_COLUMNS},${TEXT_TYPE_EMBED}`;
+
 export const TEXT_DETAIL_KO_COLUMNS = `id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,project_id,event_id,work_id,type_id,is_active,${TEXT_TYPE_EMBED}`;
 
 export const TEXT_DETAIL_EN_COLUMNS = `id,created_at,year,title_ko,title_en,writer_ko,writer_en,content_ko,content_en,project_id,event_id,work_id,type_id,is_active,${TEXT_TYPE_EMBED}`;

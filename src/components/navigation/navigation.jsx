@@ -122,9 +122,9 @@ export default function Navigation({
             texts={initialTexts}
           />
         </div>
-        <a className={styles.navigationLink} href={"https://log.doheekwak.com"} target="_blank">
+        {/* <a className={styles.navigationLink} href={"https://log.doheekwak.com"} target="_blank">
           log
-        </a>
+        </a> */}
         <Link
           className={`${styles.navigationLink} ${infoActive ? styles.navigationLinkActive : ""}`.trim()}
           href={localizedPath("/info", locale)}
