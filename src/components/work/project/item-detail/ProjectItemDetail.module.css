@@ -3,6 +3,7 @@
   font-size: 1.4rem;
   line-height: 1.5;
   color: #1f1f1f;
+  padding-left: 30px;
 }
 
 .article[id] {
@@ -16,7 +17,7 @@
   padding-left: 5px;
   margin-top: 10px;
   text-align: center;
-  margin-right: 110px;
+  margin-right: 0px;
 }
 
 .title {
@@ -67,7 +68,7 @@
   font-size: 1.65rem;
   text-align: center;
   word-break: keep-all;
-  line-height: 1.73;
+  line-height: 1.76;
   color: #2f2f2f;
   margin-right: auto;
   margin-left: auto;

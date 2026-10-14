@@ -4,7 +4,7 @@
   line-height: 1.5;
   color: #2e2e2e;
   display: flex;
-  gap: 5%;
+  gap: 40px;
 }
 
 .article[id] {
@@ -21,6 +21,7 @@
   padding-right: 56px;
   /* flex-grow: 1; */
   width: 42%;
+  max-width: 450px;
   flex-shrink: 0;
   margin-right: auto;
 }
@@ -90,7 +91,7 @@
   line-height: 1.8;
   width: 100%;
   word-break: keep-all;
-  min-width: 50%;
+  /* min-width: 50%; */
   margin-right: auto;
 
   .paragraph,

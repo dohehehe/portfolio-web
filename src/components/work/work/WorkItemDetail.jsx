@@ -107,7 +107,8 @@ export default function WorkItemDetail({
                 <SubContentSection cvs={cvs} texts={texts} locale={locale} />
             ) : null}
         </div>
-        </header>
+      </header>
+      
       <div className={styles.contentContainer}>
         <WorkGallery items={galleryItems} />
       </div>
