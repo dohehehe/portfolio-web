@@ -19,6 +19,9 @@ export function getWorkColumns(locale) {
 }
 
 export const CV_LINK_SELECT = `
+  id,
+  project_id,
+  work_id,
   cv (
     id,
     created_at,

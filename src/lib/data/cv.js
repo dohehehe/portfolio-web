@@ -276,7 +276,7 @@ const fetchCvLinksByWorkId = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["cv-links-by-work-id"],
+    key: ["cv-links-by-work-id-with-parents"],
     tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
   },
 );
@@ -296,7 +296,7 @@ const fetchCvLinksByProjectId = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["cv-links-by-project-id"],
+    key: ["cv-links-by-project-id-with-parents"],
     tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
   },
 );
@@ -324,7 +324,7 @@ const fetchCvLinksByProjectAndWorkIds = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["cv-links-by-project-and-work-ids"],
+    key: ["cv-links-by-project-and-work-ids-with-parents"],
     tags: [DATA_CACHE_TAG.link_cv_item, DATA_CACHE_TAG.cv],
   },
 );
