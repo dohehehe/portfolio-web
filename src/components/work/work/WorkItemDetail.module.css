@@ -5,6 +5,8 @@
   color: #2e2e2e;
   display: flex;
   gap: 40px;
+  position: sticky;
+  top: 50px;
 }
 
 .article[id] {
@@ -24,6 +26,11 @@
   max-width: 450px;
   flex-shrink: 0;
   margin-right: auto;
+  position: sticky;
+  top: 50px;
+  align-self: flex-start;
+  z-index: 1;
+  background-color: rgba(255, 255, 255, 0.85);
 }
 
 .titleRow {
@@ -265,6 +272,7 @@
     padding-right: 0px;
     width: 100%;
     color: #434343;
+    position: static;
   }
 
   .titleRow {
