@@ -17,6 +17,7 @@
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0);
+  /* box-shadow: inset 0 0 10px 10px pink; */
 }
 
 .item {
@@ -58,7 +59,7 @@
     transform: unset;
     left: 0;
     width: 80vw;
-    gap: 2px;
+    gap: 4px;
   }
 
   .link {

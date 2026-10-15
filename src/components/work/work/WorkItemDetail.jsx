@@ -37,25 +37,31 @@ function ContentSection({ title, data }) {
   );
 }
 
-function CreditSection({ data, cvs = [], texts = [], locale }) {
-  if (!data && !cvs.length && !texts.length) {
+function CreditSection({ data }) {
+  if (!data) {
     return null;
   }
 
   return (
-    <div className={styles.creditRow}>
+    <EditorViewer
+      data={data}
+      styles={styles}
+      rootClassName={styles.editorCredit}
+      includeHeaders={false}
+    />
+  );
+}
+
+function SubContentSection({ cvs = [], texts = [], locale }) {
+  if (!cvs.length && !texts.length) {
+    return null;
+  }
+
+  return (
+    <div className={styles.subContent}>
       <ProjectEventList items={cvs} locale={locale} styles={styles} />
       <ProjectTextList items={texts} locale={locale} styles={styles} />
-      {data ? (
-        <EditorViewer
-          data={data}
-          styles={styles}
-          rootClassName={styles.editorCredit}
-          includeHeaders={false}
-        />
-      ) : null}
     </div>
-
   );
 }
 
@@ -89,18 +95,21 @@ export default function WorkItemDetail({
 
         <MetaField label="medium" value={item.medium} classname={styles.metaField} />
         <MetaField label="dimension" value={item.dimension} classname={styles.metaField} />
-        <div className={styles.creditContent}>
-          <CreditSection
-            data={item.credit}
-            cvs={cvs}
-            texts={texts}
-            locale={locale}
-          />
+        {item.credit ? (
+            <div className={styles.creditField}>
+              <CreditSection data={item.credit} />
+            </div>
+          ) : null}
+
+        <div className={styles.contentRow}>
           <ContentSection title="content" data={item.content} />
+            {cvs.length || texts.length ? (
+                <SubContentSection cvs={cvs} texts={texts} locale={locale} />
+            ) : null}
         </div>
       </header>
-
-      <div className={styles.contentContainer}>
+      
+      <div className={styles.contentContainer} data-work-gallery>
         <WorkGallery items={galleryItems} />
       </div>
     </article>

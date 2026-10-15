@@ -1,15 +1,17 @@
 import { requireAdmin } from "@/lib/api/requireAdmin";
 import { apiError, supabaseError } from "@/lib/api/errors";
-import { IMAGE_UPLOAD_BUCKET } from "@/lib/imageUpload/constants";
+import {
+  IMAGE_UPLOAD_BUCKET,
+  IMAGE_UPLOAD_TYPES,
+} from "@/lib/imageUpload/constants";
 import { parseImageStoragePathFromUrl } from "@/lib/imageUpload/storagePath";
+import { prepareStoredImage } from "@/lib/imageUpload/toWebp";
 import { createSupabaseServiceRoleClient } from "@/lib/supabase/server";
 
-function buildStoragePath(file) {
-  const extension = file.name?.includes(".")
-    ? file.name.split(".").pop()
-    : (file.type?.split("/")[1] ?? "webp");
+export const runtime = "nodejs";
 
-  return `images/${crypto.randomUUID()}.${extension}`;
+function buildStoragePath() {
+  return `images/${crypto.randomUUID()}.webp`;
 }
 
 export async function POST(request) {
@@ -27,17 +29,22 @@ export async function POST(request) {
       return apiError("file is required.", 400);
     }
 
-    if (!file.type?.startsWith("image/")) {
-      return apiError("Only image files are allowed.", 400);
+    if (!IMAGE_UPLOAD_TYPES[file.type]) {
+      return apiError(
+        "JPEG, PNG, WebP, GIF 이미지만 업로드할 수 있습니다.",
+        400
+      );
     }
 
-    const filePath = buildStoragePath(file);
+    const source = Buffer.from(await file.arrayBuffer());
+    const stored = await prepareStoredImage(source);
+    const filePath = buildStoragePath();
     const storageSupabase = createSupabaseServiceRoleClient();
 
     const { error } = await storageSupabase.storage
       .from(IMAGE_UPLOAD_BUCKET)
-      .upload(filePath, file, {
-        contentType: file.type,
+      .upload(filePath, stored.buffer, {
+        contentType: "image/webp",
         upsert: false,
       });
 
@@ -49,7 +56,11 @@ export async function POST(request) {
       .from(IMAGE_UPLOAD_BUCKET)
       .getPublicUrl(filePath);
 
-    return Response.json({ url: data.publicUrl });
+    return Response.json({
+      url: data.publicUrl,
+      width: stored.width,
+      height: stored.height,
+    });
   } catch (error) {
     return apiError(error.message, 500);
   }
