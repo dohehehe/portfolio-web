@@ -167,8 +167,8 @@ export function formatEventDescription(event, locale) {
 function formatEventMetadataPrefix(event, locale) {
   const prefixParts = [];
   const formattedTitle = formatLocalizedTitle(event.title, locale, {
-    open: "《",
-    close: "》",
+    open: '',
+    close: '',
   });
 
   if (formattedTitle) {

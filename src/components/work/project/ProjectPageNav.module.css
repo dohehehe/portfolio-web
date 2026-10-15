@@ -1,7 +1,7 @@
 .nav {
   position: fixed;
-  top: 37px;
-  right: 17px;
+  top: 32px;
+  right: 0px;
   z-index: 5;
   width: 250px;
   opacity: 1;
@@ -12,6 +12,9 @@
     transform 0.25s ease;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  background-color: white;
+  padding: 3px 12px 80px 6px;
+  word-break: keep-all;
 }
 
 .navHidden {
@@ -28,7 +31,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
   font-size: 1.2rem;
 }
 
@@ -37,7 +40,7 @@
 }
 
 .nestedItem {
-  margin-left: 20px;
+  margin-left: 40px;
 }
 
 .link {
@@ -82,17 +85,20 @@
 
 @media (max-width: 768px) {
   .nav {
-    top: 32px;
-    right: 15px;
+    top: 42px;
+    right: 0px;
     font-size: 1.3rem;
-    width: 200px;
+    width: 250px;
+    padding: 3px 5px 3px 40px;
   }
 
   .list {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    gap: 6px;
   }
 
   .nestedItem {
-    margin-left: 12px;
+    margin-left: 40px;
   }
 }

@@ -4,9 +4,9 @@
   line-height: 1.5;
   color: #2e2e2e;
   display: flex;
-  gap: 70px;
-  padding-right: 70px;
-  /* box-shadow: inset 0 0 10px 10px green; */
+  gap: 24px;
+  height: 100%;
+  min-height: 0;
 }
 
 .article[id] {
@@ -21,10 +21,15 @@
   word-break: keep-all;
   padding-left: 0px;
   padding-right: 56px;
-  flex-grow: 1;
-  width: 52%;
+  /* flex-grow: 1; */
+  width: 42%;
+  max-width: 450px;
   flex-shrink: 0;
   margin-right: auto;
+  align-self: stretch;
+  min-height: 0;
+  overflow: clip;
+  z-index: 1;
 }
 
 .titleRow {
@@ -32,17 +37,19 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   /* margin-left: -60px; */
   margin-right: -50px;
 }
 
 .title {
-  display: inline;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   font-size: 1.6rem;
-  padding-top: 4px;
   font-weight: 500;
   line-height: 1.2;
+  margin-bottom: 5px;
   word-break: keep-all;
 }
 
@@ -62,42 +69,25 @@
   line-height: 1.4;
   font-size: 1.45rem;
   margin-left: 60px;
-}
-
-.contentContainer {
-  /* width: 80%; */
-  /* flex-shrink: 0; */
-  /* flex-direction: column; */
-  gap: 10px;
-  min-width: 45%;
-  /* box-shadow: inset 0 0 10px 10px blue; */
-}
-
-
-@media (max-width: 1000px) {
-  .article {
-    display: block;
-    padding-right: 50px;
-  }
-
-  .header {
-    width: 100%;
-  }
-
-  .contentContainer {
-    width: 100%;
-  }
-}
-
-.creditContent {
-  display: flex;
-  flex-direction: row-reverse;
-  gap: 40px;
-  margin-top: 40px;
-  line-height: 1.8;
   margin-right: -50px;
-  /* box-shadow: inset 0 0 10px 10px red; */
 }
+
+.creditField {
+  font-size: 1.2rem;
+  word-break: keep-all;
+  line-height: 1.4;
+  margin-left: 60px;
+  margin-top: 10px;
+  margin-right: -50px;
+}
+
+.contentRow {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 30px;
+}
+
 
 .editorContent {
   display: flex;
@@ -107,9 +97,7 @@
   line-height: 1.8;
   width: 100%;
   word-break: keep-all;
-  padding-right: 13px;
-  min-width: 50%;
-
+  margin-right: auto;
 
   .paragraph,
   :global(.ce-paragraph) {
@@ -197,23 +185,20 @@
   border: 0;
 }
 
-.creditRow {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  word-break: keep-all;
+
+.subContent {
   display: flex;
   flex-direction: column;
-  max-width: 200px;
   gap: 50px;
-  line-height: 1.4;
+  font-size: 1.2rem;
   word-break: keep-all;
-  /* box-shadow: inset 0 0 10px 10px green; */
+  line-height: 1.4;
 }
 
 .eventContent {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 5px;
   word-break: keep-all;
 }
 
@@ -221,7 +206,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 7px;
+  gap: 3px;
   margin: 0;
   padding: 0;
 }
@@ -229,7 +214,7 @@
 .eventItem {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 5px;
 }
 
 .eventLink {
@@ -262,7 +247,15 @@
   margin: 0;
 }
 
-
+.contentContainer {
+  gap: 10px;
+  min-width: 45%;
+  min-height: 0;
+  flex: 1;
+  overflow: clip;
+  margin-top: -50px;
+  padding-top: 50px;
+}
 
 @media (max-width: 780px) {
   .article {
@@ -270,35 +263,40 @@
     margin-left: auto;
     display: block;
     padding-right: 0px;
+    height: auto;
   }
 
   .header {
-    margin-bottom: 30px;
+    /* margin-bottom: 10px; */
     margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0 15px;
     width: 100%;
     color: #434343;
+    overflow: visible;
+    position: sticky;
+    top: 40px;
+    z-index: 1;
   }
 
   .titleRow {
     align-items: flex-start;
     gap: 5px;
-    margin-bottom: 6px;
     font-size: 1.35rem;
     margin-left: 0px;
     margin-right: 0px;
-    /* padding-left: 40px; */
+    margin-bottom: 5px;
   }
 
   .title {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.2;
     word-break: keep-all;
     vertical-align: top;
     padding-top: 4px;
-
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
 
   .year {
@@ -312,46 +310,48 @@
     margin-left: 50px;
     font-size: 1.35rem;
     font-weight: 400;
+    margin-right: unset;
+    mix-blend-mode: luminosity;
   }
 
   :global(html[lang="en"]) .metaField {
     font-size: 1.35rem;
   }
 
+  .creditField {
+    font-size: 1.18rem;
+    line-height: 1.45;
+    margin-left: 50px;
+    margin-right: unset;
+    margin-top: 6px;
+    mix-blend-mode: luminosity;
+  }
+
+  .contentRow {
+    margin-top: 20px;
+    mix-blend-mode: luminosity;
+  }
+
   .contentContainer {
     width: 100%;
     display: block;
-  }
-
-  .creditContent {
-    display: flex;
-    flex-direction: row-reverse;
-    gap: 20px;
-    width: 100%;
-    margin-bottom: 20px;
-    margin-right: 0px;
-    margin-top: 60px;
-    /* padding-left: 6px; */
+    overflow: visible;
   }
 
   .editorContent {
-    margin-right: auto;
-    width: 70%;
-    min-width: 55%;
+    width: 100%;
     font-size: 1.28rem;
+    min-width: unset;
   }
 
   :global(html[lang="en"]) .editorContent {
-    min-width: 53%;
+    /* min-width: 53%; */
     font-size: 1.32rem;
   }
 
-  .creditRow {
-    font-size: 1.18rem;
+
+  .subContent {
     gap: 40px;
-    line-height: 1.45;
-    padding-top: 3px;
-    max-width: 180px;
   }
 
   :global(html[lang="en"]) .creditRow {

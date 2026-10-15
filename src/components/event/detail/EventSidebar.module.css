@@ -94,7 +94,7 @@
 }
 
 .textBlock {
-  padding-bottom: 40px;
+  padding-bottom: 50px;
   word-break: keep-all;
   border-bottom: 0.7px dotted #181818;
 }
@@ -120,12 +120,16 @@
   font-size: 1.3rem;
   line-height: 1.4;
   text-align: left;
+  display: flex;
+  gap: 10px;
 }
 
-.textTitle,
 .textMeta {
-  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: auto;
 }
+
 
 .workBlock {
   margin-top: 24px;
@@ -138,8 +142,8 @@
   flex-direction: column;
   gap: 13px;
   margin: 0;
-  padding: 20px 0 0 13px;
-  border-top: 0.7px dotted #181818;
+  padding: 20px 0 0 50px;
+  /* border-top: 0.7px dotted #181818; */
 }
 
 .workLink {
@@ -203,7 +207,7 @@
     position: static;
     /* flex-direction: column; */
     width: 100%;
-    padding-top: 20px;
+    padding-top: 27px;
     gap: 50px;
     /* width: 100vw; */
     flex-shrink: 0;
@@ -240,12 +244,12 @@
   }
 
   .textBlock {
-    margin-left: 50px;
+    /* margin-left: 50px; */
     margin-bottom: 30px;
   }
 
   .textRow {
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
 
   .workBlock {
@@ -253,8 +257,14 @@
   }
 
   .workList {
-    margin-left: 120px;
-    padding: 15px 0 0 6px;
+    margin-left: 0px;
+    padding: 15px 0 0 60px;
+    gap: 8px;
+  }
+
+  .workLink {
+    text-indent: -50px;
+    padding-left: 50px;
   }
 
   .fileSection {

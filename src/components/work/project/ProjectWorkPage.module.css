@@ -1,6 +1,6 @@
 .main {
   min-height: 100dvh;
-  padding: 70px 0px 30px 70px;
+  padding: 50px 0px 0px 0px;
 
   /* box-shadow: inset 0 0 10px 10px pink; */
 }
@@ -8,68 +8,91 @@
 .page {
   display: flex;
   flex-direction: column;
+  gap: 360px;
+}
 
-  /* gap: 64px; */
+.workRunway {
+  width: 100%;
+  height: 0;
+  margin-top: calc(var(--work-stack-gap) * -1);
+  flex-shrink: 0;
+  pointer-events: none;
 }
 
 .workArticle {
-  /* max-width: 1000px; */
-  /* padding-right: 100px; */
-  margin: 0 auto;
-  padding: 0 40px 0 0px;
+  max-width: 1350px;
+  margin-left: auto;
+  padding: 0px 10px 0 20px;
   width: 100%;
-}
-
-.workIndex {
-  display: block;
-  margin: 0 auto;
-  margin-top: 400px;
-  /* margin-left: -150px; */
-
-  width: 100%;
-  padding-top: 8px;
-  padding-left: 4px;
-  padding-right: 4px;
-  padding-bottom: 84px;
-  text-align: center;
-  border-top: 1px dotted #565656;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
-  border-top: 0;
-  background: none;
-  font: inherit;
-  font-size: 1rem;
-  font-weight: 400;
-  color: #4141417a;
-  cursor: pointer;
+  background-color: rgba(255, 255, 255, 0.82);
+  box-shadow: 0 -20px 20px 2px rgba(255, 255, 255, 0.82);
+  position: sticky;
+  top: 50px;
+  z-index: 1;
+  height: calc(100dvh - 50px);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
 .workSection {
-  /* margin-left: 140px; */
   position: relative;
-  max-width: 1100px;
-  padding-left: 30px;
-  /* padding-left: 100px; */
   margin: 0 auto;
-  /* padding-right: 150px; */
-  /* box-shadow: inset 0 0 10px 10px red; */
+  flex: 1;
+  min-height: 0;
+  height: 100%;
 }
 
 @media (max-width: 780px) {
   .main {
-    padding: 50px 14px 30px 14px;
+    padding: 50px 0px 0px;
   }
 
   .workArticle {
-    margin-right: 0;
-    padding: 0;
+    max-width: none;
     margin: 0;
+    padding: 0;
+    top: 0;
+    height: 100dvh;
+    background-color: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 -10px 10px 5px rgba(255, 255, 255, 0.82);
   }
 
   .workSection {
     margin-left: 0;
     padding: 0;
+    padding-top: 40px;
+  }
+
+  .workArticle .workSection {
+    display: block;
+    height: 100%;
+    min-height: 0;
+    overflow: clip;
+  }
+
+  .workArticle .workSection>header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .workArticle :global([data-work-gallery]) {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    min-width: 0;
+    margin: 0;
+    /* margin-top: 40px; */
+    overflow: clip;
   }
 
   .workIndex {

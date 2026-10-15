@@ -1,9 +1,7 @@
 "use client";
 
 import { useCallback } from "react";
-import { IMAGE_UPLOAD_MAX_SIZE_MB } from "@/lib/imageUpload/constants";
-import { compressImageForUpload } from "@/utils/imageCompression";
-import { readImageDimensionsFromFile } from "@/utils/imageDimensions";
+import { IMAGE_UPLOAD_TYPES } from "@/lib/imageUpload/constants";
 
 async function parseUploadResponse(response) {
   const contentType = response.headers.get("content-type") ?? "";
@@ -19,19 +17,19 @@ async function parseUploadResponse(response) {
   };
 }
 
-export function useImageUpload({
-  maxSizeInMB = IMAGE_UPLOAD_MAX_SIZE_MB,
-  endpoint = "/api/upload",
-} = {}) {
+export function useImageUpload({ endpoint = "/api/upload" } = {}) {
   const uploadImageToServer = useCallback(
     async (file) => {
       try {
-        const dimensions = await readImageDimensionsFromFile(file);
-        const compressedFile = await compressImageForUpload(file, {
-          maxSizeInMB,
-        });
+        if (!file?.type || !IMAGE_UPLOAD_TYPES[file.type]) {
+          return {
+            success: false,
+            error: "JPEG, PNG, WebP, GIF 이미지만 업로드할 수 있습니다.",
+          };
+        }
+
         const formData = new FormData();
-        formData.append("file", compressedFile);
+        formData.append("file", file);
 
         const response = await fetch(endpoint, {
           method: "POST",
@@ -51,8 +49,8 @@ export function useImageUpload({
           success: true,
           file: {
             url: data.url,
-            width: dimensions.width,
-            height: dimensions.height,
+            width: data.width ?? null,
+            height: data.height ?? null,
           },
         };
       } catch (error) {
@@ -62,7 +60,7 @@ export function useImageUpload({
         };
       }
     },
-    [endpoint, maxSizeInMB],
+    [endpoint]
   );
 
   const deleteImageFromServer = useCallback(
@@ -93,7 +91,7 @@ export function useImageUpload({
         };
       }
     },
-    [endpoint],
+    [endpoint]
   );
 
   return { uploadImageToServer, deleteImageFromServer };

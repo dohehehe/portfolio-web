@@ -13,7 +13,7 @@
   margin-left: -70px;
   padding-left: 70px;
   display: flex;
-  gap: 15px;
+  gap: 8px;
   overflow-x: auto;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
@@ -34,7 +34,7 @@
 }
 
 .image {
-  height: 70vh;
+  height: 75dvh;
   display: block;
   width: auto;
   object-fit: contain;
@@ -46,6 +46,7 @@
 .caption {
   margin: 0;
   padding: 0 3px;
+  padding-left: 1px;
   color: #666666;
   font-size: 1.2rem;
   line-height: 1.4;
@@ -73,6 +74,7 @@
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  bottom: -38px;
   z-index: 100;
 }
 
@@ -96,8 +98,9 @@
 @media (max-width: 780px) {
   .gallery {
     width: 100vw;
-    margin-left: -14px;
-    padding-left: 14px;
+    padding-left: 10px;
+    /* margin-left: -14px;
+    padding-left: 14px; */
   }
 
   .track {
@@ -111,7 +114,9 @@
   }
 
   .image {
-    height: 54vh;
+    height: 60vh;
+    /* height: unset; */
+    /* width: 95vw; */
   }
 
   .caption {
@@ -119,11 +124,8 @@
     line-height: 1.4;
   }
 
-  .navButtonPrev {
-    left: 4px;
+  .navButton {
+    display: none;
   }
 
-  .navButtonNext {
-    right: 4px;
-  }
 }
