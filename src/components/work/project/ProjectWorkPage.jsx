@@ -2,6 +2,7 @@ import HashScroll from "@/components/work/project/HashScroll";
 import ProjectItemDetail from "@/components/work/project/item-detail/ProjectItemDetail";
 import ProjectPageNav from "@/components/work/project/ProjectPageNav";
 import WorkProjectIndex from "@/components/work/project/WorkProjectIndex";
+import WorkArticleFrame from "@/components/work/project/WorkArticleFrame";
 import WorkItemDetail from "@/components/work/work/WorkItemDetail";
 import styles from "@/components/work/project/ProjectWorkPage.module.css";
 
@@ -30,7 +31,7 @@ export default function ProjectWorkPage({
       />
 
       {works.map((work) => (
-        <div id={work.id} key={work.id} className={styles.workArticle}>
+        <WorkArticleFrame id={work.id} key={work.id}>
           {/* <WorkProjectIndex
             projectId={project.id}
             projectTitle={project.title}
@@ -44,7 +45,7 @@ export default function ProjectWorkPage({
             locale={locale}
             className={styles.workSection}
           />
-        </div>
+        </WorkArticleFrame>
       ))}
     </div>
   );

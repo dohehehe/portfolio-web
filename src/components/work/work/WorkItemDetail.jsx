@@ -109,7 +109,7 @@ export default function WorkItemDetail({
         </div>
       </header>
       
-      <div className={styles.contentContainer}>
+      <div className={styles.contentContainer} data-work-gallery>
         <WorkGallery items={galleryItems} />
       </div>
     </article>

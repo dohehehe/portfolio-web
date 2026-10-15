@@ -4,9 +4,9 @@
   line-height: 1.5;
   color: #2e2e2e;
   display: flex;
-  gap: 40px;
-  position: sticky;
-  top: 50px;
+  gap: 24px;
+  height: 100%;
+  min-height: 0;
 }
 
 .article[id] {
@@ -26,11 +26,10 @@
   max-width: 450px;
   flex-shrink: 0;
   margin-right: auto;
-  position: sticky;
-  top: 50px;
-  align-self: flex-start;
+  align-self: stretch;
+  min-height: 0;
+  overflow: clip;
   z-index: 1;
-  background-color: rgba(255, 255, 255, 0.85);
 }
 
 .titleRow {
@@ -98,7 +97,6 @@
   line-height: 1.8;
   width: 100%;
   word-break: keep-all;
-  /* min-width: 50%; */
   margin-right: auto;
 
   .paragraph,
@@ -252,10 +250,12 @@
 .contentContainer {
   gap: 10px;
   min-width: 45%;
+  min-height: 0;
+  flex: 1;
+  overflow: clip;
+  margin-top: -50px;
+  padding-top: 50px;
 }
-
-
-
 
 @media (max-width: 780px) {
   .article {
@@ -263,31 +263,33 @@
     margin-left: auto;
     display: block;
     padding-right: 0px;
+    height: auto;
   }
 
   .header {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     margin-right: 0px;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 0 5px;
     width: 100%;
     color: #434343;
-    position: static;
+    overflow: visible;
+    position: sticky;
+    top: 40px;
+    z-index: 1;
   }
 
   .titleRow {
     align-items: flex-start;
     gap: 5px;
-    margin-bottom: 10px;
     font-size: 1.35rem;
     margin-left: 0px;
     margin-right: 0px;
-    /* padding-left: 40px; */
+    margin-bottom: 5px;
   }
 
   .title {
     font-size: 1.5rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.2;
     word-break: keep-all;
     vertical-align: top;
@@ -309,6 +311,7 @@
     font-size: 1.35rem;
     font-weight: 400;
     margin-right: unset;
+    mix-blend-mode: luminosity;
   }
 
   :global(html[lang="en"]) .metaField {
@@ -320,20 +323,23 @@
     line-height: 1.45;
     margin-left: 50px;
     margin-right: unset;
-  }
-
-
-  .contentContainer {
-    width: 100%;
-    display: block;
+    margin-top: 6px;
+    mix-blend-mode: luminosity;
   }
 
   .contentRow {
     margin-top: 20px;
+    mix-blend-mode: luminosity;
+  }
+
+  .contentContainer {
+    width: 100%;
+    display: block;
+    overflow: visible;
   }
 
   .editorContent {
-    width: calc(100% - 50px);
+    width: 100%;
     font-size: 1.28rem;
     min-width: unset;
   }

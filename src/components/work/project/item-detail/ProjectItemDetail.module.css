@@ -240,6 +240,10 @@
 
 
 @media (max-width: 780px) {
+  .article {
+    padding-left: 0px;
+  }
+
   .header {
     padding-left: 0px;
     padding-right: 0px;
@@ -252,7 +256,7 @@
   }
 
   .titleLine {
-    font-size: 1.65rem;
+    font-size: 1.8rem;
     font-weight: 500;
     line-height: 1.2;
   }
