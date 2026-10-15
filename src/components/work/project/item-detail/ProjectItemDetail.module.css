@@ -242,11 +242,12 @@
 @media (max-width: 780px) {
   .article {
     padding-left: 0px;
+    padding-right: 0px;
   }
 
   .header {
-    padding-left: 0px;
-    padding-right: 0px;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-right: 0px;
     margin-bottom: 30px;
   }
@@ -284,6 +285,8 @@
     flex-direction: column;
     gap: 40px;
     margin-top: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
   }
 
   .editorContent {

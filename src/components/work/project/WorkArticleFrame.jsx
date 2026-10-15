@@ -15,6 +15,8 @@ export default function WorkArticleFrame({ id, children }) {
     const galleryPane = frame?.querySelector("[data-work-gallery]");
     const gallery = galleryPane?.firstElementChild;
 
+    const header = frame?.querySelector("header");
+
     if (!frame || !runway || !galleryPane || !gallery) {
       return undefined;
     }
@@ -25,20 +27,22 @@ export default function WorkArticleFrame({ id, children }) {
     const apply = () => {
       frameId = 0;
 
-      if (mediaQuery.matches) {
-        runway.style.height = "";
-        gallery.style.transform = "";
-        return;
+      const frameHeight = frame.offsetHeight;
+      const mobile = mediaQuery.matches;
+      const headerHeight = mobile && header ? header.offsetHeight : 0;
+      const nextPadding = headerHeight > 0 ? `${headerHeight}px` : "";
+
+      if (galleryPane.style.paddingTop !== nextPadding) {
+        galleryPane.style.paddingTop = nextPadding;
       }
 
-      const frameHeight = frame.offsetHeight;
       const visibleHeight = galleryPane.clientHeight;
 
       if (!frameHeight || !visibleHeight) {
         return;
       }
 
-      const overflow = Math.max(0, gallery.offsetHeight - visibleHeight);
+      const overflow = Math.max(0, headerHeight + gallery.offsetHeight - visibleHeight);
       const nextHeight = `${overflow}px`;
 
       if (runway.style.height !== nextHeight) {
@@ -73,6 +77,10 @@ export default function WorkArticleFrame({ id, children }) {
     const resizeObserver = new ResizeObserver(schedule);
     resizeObserver.observe(gallery);
     resizeObserver.observe(galleryPane);
+
+    if (header) {
+      resizeObserver.observe(header);
+    }
 
     return () => {
       window.removeEventListener("scroll", schedule);

@@ -98,8 +98,9 @@
 @media (max-width: 780px) {
   .gallery {
     width: 100vw;
-    margin-left: -14px;
-    padding-left: 14px;
+    padding-left: 10px;
+    /* margin-left: -14px;
+    padding-left: 14px; */
   }
 
   .track {
