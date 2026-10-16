@@ -38,10 +38,9 @@
 
 .year {
   font-family: var(--font-barlow), sans-serif;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 400;
   padding-left: 2px;
-  /* margin-bottom: -4px; */
 }
 
 .metaValue {
@@ -62,7 +61,7 @@
 .editorContent {
   display: flex;
   flex-direction: column;
-  max-width: 650px;
+  max-width: 630px;
   width: 43%;
   flex-grow: 1;
   font-size: 1.65rem;
@@ -73,7 +72,8 @@
   margin-right: auto;
   margin-left: auto;
   padding: 0;
-  font-family: var(--font-inter), "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+  font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
+  position: relative;
 
   & .paragraph,
   & :global(.ce-paragraph) {
@@ -92,8 +92,14 @@
 
   & .editorHeader4,
   & :global(.ce-header[data-level="4"]) {
-    font-size: 1.4rem;
-    font-weight: 400;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: right;
+    font-family: var(--font-gothic-a1), sans-serif;
+    transform: rotate(90deg);
+    transform-origin: right bottom;
+    padding-bottom: 50px;
+    padding-right: 70px;
   }
 
   & :global(.ce-block + .ce-block) {
@@ -319,7 +325,7 @@
     margin-right: 0;
     margin-left: auto;
     padding-right: 0;
-    padding-top: 50px;
+    padding-top: 0px;
     font-size: 1.25rem;
     gap: 50px;
     word-break: keep-all;

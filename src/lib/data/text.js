@@ -210,7 +210,7 @@ const fetchTextsByProjectAndWorkIds = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["texts-by-project-and-work-ids"],
+    key: ["texts-by-project-and-work-ids", "with-relations"],
     tags: [DATA_CACHE_TAG.text],
   },
 );

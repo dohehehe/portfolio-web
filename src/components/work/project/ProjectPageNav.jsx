@@ -7,7 +7,7 @@ import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
 import styles from "@/components/work/project/ProjectPageNav.module.css";
 
 const SCROLL_OFFSET = 64;
-const NAV_HIDE_TOP_ZONE = 200;
+const NAV_HIDE_TOP_ZONE = 0;
 const SCROLL_DIRECTION_THRESHOLD = 8;
 
 function NavItem({ id, title, year, nested = false, active, onNavigate }) {

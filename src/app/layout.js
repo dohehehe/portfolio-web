@@ -1,7 +1,7 @@
 import { headers } from "next/headers";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { archivoNarrow, gothicA1, inter } from "./fonts";
+import { archivoNarrow, gothicA1 } from "./fonts";
 import "@/components/fonts/eulyoo1945.css";
 import "./globals.css";
 import { ImageLightboxProvider } from "@/components/image-lightbox";
@@ -35,7 +35,7 @@ export default async function RootLayout({ children }) {
   return (
     <html
       lang={locale}
-      className={`${gothicA1.variable} ${inter.variable} ${archivoNarrow.variable}`}
+      className={`${gothicA1.variable} ${archivoNarrow.variable}`}
     >
       <body>
         <HtmlLocaleSync />

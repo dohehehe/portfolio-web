@@ -2,7 +2,6 @@ import {
   Archivo_Narrow,
   Barlow,
   Gothic_A1,
-  Inter,
   Kapakana,
 } from "next/font/google";
 
@@ -19,12 +18,6 @@ export const gothicA1 = Gothic_A1({
   display: "swap",
 });
 
-export const inter = Inter({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500", "600", "700", "800", "900"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const barlow = Barlow({
   subsets: ["latin"],
