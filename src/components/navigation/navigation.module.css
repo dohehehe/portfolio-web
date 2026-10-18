@@ -73,6 +73,7 @@
   font-weight: 400;
   z-index: 1;
   color: #3c3c3c;
+  background-color: white;
 }
 
 .navigationLink:hover,

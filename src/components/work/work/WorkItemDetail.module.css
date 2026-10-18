@@ -247,6 +247,30 @@
   margin: 0;
 }
 
+.textLink {
+  display: block;
+  color: inherit;
+}
+
+.textRow {
+  color: #232323;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  text-align: left;
+  display: flex;
+  gap: 10px;
+}
+
+.textMeta {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: auto;
+}
+
+.textTitle {
+  margin: 0;
+}
+
 .contentContainer {
   gap: 10px;
   min-width: 45%;
@@ -262,20 +286,14 @@
     width: 100%;
     margin-left: auto;
     display: block;
-    padding-right: 0px;
+    padding: 0 15px;
     height: auto;
+    color: #434343;
   }
 
   .header {
-    /* margin-bottom: 10px; */
-    margin-right: 0px;
-    padding: 0 15px;
-    width: 100%;
-    color: #434343;
+    display: contents;
     overflow: visible;
-    position: sticky;
-    top: 40px;
-    z-index: 1;
   }
 
   .titleRow {
@@ -285,6 +303,10 @@
     margin-left: 0px;
     margin-right: 0px;
     margin-bottom: 5px;
+    position: sticky;
+    top: 30px;
+    z-index: 1;
+    text-shadow: 0 0 2px white;
   }
 
   .title {
@@ -333,9 +355,13 @@
   }
 
   .contentContainer {
-    width: 100%;
+    width: calc(100vw - 20px);
     display: block;
     overflow: visible;
+    margin-top: 60px;
+    padding-top: 0px;
+    margin-left: 5px;
+    margin-right: -5px;
   }
 
   .editorContent {
@@ -363,6 +389,10 @@
     flex-direction: column;
     gap: 7px;
     word-break: keep-all;
+  }
+
+  .textRow {
+    font-size: 1.35rem;
   }
 
   .eventItem {

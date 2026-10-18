@@ -81,7 +81,7 @@ export const EVENT_WORK_LINK_SELECT = `
 `;
 
 export const TEXT_COLUMNS =
-  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,type_id";
+  "id,created_at,year,title_ko,title_en,writer_ko,writer_en,project_id,event_id,work_id,type_id";
 
 const TEXT_TYPE_EMBED = "text_type:type_id (id,name,slug)";
 

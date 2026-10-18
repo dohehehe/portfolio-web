@@ -19,22 +19,25 @@ export default function ProjectTextList({
             return null;
           }
 
-          const content = (
-            <>
-              <div className={styles.eventItemRow}>
-                - {item.title ? <span className={styles.eventTitle}>{item.title}, </span> : null}
-                {item.writer ? <span className={styles.eventMeta}>{item.writer}</span> : null}
-              </div>
-            </>
-          );
-
           return (
             <li key={item.id}>
               <Link
                 href={localizedPath(`/text/${item.id}`, locale)}
-                className={`${styles.eventItem} ${styles.eventLink}`.trim()}
+                className={styles.textLink}
               >
-                {content}
+                <span className={styles.textRow}>
+                  {item.type?.name ? (
+                    <span className={styles.textMeta}>
+                      {item.writer || !item.title ? " " : null}
+                      {item.type.name}
+                    </span>
+                  ) : null}
+                  {item.title ? (
+                    <span className={styles.textTitle}>
+                      {item.title}, {item.writer}
+                    </span>
+                  ) : null}
+                </span>
               </Link>
             </li>
           );
