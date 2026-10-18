@@ -120,7 +120,7 @@
 .creditRow {
   display: flex;
   flex-direction: column;
-  gap: 58px;
+  gap: 48px;
   width: 30%;
   max-width: 400px;
   margin-left: auto;
@@ -143,7 +143,7 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
 .eventItem {
@@ -163,18 +163,18 @@
 }
 
 .eventYear {
-  font-family: var(--font-barlow), sans-serif;
-  font-size: 1.2rem;
+  /* font-family: var(--font-gothic-a1), sans-serif; */
+  font-size: 1.1rem;
   flex-shrink: 0;
-  display: inline-block;
-  width: 31px;
-  font-weight: 500;
-  margin-top: -10px;
+  display: block;
+  width: 30px;
+  font-weight: 600;
+  margin-top: 0.2px;
 }
 
 :global(html[lang="en"]) .eventYear {
   font-weight: 500;
-  font-size: 1.3rem;
+  /* font-size: 1.3rem; */
 }
 
 
@@ -197,7 +197,7 @@
 
 .textRow {
   color: #232323;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   line-height: 1.4;
   text-align: left;
   display: flex;
@@ -205,9 +205,12 @@
 }
 
 .textMeta {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 0.82rem;
+  font-weight: 800;
   margin-bottom: auto;
+  width: 28px;
+  margin-top: 0.2px;
+  /* text-align: right; */
 }
 
 .textTitle {
@@ -316,7 +319,7 @@
 
   .contentRow {
     flex-direction: column;
-    gap: 30px;
+    gap: 40px;
     margin-top: 40px;
     padding-left: 10px;
     padding-right: 10px;
@@ -330,13 +333,31 @@
     line-height: 1.7;
     margin-left: 0;
     min-width: unset;
-    /* text-align: left; */
+    position: relative;
+    text-align: left;
+    padding-left: 11px;
 
     & .paragraph {
       width: 100%;
       max-width: none;
       margin: 0 auto;
       margin-bottom: 25px;
+    }
+
+    & .editorHeader4,
+    & :global(.ce-header[data-level="4"]) {
+      font-size: 1rem;
+      font-weight: 600;
+      font-family: var(--font-gothic-a1), sans-serif;
+      text-align: right;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
+      position: relative;
+      top: 6px;
+      right: calc(100% + 7px);
+      width: 100%;
+      margin-top: 0px;
+      color: #494949;
     }
   }
 
