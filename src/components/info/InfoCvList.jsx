@@ -51,29 +51,31 @@ function CvItem({ item, locale }) {
 
   if (item.eventId) {
     return (
-      <li className={styles.cvItem}>
+
         <Link
           href={localizedPath(`/event/${item.eventId}`, locale)}
           className={styles.cvLink}
         >
+                <li className={styles.cvItem}>
           {content}
+          </li>
         </Link>
-      </li>
+
     );
   }
 
   if (item.linkUrl) {
     return (
-      <li className={styles.cvItem}>
         <a
           href={item.linkUrl}
-          className={styles.cvLink}
           target="_blank"
           rel="noopener noreferrer"
         >
+          <li className={styles.cvItem}>
           {content}
+          </li>
         </a>
-      </li>
+
     );
   }
 

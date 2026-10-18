@@ -99,10 +99,6 @@
     text-align: center;
     margin-top: 20px;
     font-family: var(--font-gothic-a1), sans-serif;
-    /* transform: rotate(90deg);
-    transform-origin: right bottom;
-    padding-bottom: 50px;
-    padding-right: 70px; */
   }
 
   & :global(.ce-block + .ce-block) {
@@ -337,6 +333,7 @@
     text-align: left;
     padding-left: 11px;
 
+
     & .paragraph {
       width: 100%;
       max-width: none;
@@ -351,12 +348,11 @@
       font-family: var(--font-gothic-a1), sans-serif;
       text-align: right;
       transform: rotate(-90deg);
-      transform-origin: right bottom;
-      position: relative;
-      top: 6px;
-      right: calc(100% + 7px);
+      transform-origin: left top;
       width: 100%;
-      margin-top: 0px;
+      position: absolute;
+      top: calc(100vw - 34px);
+      left: -13px;
       color: #494949;
     }
   }
