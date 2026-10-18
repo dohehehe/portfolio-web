@@ -7,8 +7,12 @@ import { getSectionHash, scrollToSection } from "@/lib/scroll/scrollToSection";
 import styles from "@/components/work/project/ProjectPageNav.module.css";
 
 const SCROLL_OFFSET = 64;
-const NAV_HIDE_TOP_ZONE = 0;
+const NAV_HIDE_TOP_VH = 200;
 const SCROLL_DIRECTION_THRESHOLD = 8;
+
+function getNavHideTopZone() {
+  return (window.innerHeight * NAV_HIDE_TOP_VH) / 100;
+}
 
 function NavItem({ id, title, year, nested = false, active, onNavigate }) {
   return (
@@ -62,7 +66,7 @@ export default function ProjectPageNav({ project, works, locale }) {
       const currentScrollY = window.scrollY;
       const delta = currentScrollY - lastScrollYRef.current;
 
-      if (currentScrollY <= NAV_HIDE_TOP_ZONE) {
+      if (currentScrollY <= getNavHideTopZone()) {
         setIsVisible(false);
       } else if (delta > SCROLL_DIRECTION_THRESHOLD) {
         setIsVisible(false);
