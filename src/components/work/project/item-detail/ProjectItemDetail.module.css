@@ -54,8 +54,10 @@
 .contentRow {
   display: flex;
   justify-content: space-between;
-  gap: 60px;
+  gap: 100px;
   margin-top: 85px;
+  position: relative;
+  padding-right: 30px;
 }
 
 .editorContent {
@@ -69,7 +71,7 @@
   word-break: keep-all;
   line-height: 1.76;
   color: #2f2f2f;
-  margin-right: auto;
+  /* margin-right: auto; */
   margin-left: auto;
   padding: 0;
   font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
@@ -94,12 +96,13 @@
   & :global(.ce-header[data-level="4"]) {
     font-size: 1rem;
     font-weight: 600;
-    text-align: right;
+    text-align: center;
+    margin-top: 20px;
     font-family: var(--font-gothic-a1), sans-serif;
-    transform: rotate(90deg);
+    /* transform: rotate(90deg);
     transform-origin: right bottom;
     padding-bottom: 50px;
-    padding-right: 70px;
+    padding-right: 70px; */
   }
 
   & :global(.ce-block + .ce-block) {
@@ -119,9 +122,9 @@
   flex-direction: column;
   gap: 58px;
   width: 30%;
-  max-width: 470px;
-  padding-right: 40px;
-  font-size: 1.25rem;
+  max-width: 400px;
+  margin-left: auto;
+  font-size: 1.2rem;
   /* box-shadow: inset 0 0 10px 10px red; */
 }
 
@@ -146,7 +149,7 @@
 .eventItem {
   display: flex;
   align-items: flex-start;
-  gap: 14px;
+  gap: 10px;
   line-height: 1.4;
 }
 
@@ -161,12 +164,12 @@
 
 .eventYear {
   font-family: var(--font-barlow), sans-serif;
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   flex-shrink: 0;
   display: inline-block;
   width: 31px;
-  font-weight: 400;
-  margin-top: -1.5px;
+  font-weight: 500;
+  margin-top: -10px;
 }
 
 :global(html[lang="en"]) .eventYear {
@@ -184,6 +187,30 @@
 }
 
 .eventMeta {
+  margin: 0;
+}
+
+.textLink {
+  display: block;
+  color: inherit;
+}
+
+.textRow {
+  color: #232323;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  text-align: left;
+  display: flex;
+  gap: 10px;
+}
+
+.textMeta {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: auto;
+}
+
+.textTitle {
   margin: 0;
 }
 
@@ -289,7 +316,7 @@
 
   .contentRow {
     flex-direction: column;
-    gap: 40px;
+    gap: 0px;
     margin-top: 40px;
     padding-left: 10px;
     padding-right: 10px;
@@ -320,29 +347,34 @@
 
 
   .creditRow {
-    width: 100%;
+    width: 70%;
     max-width: none;
     margin-right: 0;
-    margin-left: auto;
+    margin-left: 0;
     padding-right: 0;
     padding-top: 0px;
     font-size: 1.25rem;
     gap: 50px;
     word-break: keep-all;
+    left: 80%;
+    transform: translateX(-50%) rotate(10deg);
+    position: relative;
+    max-height: 120vw;
+    overflow-y: scroll;
+    margin-top: -20px;
+    /* box-shadow: inset 0 0 10px 10px red; */
   }
 
   :global(html[lang="en"]) .creditRow {
     font-size: 1.23rem;
   }
 
-  .eventContent {
-    width: 75%;
-    order: 2;
-  }
+  .eventContent {}
 
-  .textContent {
-    width: 75%;
-    order: 1;
+  .textContent {}
+
+  .textRow {
+    font-size: 1.35rem;
   }
 
   .creditContent {

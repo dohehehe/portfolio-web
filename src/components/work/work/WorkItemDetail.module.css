@@ -247,6 +247,30 @@
   margin: 0;
 }
 
+.textLink {
+  display: block;
+  color: inherit;
+}
+
+.textRow {
+  color: #232323;
+  font-size: 1.3rem;
+  line-height: 1.4;
+  text-align: left;
+  display: flex;
+  gap: 10px;
+}
+
+.textMeta {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: auto;
+}
+
+.textTitle {
+  margin: 0;
+}
+
 .contentContainer {
   gap: 10px;
   min-width: 45%;
@@ -365,6 +389,10 @@
     flex-direction: column;
     gap: 7px;
     word-break: keep-all;
+  }
+
+  .textRow {
+    font-size: 1.35rem;
   }
 
   .eventItem {

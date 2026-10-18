@@ -119,7 +119,7 @@ const fetchTextRecordById = createCachedQuery(
 const fetchTextsByWorkId = createCachedQuery(
   async (workId) => {
     const supabase = createSupabaseServerClient();
-    let query = supabase.from("text").select(TEXT_COLUMNS).eq("work_id", workId);
+    let query = supabase.from("text").select(TEXT_WITH_TYPE_COLUMNS).eq("work_id", workId);
 
     query = applyPublicActiveFilter(query);
 
@@ -132,7 +132,7 @@ const fetchTextsByWorkId = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["texts-by-work-id"],
+    key: ["texts-by-work-id", "with-type"],
     tags: [DATA_CACHE_TAG.text],
   },
 );
@@ -142,7 +142,7 @@ const fetchTextsByProjectId = createCachedQuery(
     const supabase = createSupabaseServerClient();
     let query = supabase
       .from("text")
-      .select(TEXT_COLUMNS)
+      .select(TEXT_WITH_TYPE_COLUMNS)
       .eq("project_id", projectId);
 
     query = applyPublicActiveFilter(query);
@@ -156,7 +156,7 @@ const fetchTextsByProjectId = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["texts-by-project-id"],
+    key: ["texts-by-project-id", "with-type"],
     tags: [DATA_CACHE_TAG.text],
   },
 );
@@ -189,7 +189,7 @@ const fetchTextsByProjectAndWorkIds = createCachedQuery(
   async (projectId, workIdsKey) => {
     const supabase = createSupabaseServerClient();
     const workIds = workIdsKey ? workIdsKey.split(",") : [];
-    let query = supabase.from("text").select(TEXT_COLUMNS);
+    let query = supabase.from("text").select(TEXT_WITH_TYPE_COLUMNS);
 
     if (workIds.length > 0) {
       query = query.or(
@@ -210,7 +210,7 @@ const fetchTextsByProjectAndWorkIds = createCachedQuery(
     return data ?? [];
   },
   {
-    key: ["texts-by-project-and-work-ids", "with-relations"],
+    key: ["texts-by-project-and-work-ids", "with-relations-type"],
     tags: [DATA_CACHE_TAG.text],
   },
 );
