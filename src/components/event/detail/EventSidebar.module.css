@@ -37,8 +37,8 @@
   position: fixed;
   top: 0px;
   left: 0;
-  padding-top: calc(70px + var(--event-header-height, 80px));
-  padding-left: calc(52vw + 20px);
+  padding-top: calc(90px + var(--event-header-height, 80px));
+  padding-left: calc(52vw + 45px);
   display: flex;
   overflow-x: scroll;
   overflow-y: visible;
@@ -96,7 +96,7 @@
 .textBlock {
   padding-bottom: 50px;
   word-break: keep-all;
-  border-bottom: 0.7px dotted #181818;
+  border-bottom: 0.4px dotted #919191;
 }
 
 .textList {
@@ -182,7 +182,6 @@
 .fileItem {
   margin: 0;
   min-width: 0;
-  border: 0.2px solid #919191;
   width: 300px;
   flex-shrink: 0;
   height: auto;
@@ -195,6 +194,7 @@
   cursor: zoom-in;
   user-select: none;
   -webkit-user-drag: none;
+  border: 0.2px solid #919191;
 }
 
 @media (max-width: 780px) {
@@ -245,7 +245,8 @@
 
   .textBlock {
     /* margin-left: 50px; */
-    margin-bottom: 30px;
+    /* margin-bottom: 30px; */
+    padding-bottom: 60px;
   }
 
   .textRow {

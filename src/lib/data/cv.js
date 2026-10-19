@@ -83,6 +83,12 @@ function isWorkshopOrTeachingType(type) {
   );
 }
 
+function isStudyType(type) {
+  const haystack = getTypeHaystack(type);
+
+  return haystack.includes("학습") || /\bstudy\b/.test(haystack);
+}
+
 function shouldEmphasizeCvTitle(type) {
   return Boolean(getExhibitionKind(type) || isPerformanceOrScreeningType(type));
 }
@@ -494,6 +500,7 @@ export async function getCvsGroupedByType(locale = DEFAULT_LOCALE) {
   );
   const insertedMergeIds = new Set();
   const groups = [];
+  const studyGroups = [];
 
   for (const type of types) {
     if (mergedTypeIds.has(type.id)) {
@@ -519,11 +526,18 @@ export async function getCvsGroupedByType(locale = DEFAULT_LOCALE) {
       continue;
     }
 
-    groups.push({
+    const group = {
       id: type.id,
       name: type.name,
       items,
-    });
+    };
+
+    if (isStudyType(type)) {
+      studyGroups.push(group);
+      continue;
+    }
+
+    groups.push(group);
   }
 
   const uncategorized = byTypeId.get("__none__") ?? [];
@@ -535,6 +549,8 @@ export async function getCvsGroupedByType(locale = DEFAULT_LOCALE) {
       items: uncategorized,
     });
   }
+
+  groups.push(...studyGroups);
 
   return groups;
 }
