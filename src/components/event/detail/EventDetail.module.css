@@ -52,7 +52,7 @@ a :hover {
 .eventGallery {
   width: 49vw;
   flex-shrink: 0;
-  margin-top: 30px;
+  margin-top: 50px;
   margin-left: 20px;
   position: relative;
   /* z-index: 1; */
@@ -150,6 +150,7 @@ a :hover {
 
     width: calc(100vw - 50px);
     margin-left: 0;
+    margin-top: 30px;
   }
 
   .item {
