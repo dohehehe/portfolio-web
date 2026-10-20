@@ -170,7 +170,7 @@
     text-align: left;
     width: 32px;
     font-weight: 600;
-    margin-top: 1.23px;
+    margin-top: 0.5px;
   }
 
   :global(html[lang="en"]) .cvBody {
