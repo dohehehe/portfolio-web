@@ -1,6 +1,7 @@
 import { getSiteDescription } from "@/lib/data/info";
 import { buildRootPageMetadata } from "@/lib/locale/metadata";
 import Live from "@/components/live/Live";
+import HomeImage from "@/components/home/homeImage";
 
 export async function generateMetadata({ params }) {
   const { locale } = await params;
@@ -14,6 +15,7 @@ export default async function Home({ params }) {
   return (
     <>
       <Live locale={locale} />
+      <HomeImage locale={locale} />
     </>
   );
 }
