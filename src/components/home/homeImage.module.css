@@ -15,7 +15,7 @@
   position: fixed;
   right: -20px;
   bottom: -20px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   overflow-x: hidden;
@@ -58,10 +58,10 @@
 @media (max-width: 780px) {
   .imageContainer {
     max-width: unset;
-    width: 100vw;
+    width: 133vw;
     right: unset;
     left: 0px;
-    bottom: 10px;
+    bottom: 0px;
     height: auto;
     display: flex;
     flex-direction: row;
@@ -72,7 +72,8 @@
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     animation: none;
-    gap: 10px;
+    gap: 0px;
+    /* box-shadow: inset 0 0 10px 10px pink; */
   }
 
   .imageContainer::-webkit-scrollbar {
@@ -83,8 +84,9 @@
   .imageLinkActive {
     display: flex;
     flex-shrink: 0;
-    width: 100vw;
-    padding: 0 10px;
+    max-width: 100vw;
+    padding: 10px 10px;
+    width: unset;
     height: auto;
     scroll-snap-align: start;
     margin-top: auto;
@@ -95,5 +97,8 @@
     width: 100%;
     object-fit: contain;
     margin-left: unset;
+    max-height: 400px;
+    padding-top: 10px;
+    animation: none;
   }
 }

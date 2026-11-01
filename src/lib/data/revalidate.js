@@ -32,6 +32,7 @@ const TABLE_LIST_PATHS = {
   work: ["/work", "/"],
   info: ["/info"],
   live: ["/"],
+  gallery: ["/"],
   cv: ["/info"],
   cv_type: ["/info"],
 };

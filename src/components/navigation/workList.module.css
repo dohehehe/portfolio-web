@@ -39,7 +39,7 @@
 } */
 
 .listHome .item {
-  animation: blur 10s ease-in-out infinite alternate;
+  animation: blur 7s ease-in-out infinite;
 }
 
 .listHome .item:hover {
@@ -49,15 +49,15 @@
 
 @keyframes blur {
   100% {
+    filter: blur(0.2px);
+  }
+
+  40% {
     filter: blur(4px);
   }
 
-  70% {
-    filter: blur(1px);
-  }
-
   0% {
-    filter: blur(0.3px);
+    filter: blur(0.2px);
   }
 }
 
