@@ -140,9 +140,9 @@
 
   .paragraph,
   .caption {
-    font-size: 1.55rem;
+    font-size: 1.52rem;
     font-family: "Eulyoo1945", var(--font-gothic-a1), sans-serif;
-    line-height: 1.88;
+    line-height: 1.7;
   }
 
   .editorHeader1 {
