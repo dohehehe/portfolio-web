@@ -18,6 +18,7 @@ export const DATA_CACHE_TAG = {
   text_type: "data:text_type",
   link_cv_item: "data:link_cv_item",
   navigation: "data:navigation",
+  gallery: "data:gallery",
 };
 
 /**
@@ -25,7 +26,10 @@ export const DATA_CACHE_TAG = {
  * - unstable_cache: reuse results across requests (ISR-style)
  * - React cache: dedupe calls within a single render pass
  */
-export function createCachedQuery(fetcher, { key, tags, revalidate = DATA_REVALIDATE_SECONDS }) {
+export function createCachedQuery(
+  fetcher,
+  { key, tags, revalidate = DATA_REVALIDATE_SECONDS }
+) {
   const crossRequestCache = unstable_cache(fetcher, key, { tags, revalidate });
   return cache(crossRequestCache);
 }
