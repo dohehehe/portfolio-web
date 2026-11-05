@@ -100,4 +100,8 @@
     max-width: unset;
   }
 
+  .listHome .item {
+    animation: none;
+  }
+
 }
