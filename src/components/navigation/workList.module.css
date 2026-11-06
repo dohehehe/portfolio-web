@@ -44,20 +44,24 @@
 
 .listHome .item:hover {
   animation: none;
-  filter: blur(0.2px);
+  filter: blur(0.1px);
 }
 
 @keyframes blur {
   100% {
-    filter: blur(0.2px);
+    filter: blur(0.1px);
   }
 
-  40% {
+  60% {
     filter: blur(4px);
   }
 
+  20% {
+    filter: blur(0.1px);
+  }
+
   0% {
-    filter: blur(0.2px);
+    filter: blur(0.1px);
   }
 }
 

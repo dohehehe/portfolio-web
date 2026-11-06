@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import HomeImageLink from "@/components/home/homeImageLink";
 import styles from "./homeImage.module.css";
 
+const AUTO_HOVER_DELAY_MS = 3000;
 const AUTO_HOVER_MS = 5000;
 
 export default function HomeImageList({ slides }) {
@@ -20,10 +21,17 @@ export default function HomeImageList({ slides }) {
       return undefined;
     }
 
-    setActiveKey(slide.key);
-    const timer = window.setTimeout(() => setActiveKey(null), AUTO_HOVER_MS);
+    const startTimer = window.setTimeout(() => {
+      setActiveKey(slide.key);
+    }, AUTO_HOVER_DELAY_MS);
+    const endTimer = window.setTimeout(() => {
+      setActiveKey(null);
+    }, AUTO_HOVER_DELAY_MS + AUTO_HOVER_MS);
 
-    return () => window.clearTimeout(timer);
+    return () => {
+      window.clearTimeout(startTimer);
+      window.clearTimeout(endTimer);
+    };
   }, [slides]);
 
   return (
