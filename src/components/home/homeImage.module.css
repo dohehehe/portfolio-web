@@ -152,7 +152,7 @@
     margin-right: 0;
     scroll-snap-align: start;
     margin-top: auto;
-    animation: blur 7s ease-in-out infinite;
+    /* animation: blur 7s ease-in-out infinite reverse; */
   }
 
   .imageFrame,
