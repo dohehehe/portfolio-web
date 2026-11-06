@@ -1,4 +1,4 @@
-import HomeImageFrame from "@/components/home/homeImageFrame";
+import HomeImageList from "@/components/home/homeImageList";
 import { getHomeGallerySlides } from "@/lib/data/gallery";
 
 export default async function HomeImage({ locale }) {
@@ -8,5 +8,7 @@ export default async function HomeImage({ locale }) {
     return null;
   }
 
-  return <HomeImageFrame slides={slides} />;
+  return (
+    <HomeImageList slides={slides} />
+  );
 }

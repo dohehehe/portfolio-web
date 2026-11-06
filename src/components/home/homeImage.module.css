@@ -1,68 +1,124 @@
-@keyframes blur {
-  100% {
-    filter: blur(10px);
-  }
-
-  0% {
-    filter: blur(0.3px);
-  }
+.imageContainer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: safe flex-end;
+  height: 100dvh;
+  width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+  z-index: -1;
+  scrollbar-width: none;
 }
 
-.imageContainer {
-  /* width: calc(100vw - 430px); */
-  max-width: calc(100vw - 500px);
-  height: calc(100vh - 12px);
-  position: fixed;
-  right: -20px;
-  bottom: -20px;
+.imageContainer::-webkit-scrollbar {
   display: none;
-  align-items: center;
-  justify-content: center;
-  overflow-x: hidden;
-  /* overflow: hidden; */
-  /* box-shadow: inset 0 0 10px 10px pink; */
+}
+
+.imageLink {
+  display: flex;
+  flex-shrink: 0;
+  width: 40px;
+  min-height: 0;
+  position: relative;
+  transition:
+    width 5s ease-in-out,
+    padding-right 5s ease-in-out;
+}
+
+.imageLink:hover,
+.imageLinkActive {
+  width: 100vw;
+  padding-right: 40px;
   z-index: -1;
 }
 
-
-.imageLink {
-  display: none;
-  align-items: center;
-  justify-content: center;
+.imageFrame {
+  display: block;
   width: 100%;
-  height: 100%;
-  min-width: 0;
+  aspect-ratio: 1;
   min-height: 0;
+  overflow: hidden;
+  transition: aspect-ratio 5s ease-in-out;
 }
 
-.imageLinkActive {
-  display: flex;
+.imageLink:hover .imageFrame,
+.imageLinkActive .imageFrame {
+  aspect-ratio: var(--ratio, 1);
 }
 
 .image {
+  display: block;
   height: 100%;
-  width: auto;
-  max-width: none;
-  flex-shrink: 0;
+  width: 100%;
   object-fit: cover;
   object-position: center;
-  margin-left: auto;
-  animation: blur 6s ease-in-out infinite alternate;
 }
 
-.image:hover {
-  animation: none;
-  filter: blur(0.2px);
+.caption {
+  position: absolute;
+  width: calc(100vh - 80px);
+  left: calc(100vw - 22px);
+  bottom: 0px;
+  z-index: 1;
+  margin: 0;
+  padding: 0px 2px;
+  color: #1f1f1f;
+  font-size: 1rem;
+  line-height: 1.4;
+  text-align: left;
+  word-break: keep-all;
+  pointer-events: none;
+  transform: rotate(-90deg);
+  transform-origin: left bottom;
+  opacity: 0;
+  padding-left: 5px;
+  /* transition: all 5s ease-in-out; */
 }
+
+.imageLink:hover .caption,
+.imageLinkActive .caption {
+  opacity: 1;
+}
+
+.caption :is(i, em) {
+  font-style: italic;
+}
+
+
 
 @media (max-width: 780px) {
+
+  @keyframes blur {
+    100% {
+      filter: blur(0.1px);
+    }
+
+    60% {
+      filter: blur(4px);
+    }
+
+    20% {
+      filter: blur(0.1px);
+    }
+
+    0% {
+      filter: blur(0.1px);
+    }
+  }
+
+
   .imageContainer {
     max-width: unset;
-    width: 133vw;
+    width: 100vw;
     right: unset;
     left: 0px;
-    bottom: 0px;
+    bottom: -10px;
     height: auto;
+    max-height: none;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -81,24 +137,54 @@
   }
 
   .imageLink,
-  .imageLinkActive {
+  .imageLinkActive,
+  .imageLink:hover,
+  .imageLinkActive:hover {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-end;
     flex-shrink: 0;
-    max-width: 100vw;
-    padding: 10px 10px;
-    width: unset;
-    height: auto;
+    width: auto;
+    height: 400px;
+    padding: 20px 10px 20px;
+    aspect-ratio: auto;
+    margin-right: 0;
     scroll-snap-align: start;
     margin-top: auto;
+    /* animation: blur 7s ease-in-out infinite reverse; */
+  }
+
+  .imageFrame,
+  .imageLink:hover .imageFrame,
+  .imageLinkActive .imageFrame {
+    aspect-ratio: auto;
+    height: 100%;
+    overflow: visible;
   }
 
   .image {
-    height: auto;
-    width: 100%;
+    height: 100%;
+    width: auto;
     object-fit: contain;
     margin-left: unset;
     max-height: 400px;
-    padding-top: 10px;
+    padding-top: 0px;
     animation: none;
+  }
+
+
+
+  .caption {
+    position: static;
+    opacity: 1;
+    max-width: 100%;
+    padding: 2px 0 0;
+    background: transparent;
+    color: #c0c0c0;
+    transform: none;
+    left: 0;
+    text-align: center;
+    display: none;
   }
 }
