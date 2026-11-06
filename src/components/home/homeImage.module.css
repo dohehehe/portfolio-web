@@ -29,7 +29,8 @@
     padding-right 4s ease-in-out;
 }
 
-.imageLink:hover {
+.imageLink:hover,
+.imageLinkActive {
   width: 100vw;
   padding-right: 40px;
   z-index: -1;
@@ -44,7 +45,8 @@
   transition: aspect-ratio 4s ease-in-out;
 }
 
-.imageLink:hover .imageFrame {
+.imageLink:hover .imageFrame,
+.imageLinkActive .imageFrame {
   aspect-ratio: var(--ratio, 1);
 }
 
@@ -77,7 +79,8 @@
   /* transition: all 5s ease-in-out; */
 }
 
-.imageLink:hover .caption {
+.imageLink:hover .caption,
+.imageLinkActive .caption {
   opacity: 1;
 }
 
@@ -132,7 +135,8 @@
   }
 
   .imageFrame,
-  .imageLink:hover .imageFrame {
+  .imageLink:hover .imageFrame,
+  .imageLinkActive .imageFrame {
     aspect-ratio: auto;
     height: auto;
     overflow: visible;

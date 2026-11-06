@@ -13,7 +13,7 @@ function readRatio(image) {
   return image.naturalWidth / image.naturalHeight;
 }
 
-export default function HomeImageLink({ slide }) {
+export default function HomeImageLink({ slide, active = false }) {
   const imageRef = useRef(null);
   const [ratio, setRatio] = useState(1);
 
@@ -41,7 +41,7 @@ export default function HomeImageLink({ slide }) {
   return (
     <Link
       href={slide.href}
-      className={styles.imageLink}
+      className={active ? `${styles.imageLink} ${styles.imageLinkActive}` : styles.imageLink}
       style={{ "--ratio": ratio }}
     >
       <span className={styles.imageFrame}>
