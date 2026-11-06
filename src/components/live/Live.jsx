@@ -25,7 +25,7 @@ function formatDateRange(startAt, endAt, locale) {
   const end = formatDate(endAt, locale);
 
   if (start && end) {
-    return `${start} – ${end}`;
+    return `${start} ~ ${end}`;
   }
 
   return start || end || "";
@@ -102,7 +102,6 @@ export default async function Live({ locale }) {
 
   return (
     <ul className={`${kapakana.variable} ${styles.list}`}>
-      *
       {lives.map((item) => (
         <LiveItem key={item.id} item={item} locale={locale} />
       ))}

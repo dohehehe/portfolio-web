@@ -1,5 +1,6 @@
-import HomeImageFrame from "@/components/home/homeImageFrame";
+import HomeImageLink from "@/components/home/homeImageLink";
 import { getHomeGallerySlides } from "@/lib/data/gallery";
+import styles from "./homeImage.module.css";
 
 export default async function HomeImage({ locale }) {
   const slides = await getHomeGallerySlides(locale);
@@ -8,5 +9,11 @@ export default async function HomeImage({ locale }) {
     return null;
   }
 
-  return <HomeImageFrame slides={slides} />;
+  return (
+    <div className={styles.imageContainer}>
+      {slides.map((slide) => (
+        <HomeImageLink key={slide.key} slide={slide} />
+      ))}
+    </div>
+  );
 }
