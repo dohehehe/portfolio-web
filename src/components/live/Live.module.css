@@ -9,94 +9,44 @@
   display: flex;
   flex-direction: column;
   gap: 24px;
-  font-size: 1.6rem;
+  font-size: 2.4rem;
   color: #838383;
   font-weight: 300;
-  text-align: center;
-  transform: scale(0.9);
-  transform-origin: bottom center;
+  text-align: right;
+  color: #838383;
+  word-break: keep-all;
 }
 
 .item {
   margin: 0;
+  transform: rotate(-5deg);
+  width: 100%;
 }
 
-
-.ongoing,
-.ongoing .date,
-.ongoing .body,
-.ongoing .title,
-.ongoing .space {
-  opacity: 1;
-
-}
-
-.ongoing .date {
-  font-weight: 500;
-  text-stroke: 0.5px black;
-  -webkit-text-stroke: 0.5px black;
-  font-size: 3.8rem;
-  color: limegreen;
-}
-
-
-.ongoing .body {
-  font-weight: 400;
-  margin-bottom: 10px;
-  color: rgb(58, 58, 58);
-  text-shadow: 0px 0px 1px limegreen;
-}
-
-
-
-html[lang="en"] .ongoing .body {
-  font-weight: 300;
-}
 
 .link,
 .row {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   color: inherit;
   text-decoration: none;
 }
 
-.link:hover .body {
-  text-decoration: underline 2px dotted currentColor;
-  text-underline-offset: 2px;
+.link:hover {
+  color: black;
 }
 
 .date {
   flex-shrink: 0;
   font-family: var(--font-kapakana), "Kapakana", cursive;
   font-optical-sizing: auto;
-  font-size: 2.8rem;
+  font-size: 7rem;
   font-weight: 300;
   font-style: normal;
-  color: #838383;
   -webkit-text-stroke: 0.8px #838383;
 }
 
-html[lang="en"] .date {
-  -webkit-text-stroke: 0.6px #838383;
-}
-
-.body {
-  min-width: 0;
-  margin-top: -1rem;
-}
-
-html[lang="en"] .body {
-  font-size: 1.75rem;
-  font-weight: 200;
-  margin-top: -1.1rem;
-}
-
-
-.titleEn {
-  font-style: italic;
-}
 
 .space {
   margin: 0;

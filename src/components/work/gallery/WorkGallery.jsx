@@ -287,7 +287,6 @@ export default function WorkGallery({ items }) {
                         width={meta?.width}
                         height={meta?.height}
                         draggable={false}
-                        loading={index === 0 ? "eager" : "lazy"}
                         onClick={() => openImageLightbox({ items, index })}
                         onLoad={(event) => handleImageLoad(index, event.currentTarget)}
                       />
@@ -322,7 +321,6 @@ export default function WorkGallery({ items }) {
                 width={meta?.width}
                 height={meta?.height}
                 draggable={false}
-                loading={index === 0 ? "eager" : "lazy"}
                 onClick={() => openImageLightbox({ items, index })}
                 onLoad={(event) => handleImageLoad(index, event.currentTarget)}
               />

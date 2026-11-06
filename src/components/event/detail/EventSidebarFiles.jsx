@@ -32,7 +32,6 @@ export default function EventSidebarFiles({ items }) {
               width={item.width}
               height={item.height}
               draggable={false}
-              loading={index === 0 ? "eager" : "lazy"}
               onClick={() => openImageLightbox({ items, index })}
             />
           )}
