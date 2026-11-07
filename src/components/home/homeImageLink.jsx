@@ -13,8 +13,63 @@ function readRatio(image) {
   return image.naturalWidth / image.naturalHeight;
 }
 
-export default function HomeImageLink({ slide, active = false, nudgeScroll = false }) {
-  const linkRef = useRef(null);
+const SCROLL_NUDGE_MS = 5000;
+
+export function startScrollNudge(link) {
+  let frame = 0;
+  let cancelled = false;
+  const image = link.querySelector("img");
+
+  function cancel() {
+    cancelled = true;
+    window.cancelAnimationFrame(frame);
+    image?.removeEventListener("load", run);
+    link.removeEventListener("pointerdown", cancel);
+  }
+
+  function run() {
+    if (cancelled) {
+      return;
+    }
+
+    const max = link.scrollWidth - link.clientWidth;
+
+    if (max <= 1) {
+      if (image && !image.complete) {
+        image.addEventListener("load", run, { once: true });
+      }
+
+      return;
+    }
+
+    const start = performance.now();
+
+    function step(now) {
+      if (cancelled) {
+        return;
+      }
+
+      const progress = Math.min(1, (now - start) / SCROLL_NUDGE_MS);
+      link.scrollLeft = max * Math.sin(progress * Math.PI);
+
+      if (progress < 1) {
+        frame = window.requestAnimationFrame(step);
+        return;
+      }
+
+      link.scrollLeft = 0;
+    }
+
+    frame = window.requestAnimationFrame(step);
+  }
+
+  link.addEventListener("pointerdown", cancel);
+  run();
+
+  return cancel;
+}
+
+export default function HomeImageLink({ slide, active = false, linkRef }) {
   const imageRef = useRef(null);
   const [ratio, setRatio] = useState(1);
 
@@ -38,77 +93,6 @@ export default function HomeImageLink({ slide, active = false, nudgeScroll = fal
 
     return () => image.removeEventListener("load", syncRatio);
   }, [slide.src]);
-
-  useEffect(() => {
-    if (!nudgeScroll) {
-      return undefined;
-    }
-
-    const link = linkRef.current;
-    const mobile = window.matchMedia("(max-width: 780px)");
-    const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
-
-    if (!link || !mobile.matches || motion.matches) {
-      return undefined;
-    }
-
-    let frame = 0;
-    let cancelled = false;
-    const duration = 3000;
-
-    function cancel() {
-      cancelled = true;
-      window.cancelAnimationFrame(frame);
-      window.clearTimeout(timer);
-      imageRef.current?.removeEventListener("load", run);
-      link.removeEventListener("pointerdown", cancel);
-    }
-
-    function run() {
-      const max = link.scrollWidth - link.clientWidth;
-
-      if (cancelled) {
-        return;
-      }
-
-      if (max <= 1) {
-        const image = imageRef.current;
-
-        if (image && !image.complete) {
-          image.addEventListener("load", run, { once: true });
-        }
-
-        return;
-      }
-
-      const start = performance.now();
-
-      function step(now) {
-        if (cancelled) {
-          return;
-        }
-
-        const progress = Math.min(1, (now - start) / duration);
-        link.scrollLeft = max * Math.sin(progress * Math.PI);
-
-        if (progress < 1) {
-          frame = window.requestAnimationFrame(step);
-          return;
-        }
-
-        link.scrollLeft = 0;
-      }
-
-      frame = window.requestAnimationFrame(step);
-    }
-
-    const timer = window.setTimeout(run, 2000);
-    link.addEventListener("pointerdown", cancel);
-
-    return () => {
-      cancel();
-    };
-  }, [nudgeScroll]);
 
   return (
     <Link
