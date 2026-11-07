@@ -99,13 +99,24 @@
 
 @media (max-width: 780px) {
   .list {
-    padding-right: 11px;
-    width: calc(100vw);
+    padding-right: 10px;
+    width: calc(100vw - 50px);
     max-width: unset;
   }
 
   .listHome .item {
     /* animation: none; */
+  }
+
+  .listHome .link {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .year {
+    margin-top: -1.5px;
   }
 
 }
