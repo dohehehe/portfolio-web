@@ -1,3 +1,9 @@
+@property --home-image-ratio {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 1;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
