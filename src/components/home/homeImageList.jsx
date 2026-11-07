@@ -36,11 +36,12 @@ export default function HomeImageList({ slides }) {
 
   return (
     <div className={styles.imageContainer}>
-      {slides.map((slide) => (
+      {slides.map((slide, index) => (
         <HomeImageLink
           key={slide.key}
           slide={slide}
           active={slide.key === activeKey}
+          nudgeScroll={index === 0}
         />
       ))}
     </div>
