@@ -113,23 +113,25 @@
 
   .imageContainer {
     max-width: unset;
+    flex-direction: column;
     width: 100vw;
+    height: 100dvh;
     right: unset;
     left: 0px;
-    bottom: -10px;
-    height: auto;
+    bottom: 0px;
+    top: 0px;
+    bottom: unset;
     max-height: none;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
-    overflow-x: auto;
     overflow-anchor: none;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
     animation: none;
+    padding-top: 30px;
     gap: 0px;
-    /* box-shadow: inset 0 0 10px 10px pink; */
+    z-index: -1;
   }
 
   .imageContainer::-webkit-scrollbar {
@@ -145,35 +147,43 @@
     align-items: flex-start;
     justify-content: flex-end;
     flex-shrink: 0;
-    width: auto;
-    height: 400px;
-    padding: 20px 10px 20px;
+    margin-left: auto;
+    width: 50vw;
+    height: auto;
+    padding: 2px 0;
     aspect-ratio: auto;
     margin-right: 0;
     scroll-snap-align: start;
-    margin-top: auto;
-    /* animation: blur 7s ease-in-out infinite reverse; */
+    margin-top: unset;
+    transition: none;
+    overflow-x: scroll;
+    padding-left: calc(50vw - 50px);
+    scrollbar-width: none;
+    /* box-shadow: inset 0 0 10px 10px pink; */
+  }
+
+  .imageContainer::-webkit-scrollbar {
+    display: none;
   }
 
   .imageFrame,
   .imageLink:hover .imageFrame,
   .imageLinkActive .imageFrame {
     aspect-ratio: auto;
-    height: 100%;
+    height: auto;
+    width: 100px;
     overflow: visible;
   }
 
   .image {
-    height: 100%;
-    width: auto;
+    height: auto;
+    width: 100%;
     object-fit: contain;
     margin-left: unset;
-    max-height: 400px;
+    max-height: unset;
     padding-top: 0px;
     animation: none;
   }
-
-
 
   .caption {
     position: static;
