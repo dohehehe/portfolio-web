@@ -39,6 +39,7 @@ export default function WorkList({
   const locale = getLocaleFromPathname(pathname);
   const path = stripLocaleFromPathname(pathname);
   const isHome = path === "/";
+  const isWorkPage = path === "/work";
 
   const groupedProjects = useMemo(
     () => groupWorksByProject(initialProjects, initialWorks),
@@ -51,7 +52,7 @@ export default function WorkList({
 
   return (
     <ul
-      className={`${barlow.variable} ${styles.list} ${isHome ? styles.listHome : ""} ${className}`.trim()}
+      className={`${barlow.variable} ${styles.list} ${isHome ? styles.listHome : ""} ${isWorkPage ? styles.listWork : ""} ${className}`.trim()}
     >
       {groupedProjects.map((project) => (
         <li key={project.id} className={`${styles.projectGroup} ${styles.item}`}>

@@ -68,7 +68,8 @@
 .link {
   display: flex;
   gap: 10px;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   text-decoration: none;
 }
 
@@ -88,7 +89,8 @@
   font-size: 1.23rem;
   text-align: right;
   font-weight: 400;
-  padding-bottom: 1.5px;
+  margin-top: -3px;
+  /* padding-bottom: 1.5px; */
 }
 
 .status {
@@ -102,21 +104,25 @@
     padding-right: 10px;
     width: calc(100vw - 50px);
     max-width: unset;
+    font-size: 1.35rem;
+  }
+
+  .listWork {
+    width: calc(100vw - 5px);
+    margin-left: -10px;
+    padding-left: 10px;
+
   }
 
   .listHome .item {
     /* animation: none; */
   }
 
-  .listHome .link {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-start;
-  }
+  .listHome .link {}
 
   .year {
-    margin-top: -1.5px;
+    margin-top: -2px;
+    font-size: 1.3rem;
   }
 
 }
