@@ -54,7 +54,7 @@ function LiveItemContent({ item, locale }) {
       </span>
       <span className={styles.body}>
         {item.title ? (
-          <span className={titleClassName}>
+          <span className={styles.title}>
             {formatTitle(item.title, locale)}
             {item.space ? ", " : null}
           </span>

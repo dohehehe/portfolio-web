@@ -13,9 +13,12 @@ import { getNavigationTextListData } from "@/lib/data/text";
 import { DEFAULT_LOCALE } from "@/lib/locale/constants";
 import { LOCALE_HEADER } from "@/lib/locale/routing";
 import { SITE_NAME, SITE_URL } from "@/lib/site/constants";
+import { GoogleAnalytics } from '@next/third-parties/google';
+
 
 /** Keep in sync with DATA_REVALIDATE_SECONDS in @/lib/data/cache */
 export const revalidate = 3600;
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -50,6 +53,7 @@ export default async function RootLayout({ children }) {
         </ImageLightboxProvider>
         <Analytics />
         <SpeedInsights />
+        <GoogleAnalytics gaId={gaId} />
       </body>
     </html>
   );

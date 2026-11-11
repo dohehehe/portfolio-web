@@ -1,25 +1,23 @@
 .list {
   list-style: none;
   position: fixed;
-  width: 100vw;
-  bottom: 0;
-  right: 0;
-  padding: 20px 10px;
+  width: calc(100vw - 490px);
+  top: 50px;
+  left: calc(100vw - 490px);
+  padding: 10px;
   margin: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
-  font-size: 2.4rem;
-  color: #838383;
-  font-weight: 300;
-  text-align: right;
-  color: #838383;
+  font-size: 2.2rem;
+  font-weight: 200;
+  text-align: left;
+  color: #043aff;
   word-break: keep-all;
 }
 
 .item {
   margin: 0;
-  transform: rotate(-5deg);
   width: 100%;
 }
 
@@ -28,23 +26,28 @@
 .row {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: flex-start;
   color: inherit;
   text-decoration: none;
+  -webkit-text-stroke: 0.8px #a4a4a4;
+  transition: all 2s ease-in-out;
 }
 
 .link:hover {
-  color: black;
+  -webkit-text-stroke: 0.5px #a4a4a4;
+}
+
+.title {
+  font-weight: 200;
 }
 
 .date {
   flex-shrink: 0;
   font-family: var(--font-kapakana), "Kapakana", cursive;
   font-optical-sizing: auto;
-  font-size: 7rem;
+  font-size: 4rem;
   font-weight: 300;
   font-style: normal;
-  -webkit-text-stroke: 0.8px #838383;
 }
 
 
