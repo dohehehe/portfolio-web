@@ -125,12 +125,21 @@
     width: unset;
   }
 
+  .navigation {
+    justify-content: flex-start;
+    gap: 20px;
+  }
+
   .navigationSection {
     position: relative;
   }
 
   .HomeLink {
-    margin-right: 50px;
+    /* margin-right: 50px; */
+    position: fixed;
+    bottom: 4px;
+    background: transparent;
+    mix-blend-mode: overlay;
   }
 
 }
