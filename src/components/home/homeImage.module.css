@@ -19,7 +19,7 @@
 }
 
 .imageLink {
-  display: flex;
+  display: block;
   flex-shrink: 0;
   width: 40px;
   min-height: 0;
@@ -37,23 +37,29 @@
 }
 
 .imageFrame {
+  --home-image-ratio: 1;
+  position: relative;
   display: block;
+  flex: none;
+  box-sizing: content-box;
   width: 100%;
-  aspect-ratio: 1;
-  min-height: 0;
+  height: 0;
+  padding-bottom: calc(100% / var(--home-image-ratio));
   overflow: hidden;
-  transition: aspect-ratio 5s ease-in-out;
+  transition: --home-image-ratio 5s ease-in-out;
 }
 
 .imageLink:hover .imageFrame,
 .imageLinkActive .imageFrame {
-  aspect-ratio: var(--ratio, 1);
+  --home-image-ratio: var(--ratio, 1);
 }
 
 .image {
+  position: absolute;
+  inset: 0;
   display: block;
-  height: 100%;
   width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
 }
@@ -169,13 +175,18 @@
   .imageFrame,
   .imageLink:hover .imageFrame,
   .imageLinkActive .imageFrame {
-    aspect-ratio: auto;
+    --home-image-ratio: 1;
+    box-sizing: border-box;
     height: auto;
     width: 100px;
+    padding-bottom: 0;
     overflow: visible;
+    transition: none;
   }
 
   .image {
+    position: static;
+    inset: auto;
     height: auto;
     width: 100%;
     object-fit: contain;

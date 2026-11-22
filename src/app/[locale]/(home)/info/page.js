@@ -29,12 +29,14 @@ export default async function InfoPage({ params }) {
   return (
     <>
       <JsonLd data={buildPersonJsonLd(locale)} />
-      <section className={`${barlow.variable} ${styles.section}`}>
-        <InfoBio info={info} />
-      </section>
-      <section className={`${barlow.variable} ${styles.section}`}>
-        <InfoCvList groups={cvGroups} locale={locale} />
-      </section>
+      <div className={styles.container}>
+        <section className={`${barlow.variable} ${styles.section}`}>
+          <InfoBio info={info} />
+        </section>
+        <section className={`${barlow.variable} ${styles.section}`}>
+          <InfoCvList groups={cvGroups} locale={locale} />
+        </section>
+      </div>
     </>
   );
 }
