@@ -14,7 +14,7 @@ export default async function Home({ params }) {
 
   return (
     <>
-      <Live locale={locale} />
+      {/* <Live locale={locale} /> */}
       <HomeImage locale={locale} />
     </>
   );
