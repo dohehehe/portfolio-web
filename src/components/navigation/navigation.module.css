@@ -121,6 +121,14 @@
     padding: 2px 10px 0px;
   }
 
+  .headerHome {
+    mix-blend-mode: difference;
+  }
+
+  .headerHome .navigationSection.workListVisible .workList {
+    pointer-events: none;
+  }
+
   .workNavigation {
     width: unset;
   }
@@ -136,7 +144,7 @@
   }
 
   .HomeLink {
-    margin-right: 50px;
+    margin-right: 60px;
     margin-left: auto;
     /* position: fixed;
     bottom: 4px;

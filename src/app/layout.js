@@ -5,6 +5,7 @@ import { archivoNarrow, gothicA1 } from "./fonts";
 import "@/components/fonts/eulyoo1945.css";
 import "./globals.css";
 import { ImageLightboxProvider } from "@/components/image-lightbox";
+import LoadingBar from "@/components/loading/LoadingBar";
 import HtmlLocaleSync from "@/components/locale/HtmlLocaleSync";
 import Navigation from "@/components/navigation/navigation";
 import { getNavigationEventListData } from "@/lib/data/event";
@@ -41,6 +42,7 @@ export default async function RootLayout({ children }) {
       className={`${gothicA1.variable} ${archivoNarrow.variable}`}
     >
       <body>
+        <LoadingBar />
         <HtmlLocaleSync />
         <ImageLightboxProvider>
           <Navigation

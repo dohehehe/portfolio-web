@@ -98,27 +98,27 @@
 
 @media (max-width: 780px) {
 
-  /* @keyframes blur {
-    100% {
-      filter: blur(0.1px);
-    }
-
-    60% {
-      filter: blur(4px);
-    }
-
-    20% {
-      filter: blur(0.1px);
-    }
-
-    0% {
-      filter: blur(0.1px);
-    }
-  } */
-
-
   .imageContainer {
-    display: none;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-shrink: 0;
+    right: unset;
+    left: 0;
+    max-width: unset;
+    height: auto;
+    padding: 0 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    touch-action: pan-x;
+    overscroll-behavior-x: contain;
+    bottom: 10px;
+    margin: 0;
+    flex-wrap: nowrap;
+    /* box-shadow: inset 0 0 10px 10px pink; */
+    z-index: -1;
+    gap: 10px;
   }
 
   .imageContainer::-webkit-scrollbar {
@@ -134,19 +134,15 @@
     align-items: flex-start;
     justify-content: flex-end;
     flex-shrink: 0;
-    margin-left: auto;
-    width: 50vw;
-    height: auto;
-    padding: 2px 0;
+    width: calc(100vw - 20px);
+    height: 240px;
+    padding: 0;
     aspect-ratio: auto;
-    margin-right: 0;
+    margin: auto 0px 0;
     scroll-snap-align: start;
-    margin-top: unset;
-    transition: none;
-    overflow-x: scroll;
-    padding-left: calc(50vw - 50px);
+    overflow: hidden;
+    touch-action: pan-x;
     scrollbar-width: none;
-    /* box-shadow: inset 0 0 10px 10px pink; */
   }
 
   .imageContainer::-webkit-scrollbar {
@@ -157,24 +153,27 @@
   .imageLink:hover .imageFrame,
   .imageLinkActive .imageFrame {
     --home-image-ratio: 1;
-    box-sizing: border-box;
-    height: auto;
-    width: 100px;
+    /* width: calc(100vw - 10px); */
     padding-bottom: 0;
     overflow: visible;
     transition: none;
+    width: 100%;
+    height: 100%;
   }
 
   .image {
+    --home-image-wide: clamp(0, (var(--ratio, 1) - 1) * 1000, 1);
     position: static;
     inset: auto;
-    height: auto;
-    width: 100%;
-    object-fit: contain;
+    width: calc((1 - var(--home-image-wide)) * 240px * var(--ratio, 1) + var(--home-image-wide) * (100vw - 20px));
+    height: 240px;
+    max-height: 240px;
+    object-fit: cover;
+    object-position: center;
     margin-left: unset;
-    max-height: unset;
     padding-top: 0px;
     animation: none;
+    margin: 0 auto;
   }
 
   .caption {

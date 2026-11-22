@@ -27,6 +27,54 @@ function shuffleKeys(keys, previousKey) {
 export default function HomeImageList({ slides }) {
   const [activeKey, setActiveKey] = useState(null);
   const linkNodes = useRef(new Map());
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container || !window.matchMedia(MOBILE_QUERY).matches) {
+      return undefined;
+    }
+
+    let followEnd = true;
+    let pinning = false;
+
+    function pinEnd() {
+      if (!followEnd) {
+        return;
+      }
+
+      pinning = true;
+      container.scrollLeft = container.scrollWidth;
+      pinning = false;
+    }
+
+    function onScroll() {
+      if (pinning) {
+        return;
+      }
+
+      const max = container.scrollWidth - container.clientWidth;
+
+      if (max > 1 && container.scrollLeft < max - 2) {
+        followEnd = false;
+      }
+    }
+
+    pinEnd();
+    const observer = new ResizeObserver(pinEnd);
+
+    for (const child of container.children) {
+      observer.observe(child);
+    }
+
+    container.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      observer.disconnect();
+      container.removeEventListener("scroll", onScroll);
+    };
+  }, [slides]);
 
   useEffect(() => {
     const slide = slides[0];
@@ -124,7 +172,7 @@ export default function HomeImageList({ slides }) {
   // }, [slides]);
 
   return (
-    <div className={styles.imageContainer}>
+    <div ref={containerRef} className={styles.imageContainer}>
       {slides.map((slide) => (
         <HomeImageLink
           key={slide.key}
