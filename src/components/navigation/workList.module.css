@@ -40,6 +40,7 @@
 
 .listHome .item {
   animation: blur 7s ease-in-out infinite;
+  animation-delay: var(--blur-delay, 0s);
 }
 
 .listHome .item:hover {
