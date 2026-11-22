@@ -16,7 +16,7 @@ export function scrollToSection(id, behavior = "smooth") {
   const frame = element.hasAttribute("data-work-frame")
     ? element
     : element.closest("[data-work-frame]");
-  const runway = frame?.nextElementSibling;
+  const runway = frame?.nextElegmentSibling;
 
   if (
     frame &&
@@ -24,7 +24,7 @@ export function scrollToSection(id, behavior = "smooth") {
     getComputedStyle(frame).position === "sticky"
   ) {
     const stickyTop = Number.parseFloat(getComputedStyle(frame).top) || 0;
-    const top = getDocumentTop(runway) - frame.offsetHeight - stickyTop;
+    const top = getDocumentTop(runway) - frame.offsetHeight - stickyTop - 50;
     window.scrollTo({ top: Math.max(0, top), behavior });
     return;
   }
