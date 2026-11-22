@@ -15,8 +15,9 @@
   padding-left: 16px;
   padding-right: 18px;
   margin-left: -16px;
+  margin-bottom: 0;
   position: absolute;
-  margin-bottom: 0px;
+  padding-bottom: 40px;
   /* box-shadow: inset 0 0 10px 10px pink; */
 }
 
@@ -40,7 +41,6 @@
 
 .listHome .item {
   animation: blur 7s ease-in-out infinite;
-  animation-delay: var(--blur-delay, 0s);
 }
 
 .listHome .item:hover {
@@ -102,10 +102,23 @@
 
 @media (max-width: 780px) {
   .list {
+    padding-left: 10px;
     padding-right: 10px;
-    width: calc(100vw - 50px);
+  }
+
+  .listHome {
+    /* padding-right: 10px; */
+    width: calc(100vw + 20px);
     max-width: unset;
-    font-size: 1.35rem;
+    font-size: 1.3rem;
+    transform: rotate(-2deg);
+    padding-right: 10px;
+    padding-left: 30px;
+    /* box-shadow: inset 0 0 10px 10px pink; */
+    max-height: calc(100dvh + 16px);
+    margin-top: -32px;
+    padding-top: 50px;
+    padding-bottom: 70dvh;
   }
 
   .listWork {
@@ -122,8 +135,8 @@
   .listHome .link {}
 
   .year {
-    margin-top: -2px;
-    font-size: 1.3rem;
+    margin-top: -1px;
+    font-size: 1.25rem;
   }
 
 }
