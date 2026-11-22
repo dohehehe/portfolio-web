@@ -47,7 +47,7 @@
 .listHome .item:hover {
   animation: none;
   filter: blur(0.1px);
-  transform: rotate(45deg);
+  /* transform: rotate(45deg); */
 }
 
 @keyframes blur {
