@@ -98,27 +98,23 @@
 
 @media (max-width: 780px) {
 
-  /* @keyframes blur {
-    100% {
-      filter: blur(0.1px);
-    }
-
-    60% {
-      filter: blur(4px);
-    }
-
-    20% {
-      filter: blur(0.1px);
-    }
-
-    0% {
-      filter: blur(0.1px);
-    }
-  } */
-
-
   .imageContainer {
-    display: none;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-shrink: 0;
+    right: unset;
+    left: 0;
+    max-width: unset;
+    height: auto;
+    padding: 10px;
+    overflow-x: scroll;
+    bottom: -5px;
+    margin: 0;
+    flex-wrap: nowrap;
+    /* box-shadow: inset 0 0 10px 10px pink; */
+    z-index: -1;
   }
 
   .imageContainer::-webkit-scrollbar {
@@ -134,19 +130,15 @@
     align-items: flex-start;
     justify-content: flex-end;
     flex-shrink: 0;
-    margin-left: auto;
-    width: 50vw;
+    width: calc(100vw - 20px);
     height: auto;
-    padding: 2px 0;
+    padding: 0;
     aspect-ratio: auto;
-    margin-right: 0;
+    margin: 0;
     scroll-snap-align: start;
-    margin-top: unset;
-    transition: none;
     overflow-x: scroll;
-    padding-left: calc(50vw - 50px);
     scrollbar-width: none;
-    /* box-shadow: inset 0 0 10px 10px pink; */
+    margin-top: auto;
   }
 
   .imageContainer::-webkit-scrollbar {
@@ -157,12 +149,12 @@
   .imageLink:hover .imageFrame,
   .imageLinkActive .imageFrame {
     --home-image-ratio: 1;
-    box-sizing: border-box;
-    height: auto;
-    width: 100px;
+    /* width: calc(100vw - 10px); */
     padding-bottom: 0;
     overflow: visible;
     transition: none;
+    height: auto;
+    /* height: 100px; */
   }
 
   .image {

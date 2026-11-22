@@ -104,21 +104,26 @@
   .list {
     padding-left: 10px;
     padding-right: 10px;
+    width: calc(100vw - 5px);
+    margin-left: -10px;
+    max-width: unset;
   }
 
   .listHome {
-    /* padding-right: 10px; */
-    width: calc(100vw + 20px);
-    max-width: unset;
-    font-size: 1.3rem;
     transform: rotate(-2deg);
-    padding-right: 10px;
-    padding-left: 30px;
-    /* box-shadow: inset 0 0 10px 10px pink; */
-    max-height: calc(100dvh + 16px);
+    box-shadow: inset 0 0 15px 7px var(--list-home-shadow, rgb(21, 208, 255));
+    height: calc(100dvh + 13px);
     margin-top: -32px;
-    padding-top: 50px;
-    padding-bottom: 70dvh;
+    /* max-height: unset; */
+    padding-bottom: 50dvh;
+    margin-left: 0px;
+    padding-top: 45px;
+    width: calc(100vw - 5px);
+    padding-left: 12px;
+    padding-right: 15px;
+    background-color: white;
+    mix-blend-mode: difference;
+    /* width: 100vw; */
   }
 
   .listWork {
@@ -129,7 +134,7 @@
   }
 
   .listHome .item {
-    /* animation: none; */
+    animation: turn 20s ease-in-out infinite alternate;
   }
 
   .listHome .link {}
@@ -137,6 +142,20 @@
   .year {
     margin-top: -1px;
     font-size: 1.25rem;
+  }
+
+  @keyframes turn {
+    20% {
+      transform: rotate(0deg);
+    }
+
+    7% {
+      transform: rotate(45deg);
+    }
+
+    0% {
+      transform: rotate(45deg);
+    }
   }
 
 }
