@@ -138,7 +138,7 @@
     scroll-snap-align: start;
     overflow-x: scroll;
     scrollbar-width: none;
-    margin-top: auto;
+    margin: auto 10px 0;
   }
 
   .imageContainer::-webkit-scrollbar {

@@ -121,6 +121,10 @@
     padding: 2px 10px 0px;
   }
 
+  .headerHome {
+    mix-blend-mode: difference;
+  }
+
   .workNavigation {
     width: unset;
   }

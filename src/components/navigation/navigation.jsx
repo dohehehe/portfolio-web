@@ -66,11 +66,12 @@ export default function Navigation({
   const eventActive = isEventRoute(pathname);
   const textActive = isTextRoute(pathname);
   const infoActive = isInfoRoute(pathname);
+  const homeActive = stripLocaleFromPathname(pathname) === "/";
   const detailRoute = isDetailRoute(pathname);
   const { isHidden, show } = useNavigationScrollHide(detailRoute);
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${homeActive ? styles.headerHome : ""}`.trim()}>
       <nav
         className={`${styles.navigation} ${detailRoute && isHidden ? styles.navigationHidden : ""}`.trim()}
         onTouchStart={detailRoute ? show : undefined}
