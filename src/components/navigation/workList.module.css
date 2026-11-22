@@ -15,8 +15,9 @@
   padding-left: 16px;
   padding-right: 18px;
   margin-left: -16px;
+  margin-bottom: 0;
   position: absolute;
-  margin-bottom: 0px;
+  padding-bottom: 40px;
   /* box-shadow: inset 0 0 10px 10px pink; */
 }
 
@@ -103,9 +104,9 @@
 @media (max-width: 780px) {
   .list {
     padding-right: 10px;
-    width: calc(100vw - 50px);
+    width: 100vw;
     max-width: unset;
-    font-size: 1.35rem;
+    font-size: 1.3rem;
   }
 
   .listWork {
@@ -122,8 +123,8 @@
   .listHome .link {}
 
   .year {
-    margin-top: -2px;
-    font-size: 1.3rem;
+    margin-top: -1px;
+    font-size: 1.25rem;
   }
 
 }

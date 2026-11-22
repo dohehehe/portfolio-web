@@ -52,76 +52,76 @@ export default function HomeImageList({ slides }) {
     };
   }, [slides]);
 
-  useEffect(() => {
-    const mobile = window.matchMedia(MOBILE_QUERY);
+  // useEffect(() => {
+  //   const mobile = window.matchMedia(MOBILE_QUERY);
 
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      return undefined;
-    }
+  //   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  //     return undefined;
+  //   }
 
-    let timer = 0;
-    let cursor = 0;
-    let lastKey = null;
-    let order = [];
-    const running = new Map();
+  //   let timer = 0;
+  //   let cursor = 0;
+  //   let lastKey = null;
+  //   let order = [];
+  //   const running = new Map();
 
-    function stopRunning() {
-      running.forEach((cancel) => cancel());
-      running.clear();
-    }
+  //   function stopRunning() {
+  //     running.forEach((cancel) => cancel());
+  //     running.clear();
+  //   }
 
-    function tick() {
-      if (!mobile.matches) {
-        return;
-      }
+    // function tick() {
+    //   if (!mobile.matches) {
+    //     return;
+    //   }
 
-      const keys = slides
-        .map((slide) => slide.key)
-        .filter((key) => linkNodes.current.has(key));
+    //   const keys = slides
+    //     .map((slide) => slide.key)
+    //     .filter((key) => linkNodes.current.has(key));
 
-      if (keys.length === 0) {
-        timer = window.setTimeout(tick, SCROLL_NUDGE_INTERVAL_MS);
-        return;
-      }
+    //   if (keys.length === 0) {
+    //     timer = window.setTimeout(tick, SCROLL_NUDGE_INTERVAL_MS);
+    //     return;
+    //   }
 
-      if (cursor >= order.length || order.some((key) => !keys.includes(key))) {
-        order = shuffleKeys(keys, lastKey);
-        cursor = 0;
-      }
+    //   if (cursor >= order.length || order.some((key) => !keys.includes(key))) {
+    //     order = shuffleKeys(keys, lastKey);
+    //     cursor = 0;
+    //   }
 
-      const key = order[cursor];
-      cursor += 1;
-      lastKey = key;
-      const link = linkNodes.current.get(key);
+    //   const key = order[cursor];
+    //   cursor += 1;
+    //   lastKey = key;
+    //   const link = linkNodes.current.get(key);
 
-      if (link) {
-        running.get(key)?.();
-        running.set(key, startScrollNudge(link));
-      }
+    //   if (link) {
+    //     running.get(key)?.();
+    //     running.set(key, startScrollNudge(link));
+    //   }
 
-      timer = window.setTimeout(tick, SCROLL_NUDGE_INTERVAL_MS);
-    }
+    //   timer = window.setTimeout(tick, SCROLL_NUDGE_INTERVAL_MS);
+    // }
 
-    function syncToViewport() {
-      window.clearTimeout(timer);
+  //   function syncToViewport() {
+  //     window.clearTimeout(timer);
 
-      if (!mobile.matches) {
-        stopRunning();
-        return;
-      }
+  //     if (!mobile.matches) {
+  //       stopRunning();
+  //       return;
+  //     }
 
-      timer = window.setTimeout(tick, SCROLL_NUDGE_INTERVAL_MS);
-    }
+  //     timer = window.setTimeout(tick, SCROLL_NUDGE_INTERVAL_MS);
+  //   }
 
-    syncToViewport();
-    mobile.addEventListener("change", syncToViewport);
+  //   syncToViewport();
+  //   mobile.addEventListener("change", syncToViewport);
 
-    return () => {
-      window.clearTimeout(timer);
-      mobile.removeEventListener("change", syncToViewport);
-      stopRunning();
-    };
-  }, [slides]);
+  //   return () => {
+  //     window.clearTimeout(timer);
+  //     mobile.removeEventListener("change", syncToViewport);
+  //     stopRunning();
+  //   };
+  // }, [slides]);
 
   return (
     <div className={styles.imageContainer}>

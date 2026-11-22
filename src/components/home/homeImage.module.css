@@ -98,7 +98,7 @@
 
 @media (max-width: 780px) {
 
-  @keyframes blur {
+  /* @keyframes blur {
     100% {
       filter: blur(0.1px);
     }
@@ -114,11 +114,11 @@
     0% {
       filter: blur(0.1px);
     }
-  }
+  } */
 
 
   .imageContainer {
-    max-width: unset;
+    /* max-width: unset;
     flex-direction: column;
     width: 100vw;
     height: 100dvh;
@@ -137,7 +137,8 @@
     animation: none;
     padding-top: 30px;
     gap: 0px;
-    z-index: -1;
+    z-index: -1; */
+    display: none;
   }
 
   .imageContainer::-webkit-scrollbar {
