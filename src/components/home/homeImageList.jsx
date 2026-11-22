@@ -27,6 +27,18 @@ function shuffleKeys(keys, previousKey) {
 export default function HomeImageList({ slides }) {
   const [activeKey, setActiveKey] = useState(null);
   const linkNodes = useRef(new Map());
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+
+    if (!container || !window.matchMedia(MOBILE_QUERY).matches) {
+      return undefined;
+    }
+
+    container.scrollLeft = container.scrollWidth;
+    return undefined;
+  }, [slides]);
 
   useEffect(() => {
     const slide = slides[0];
@@ -124,7 +136,7 @@ export default function HomeImageList({ slides }) {
   // }, [slides]);
 
   return (
-    <div className={styles.imageContainer}>
+    <div ref={containerRef} className={styles.imageContainer}>
       {slides.map((slide) => (
         <HomeImageLink
           key={slide.key}

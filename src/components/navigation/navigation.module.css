@@ -125,6 +125,10 @@
     mix-blend-mode: difference;
   }
 
+  .headerHome .navigationSection.workListVisible .workList {
+    pointer-events: none;
+  }
+
   .workNavigation {
     width: unset;
   }

@@ -112,17 +112,18 @@
   .listHome {
     transform: rotate(-2deg);
     box-shadow: inset 0 0 15px 7px var(--list-home-shadow, rgb(21, 208, 255));
-    height: calc(100dvh + 13px);
+    height: calc(100dvh - 24px);
     margin-top: -32px;
     /* max-height: unset; */
-    padding-bottom: 50dvh;
+    padding-bottom: 50vh;
     margin-left: 0px;
-    padding-top: 45px;
+    padding-top: 50px;
     width: calc(100vw - 5px);
     padding-left: 12px;
     padding-right: 15px;
     background-color: white;
     mix-blend-mode: difference;
+    pointer-events: none;
     /* width: 100vw; */
   }
 
@@ -135,9 +136,12 @@
 
   .listHome .item {
     animation: turn 20s ease-in-out infinite alternate;
+    pointer-events: auto;
   }
 
-  .listHome .link {}
+  .listHome .link {
+    pointer-events: auto;
+  }
 
   .year {
     margin-top: -1px;
