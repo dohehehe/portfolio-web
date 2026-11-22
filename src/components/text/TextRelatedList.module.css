@@ -56,4 +56,8 @@
     font-size: 1.2rem;
   }
 
+  .relatedItemRow {
+    text-align: left;
+  }
+
 }
